@@ -1,0 +1,365 @@
+=== STYLE BLOCK 0 ===
+
+
+/* ── Navigation ── */
+.nav-overlay {
+  overflow: hidden;
+  height: 100vh;
+}
+.nav-overlay-inner {
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+@media (min-width: 992px) {
+  .nav-overlay-inner {
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+}
+@media (max-width: 991px) {
+  .marquee_image,
+  .marquee_image_597 {
+    height: 350px !important;
+    width: auto !important;
+  }
+}
+
+/* ── Scroll Pills ── */
+@media (max-width: 767px) {
+  #stw-stage {
+    height: auto !important;
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 80px 20px;
+  }
+  #stw-title {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+    text-align: center;
+    margin-bottom: 16px;
+    white-space: normal !important;
+    font-size: clamp(32px, 9vw, 42px) !important;
+  }
+  .stw-pill {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+  }
+}
+@media (max-width: 600px) {
+  #stw-title, .stw-pill span { letter-spacing: -1.5px !important; }
+}
+.nav-overlay { pointer-events: auto; }
+.nav-wrapper { pointer-events: none; }
+.nav-pill { pointer-events: auto; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.nav-link-large-overlay { width: fit-content; transition: opacity 0.4s ease; }
+.nav-links-large:hover .nav-link-large-overlay { opacity: 0.35; }
+.nav-links-large:hover .nav-link-large-overlay:hover { opacity: 1; }
+.nav-link-small { width: fit-content; transition: opacity 0.4s ease; }
+.nav-links-small:has(.nav-link-small:not(.email-copy-btn):hover) .nav-link-small:not(.email-copy-btn):not(:hover) { opacity: 0.35; }
+.nav-pill.is-open {
+  background-color: rgba(22, 22, 22, 0.7) !important;
+  border: 1px solid #FFFFFF !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+}
+.nav-pill.is-open .nav-brand {
+  color: #FFFFFF !important;
+  filter: brightness(0) invert(1);
+}
+/* ── Email Copy Button ── */
+.email-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  background-color: #FFFFFF;
+  border-radius: 100px;
+  padding: 12px 24px;
+  white-space: nowrap;
+  justify-content: center;
+  transition: background-color 0.3s ease, width 0.3s ease;
+  width: auto;
+  text-decoration: none;
+}
+.email-copy-btn .email-copy-text { color: #161616 !important; }
+.email-copy-text { transition: opacity 0.3s ease; }
+.email-copy-btn.is-copied { background-color: #FF8000; }
+.email-copy-btn.is-copied .email-copy-text { color: #FFFFFF !important; }
+/* ── Nav Story Cards ── */
+.nav-story-card {
+  border-radius: 12px;
+  padding: 12px;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  align-self: flex-start;
+}
+.nav-story-card:hover { background-color: rgba(255, 255, 255, 0.07); }
+.nav-story-card svg { transition: transform 0.3s ease; }
+.nav-story-card:hover svg { transform: translateX(6px); }
+.nav-story-label { font-size: 13px; color: rgba(255, 255, 255, 0.5); }
+.nav-story-title { font-size: 15px; color: #FFFFFF; }
+@media (max-width: 991px) {
+  .nav-story-card { align-self: center; width: 75%; max-width: 500px; }
+  .nav-overlay-right { width: 100%; display: flex; flex-direction: column; align-items: center; }
+}
+
+  
+/* ── Strategy Move Buttons ── */
+.strategymoves-btn:hover { background-color: #161616; }
+.strategymoves-btn .sm-icon svg path { fill: white !important; }
+.sm-icon { display: flex; align-items: center; }
+.strategymoves-btn .sm-icon,
+.strategymoves-btn-ghost .sm-icon { transition: transform 0.3s ease; }
+.strategymoves-btn:hover .sm-icon,
+.strategymoves-btn-ghost:hover .sm-icon { transform: translateX(5px); }
+
+
+
+  
+/* ── Footer nav hover (large links) ── */
+.nav-links-large-footer:hover .nav-link-large-overlay { opacity: 0.35; }
+.nav-links-large-footer:hover .nav-link-large-overlay:hover { opacity: 1; }
+
+/* ── Footer nav hover (small links) ── */
+.nav-link-small-footer { transition: opacity 0.4s ease; }
+.nav-links-small-footer:has(.nav-link-small-footer:not(.email-copy-btn):hover) .nav-link-small-footer:not(.email-copy-btn):not(:hover) { opacity: 0.35; }
+
+/* ── Footer bottom row ── */
+.nav-bottom-row:has(.nav-link-bottom:hover) .nav-link-bottom:not(:hover) { opacity: 0.35; }
+.nav-link-bottom { text-decoration: none; transition: opacity 0.6s ease; }
+.nav-bottom-text { transition: color 0.6s ease; }
+.nav-link-bottom:hover .nav-bottom-text { color: #ffffff !important; }
+
+/* ── Footer bottom row — mobile ── */
+@media (max-width: 767px) {
+  .nav-bottom-row { flex-direction: column; align-items: center; gap: 16px; }
+  .nav-bottom-right { align-items: center; }
+}
+  
+
+/* ── Programs Section ── */
+.programs-item { text-decoration: none; transition: background-color 0.4s ease; cursor: pointer; }
+.programs-item:hover { background-color: #FFF500; }
+.programs-item-btn { transition: background-color 0.4s ease, border-color 0.4s ease; flex-shrink: 0; }
+.programs-item:hover .programs-item-btn { background-color: #1A00FF; border-color: #1A00FF; }
+.programs-item:hover .programs-item-btn svg path { fill: white; }
+.programs-item-btn .w-embed { display: flex; align-items: center; justify-content: center; }
+
+
+=== STYLE BLOCK 1 ===
+
+
+/* Set color style to inherit */
+.inherit-color * {
+    color: inherit;
+}
+
+/* Focus state style for keyboard navigation for the focusable elements */
+*[tabindex]:focus-visible,
+  input[type="file"]:focus-visible {
+   outline: 0.125rem solid #4d65ff;
+   outline-offset: 0.125rem;
+}
+
+/* Get rid of top margin on first element in any rich text element */
+.w-richtext > :not(div):first-child, .w-richtext > div:first-child > :first-child {
+  margin-top: 0 !important;
+}
+
+/* Get rid of bottom margin on last element in any rich text element */
+.w-richtext>:last-child, .w-richtext ol li:last-child, .w-richtext ul li:last-child {
+	margin-bottom: 0 !important;
+}
+
+/* Prevent all click and hover interaction with an element */
+.pointer-events-off {
+	pointer-events: none;
+}
+
+/* Enables all click and hover interaction with an element */
+.pointer-events-on {
+  pointer-events: auto;
+}
+
+/* Create a class of .div-square which maintains a 1:1 dimension of a div */
+.div-square::after {
+	content: "";
+	display: block;
+	padding-bottom: 100%;
+}
+
+/* Make sure containers never lose their center alignment */
+.container-medium,.container-small, .container-large {
+	margin-right: auto !important;
+  margin-left: auto !important;
+}
+
+/* 
+Make the following elements inherit typography styles from the parent and not have hardcoded values. 
+Important: You will not be able to style for example "All Links" in Designer with this CSS applied.
+Uncomment this CSS to use it in the project. Leave this message for future hand-off.
+*/
+/*
+a,
+.w-input,
+.w-select,
+.w-tab-link,
+.w-nav-link,
+.w-dropdown-btn,
+.w-dropdown-toggle,
+.w-dropdown-link {
+  color: inherit;
+  text-decoration: inherit;
+  font-size: inherit;
+}
+*/
+
+/* Apply "..." after 3 lines of text */
+.text-style-3lines {
+	display: -webkit-box;
+	overflow: hidden;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+}
+
+/* Apply "..." after 2 lines of text */
+.text-style-2lines {
+	display: -webkit-box;
+	overflow: hidden;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+}
+
+/* Adds inline flex display */
+.display-inlineflex {
+  display: inline-flex;
+}
+
+/* These classes are never overwritten */
+.hide {
+  display: none !important;
+}
+
+@media screen and (max-width: 991px) {
+    .hide, .hide-tablet {
+        display: none !important;
+    }
+}
+  @media screen and (max-width: 767px) {
+    .hide-mobile-landscape{
+      display: none !important;
+    }
+}
+  @media screen and (max-width: 479px) {
+    .hide-mobile{
+      display: none !important;
+    }
+}
+ 
+.margin-0 {
+  margin: 0rem !important;
+}
+  
+.padding-0 {
+  padding: 0rem !important;
+}
+
+.spacing-clean {
+padding: 0rem !important;
+margin: 0rem !important;
+}
+
+.margin-top {
+  margin-right: 0rem !important;
+  margin-bottom: 0rem !important;
+  margin-left: 0rem !important;
+}
+
+.padding-top {
+  padding-right: 0rem !important;
+  padding-bottom: 0rem !important;
+  padding-left: 0rem !important;
+}
+  
+.margin-right {
+  margin-top: 0rem !important;
+  margin-bottom: 0rem !important;
+  margin-left: 0rem !important;
+}
+
+.padding-right {
+  padding-top: 0rem !important;
+  padding-bottom: 0rem !important;
+  padding-left: 0rem !important;
+}
+
+.margin-bottom {
+  margin-top: 0rem !important;
+  margin-right: 0rem !important;
+  margin-left: 0rem !important;
+}
+
+.padding-bottom {
+  padding-top: 0rem !important;
+  padding-right: 0rem !important;
+  padding-left: 0rem !important;
+}
+
+.margin-left {
+  margin-top: 0rem !important;
+  margin-right: 0rem !important;
+  margin-bottom: 0rem !important;
+}
+  
+.padding-left {
+  padding-top: 0rem !important;
+  padding-right: 0rem !important;
+  padding-bottom: 0rem !important;
+}
+  
+.margin-horizontal {
+  margin-top: 0rem !important;
+  margin-bottom: 0rem !important;
+}
+
+.padding-horizontal {
+  padding-top: 0rem !important;
+  padding-bottom: 0rem !important;
+}
+
+.margin-vertical {
+  margin-right: 0rem !important;
+  margin-left: 0rem !important;
+}
+  
+.padding-vertical {
+  padding-right: 0rem !important;
+  padding-left: 0rem !important;
+}
+
+/* Apply "..." at 100% width */
+.truncate-width { 
+		width: 100%; 
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+}
+/* Removes native scrollbar */
+.no-scrollbar {
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none; 
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+

@@ -1,0 +1,802 @@
+[
+ {
+  "slug": "about-us",
+  "title": "About Humblebee - Digital Service Design Studio — Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "careers",
+  "title": "Careers at Humblebee — Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "contact",
+  "title": "Contact Us — Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "enquiry",
+  "title": "Enquiry Form — Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "events/hive-alumni-gathering",
+  "title": "HIVE Alumni Gathering",
+  "template": "legacy"
+ },
+ {
+  "slug": "events/navigating-ai-with-ikea",
+  "title": "Navigating AI with IKEA",
+  "template": "legacy"
+ },
+ {
+  "slug": "fast-track",
+  "title": "Humblebee Fast Track Packages — Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "fast-track/business-experiments",
+  "title": "Business Experiments — Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "fast-track/create-a-new-digital-service",
+  "title": "Create a new digital service — Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "fast-track/data-health-check",
+  "title": "Data Health Check — Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "fast-track/design-system-lite",
+  "title": "Design System Lite — Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "fast-track/explore-new-data-driven-solutions",
+  "title": "Explore New Data-Driven Solutions — Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "fast-track/explore-new-service-opportunities",
+  "title": "Explore new service opportunities — Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "fast-track/lean-success-metrics",
+  "title": "Lean Success Metrics — Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "fast-track/product-improvement-sprint",
+  "title": "Product Improvement Sprint — Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "fast-track/rapid-user-insights",
+  "title": "Rapid User Insights — Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "fast-track/tech-review",
+  "title": "Tech Review — Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "fast-track/user-interface-review",
+  "title": "User Interface Review — Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "fast-track/ux-health-check",
+  "title": "UX Health Check — Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "glimpse-of-humblebee",
+  "title": "A Glimpse of Humblebee — Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "hej/securitas",
+  "title": "Well Hello Securitas",
+  "template": "legacy"
+ },
+ {
+  "slug": "hire-a-design-bee",
+  "title": "Hire a Design Bee — Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "hire-us",
+  "title": "Hire Us",
+  "template": "legacy"
+ },
+ {
+  "slug": "hive",
+  "title": "Humblebee Hive - A student lab — Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "impact/after-sales",
+  "title": "Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "journeys",
+  "title": "Humblebee Journey packages — Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "journeys/90-day-innovation",
+  "title": "90 Day Innovation — Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "journeys/incubation",
+  "title": "Incubation — Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "journeys/life-science-service-excellence",
+  "title": "Life Science Service Excellence — Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "journeys/pilot-as-a-service",
+  "title": "Pilot as a service — Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "journeys/practical-digital-transformation",
+  "title": "Practical Digital Transformation — Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "journeys/service-acceleration",
+  "title": "Service Acceleration — Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "journeys/talent-as-a-service",
+  "title": "Talent as a service — Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "old-home",
+  "title": "Home - Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "out-of-context",
+  "title": "Out of Context — Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "products/talking-catalogues",
+  "title": "Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "programs",
+  "title": "Programs",
+  "template": "programsIndex"
+ },
+ {
+  "slug": "programs/ai-adoption-program",
+  "title": "AI Adoption Program",
+  "template": "program"
+ },
+ {
+  "slug": "programs/connected-products-program",
+  "title": "Connected Products Program",
+  "template": "program"
+ },
+ {
+  "slug": "programs/coventures-program",
+  "title": "CoVentures Program",
+  "template": "program"
+ },
+ {
+  "slug": "programs/customer-experience-program",
+  "title": "Customer Experience Program",
+  "template": "program"
+ },
+ {
+  "slug": "programs/go-to-market-program",
+  "title": "Go-To-Market Program",
+  "template": "program"
+ },
+ {
+  "slug": "programs/revenue-growth-program",
+  "title": "Revenue Growth Program",
+  "template": "program"
+ },
+ {
+  "slug": "programs/strategic-products-program",
+  "title": "Strategic Products Program",
+  "template": "program"
+ },
+ {
+  "slug": "responsible-ai",
+  "title": "Responsible AI",
+  "template": "legacy"
+ },
+ {
+  "slug": "segment-expert-consultant/construction",
+  "title": "Hire someone who already understands construction.",
+  "template": "legacy"
+ },
+ {
+  "slug": "services",
+  "title": "Services — Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "services/design",
+  "title": "Design — Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "services/strategy",
+  "title": "Strategy — Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "services/technology",
+  "title": "Technology — Humblebee",
+  "template": "legacy"
+ },
+ {
+  "slug": "stories",
+  "title": "Stories — Humblebee",
+  "template": "storiesIndex"
+ },
+ {
+  "slug": "stories/10-in-5-andreas-ahlqvist-service-designer-at-humblebee",
+  "title": "10 in 5. Andreas Ahlqvist, Service Designer at Humblebee",
+  "template": "story"
+ },
+ {
+  "slug": "stories/10-in-5-asa-palholmen-developer",
+  "title": "10 in 5. Åsa Palholmen, Developer",
+  "template": "story"
+ },
+ {
+  "slug": "stories/10-in-5-claudia-bertone-ux-designer-at-humblebee",
+  "title": "10 in 5. Claudia Bertone, UX Designer at Humblebee",
+  "template": "story"
+ },
+ {
+  "slug": "stories/10-in-5-florent-schildknecht-application-architect",
+  "title": "10 in 5. Florent Schildknecht, Application Architect",
+  "template": "story"
+ },
+ {
+  "slug": "stories/10-in-5-gustaf-holm-developer",
+  "title": "10 in 5. Gustaf Holm, Developer",
+  "template": "story"
+ },
+ {
+  "slug": "stories/10-in-5-helen-arnold-head-of-people-and-culture",
+  "title": "10 in 5. Helen Arnold, Head of People and Culture",
+  "template": "story"
+ },
+ {
+  "slug": "stories/10-in-5-hugo-hedelin-developer-at-humblebee",
+  "title": "10 in 5. Hugo Hedelin, Developer at Humblebee.",
+  "template": "story"
+ },
+ {
+  "slug": "stories/10-in-5-john-hult-developer-at-humblebee",
+  "title": "10 in 5. John Hult, Developer at Humblebee.",
+  "template": "story"
+ },
+ {
+  "slug": "stories/10-in-5-jonas-kaapa-service-designer-at-humblebee",
+  "title": "10 in 5. Jonas Kääpä, Service Designer at Humblebee.",
+  "template": "story"
+ },
+ {
+  "slug": "stories/10-in-5-jonatan-thomasson-ux-designer",
+  "title": "10 in 5. Jonatan Thomasson, UX Designer",
+  "template": "story"
+ },
+ {
+  "slug": "stories/10-in-5-joseph-astorga-product-designer",
+  "title": "10 in 5. Joseph Astorga, Product Designer",
+  "template": "story"
+ },
+ {
+  "slug": "stories/10-in-5-katarina-bergstrom-service-designer",
+  "title": "10 in 5. Katarina Bergström, Service Designer.",
+  "template": "story"
+ },
+ {
+  "slug": "stories/10-in-5-lovisa-stockman-ux-designer",
+  "title": "10 in 5. Lovisa Stockman, UX Designer",
+  "template": "story"
+ },
+ {
+  "slug": "stories/10-in-5-maja-haak-product-designer",
+  "title": "10 in 5. Maja Haak, Product Designer",
+  "template": "story"
+ },
+ {
+  "slug": "stories/10-in-5-marco-dondana-product-designer-at-humblebee",
+  "title": "10 in 5. Marco Dondana, Product Designer at Humblebee.",
+  "template": "story"
+ },
+ {
+  "slug": "stories/10-in-5-mattias-hagbard-service-design-lead-at-humblebee",
+  "title": "10 in 5. Mattias Hagbard, Service Design Lead at Humblebee",
+  "template": "story"
+ },
+ {
+  "slug": "stories/10-in-5-olga-dergachyova-data-scientist",
+  "title": "10 in 5 Olga Dergachyova, Data Scientist",
+  "template": "story"
+ },
+ {
+  "slug": "stories/10-in-5-olivia-chalandon-ux-designer",
+  "title": "10 in 5. Olivia Chalandon, UX Designer",
+  "template": "story"
+ },
+ {
+  "slug": "stories/10-in-5-pontus-brenner-product-designer",
+  "title": "10 in 5. Pontus Brenner, Product Designer",
+  "template": "story"
+ },
+ {
+  "slug": "stories/2017-a-love-story-for-the-web",
+  "title": "2017 — a love story for the web",
+  "template": "story"
+ },
+ {
+  "slug": "stories/2025-is-soon-is-your-digital-service-ready-for-the-new-accessibility-law",
+  "title": "2025 is soon. Is your digital service ready for the new accessibility law?",
+  "template": "story"
+ },
+ {
+  "slug": "stories/8-mini-interviews-on-8th-of-march-iwd",
+  "title": "8 Mini Interviews on 8th of March IWD",
+  "template": "story"
+ },
+ {
+  "slug": "stories/a-day-in-the-life-of-a-product-team",
+  "title": "A day in the life of a Product Team",
+  "template": "story"
+ },
+ {
+  "slug": "stories/a-mini-interview-with-the-beeblebot-team",
+  "title": "A mini interview with the BeebleBot team",
+  "template": "story"
+ },
+ {
+  "slug": "stories/co-creating-digital-products-in-hong-kong",
+  "title": "Co-creating digital products in Hong Kong",
+  "template": "story"
+ },
+ {
+  "slug": "stories/containers-and-kubernetes",
+  "title": "Containers and Kubernetes",
+  "template": "story"
+ },
+ {
+  "slug": "stories/corona-crisis-canvas",
+  "title": "Corona Crisis Canvas",
+  "template": "story"
+ },
+ {
+  "slug": "stories/design-digest-02",
+  "title": "Design digest #02",
+  "template": "story"
+ },
+ {
+  "slug": "stories/design-digest-03",
+  "title": "Design digest #03",
+  "template": "story"
+ },
+ {
+  "slug": "stories/design-digest-04",
+  "title": "Design digest #04",
+  "template": "story"
+ },
+ {
+  "slug": "stories/design-digest-05",
+  "title": "Design digest #05",
+  "template": "story"
+ },
+ {
+  "slug": "stories/design-digest-06",
+  "title": "Design digest #06",
+  "template": "story"
+ },
+ {
+  "slug": "stories/design-digest-07",
+  "title": "Design Digest #07",
+  "template": "story"
+ },
+ {
+  "slug": "stories/design-thinking-for-devs",
+  "title": "Design Thinking for Devs",
+  "template": "story"
+ },
+ {
+  "slug": "stories/designing-a-ux-for-digital-users-in-2030-with-a-multi-office-cross-competence-team",
+  "title": "Designing a UX for digital users in 2030, with a multi-office, cross-competence team.",
+  "template": "story"
+ },
+ {
+  "slug": "stories/devops-commit-build-and-deploy-your-code",
+  "title": "DevOps: Commit, build and deploy your code",
+  "template": "story"
+ },
+ {
+  "slug": "stories/everything-you-once-knew-about-customer-experience-and-marketing-has-changed-forever",
+  "title": "Everything you once knew about customer experience and marketing has changed forever.",
+  "template": "story"
+ },
+ {
+  "slug": "stories/experiences-in-a-digital-world",
+  "title": "Experiences in a digital world",
+  "template": "story"
+ },
+ {
+  "slug": "stories/experiments-are-not-just-for-mad-scientists",
+  "title": "Experiments are not just for mad scientists",
+  "template": "story"
+ },
+ {
+  "slug": "stories/get-closer-to-our-service-business-design-team",
+  "title": "Get closer to our Service & Business Design Team",
+  "template": "story"
+ },
+ {
+  "slug": "stories/growth-hacking-design-thinking-75-increase-of-customer-base",
+  "title": "Growth Hacking + Design Thinking = 75% increase of customer base",
+  "template": "story"
+ },
+ {
+  "slug": "stories/hive-13",
+  "title": "Hive 13 + Faktum",
+  "template": "story"
+ },
+ {
+  "slug": "stories/how-hive-helped-me-grow-as-a-ux-designer",
+  "title": "How HIVE helped me grow as a UX-designer",
+  "template": "story"
+ },
+ {
+  "slug": "stories/how-not-to-fail-with-innovation-a-10-point-guide",
+  "title": "How not to fail with innovation — a 10 point guide",
+  "template": "story"
+ },
+ {
+  "slug": "stories/how-to-bring-digital-services-to-the-market---10-pieces-of-advice-from-a-business-designers-perspective",
+  "title": "How to bring services to the market – 10 pieces of advice from a business designer.",
+  "template": "story"
+ },
+ {
+  "slug": "stories/how-to-supercharge-your-agency-with-studio-projects-and-the-mistakes-to-avoid",
+  "title": "How to supercharge your agency with studio projects (and the mistakes to avoid)",
+  "template": "story"
+ },
+ {
+  "slug": "stories/how-we-at-humblebee-keep-everything-up-and-running-in-these-uncertain-times",
+  "title": "How we at Humblebee keep everything up and running in these uncertain times.",
+  "template": "story"
+ },
+ {
+  "slug": "stories/how-we-develop-products-at-humblebee",
+  "title": "How we develop products at Humblebee",
+  "template": "story"
+ },
+ {
+  "slug": "stories/how-we-interview-at-humblebee-with-hannes-larsson-westerlund",
+  "title": "How we interview at Humblebee with Hannes Larsson Westerlund",
+  "template": "story"
+ },
+ {
+  "slug": "stories/how-we-put-ai-to-real-use-in-our-daily-work",
+  "title": "How we put AI to real use in our daily work",
+  "template": "story"
+ },
+ {
+  "slug": "stories/how-will-the-world-of-a-digital-user-look-in-2030",
+  "title": "How will the world of a digital user look in 2030?",
+  "template": "story"
+ },
+ {
+  "slug": "stories/hows-that-digitalisation-going-for-you",
+  "title": "How’s that digitalisation going for you?",
+  "template": "story"
+ },
+ {
+  "slug": "stories/humblebee-and-the-self-charging-culture",
+  "title": "🔋Humblebee and the self charging culture",
+  "template": "story"
+ },
+ {
+  "slug": "stories/interview-with-david-ceo-at-our-construction-startup-justr",
+  "title": "5 questions for David from construction startup Justr",
+  "template": "story"
+ },
+ {
+  "slug": "stories/interview-with-our-ceo-tove-backer",
+  "title": "Interview with our CEO Tove Bäcker",
+  "template": "story"
+ },
+ {
+  "slug": "stories/is-it-time-to-sack-your-boss",
+  "title": "Is it time to sack your boss?",
+  "template": "story"
+ },
+ {
+  "slug": "stories/keep-yourself-alive-avoid-death-by-1000-cuts-using-innovation-and-design-thinking",
+  "title": "Keep yourself alive. Avoid death by 1000 cuts using innovation and design thinking.",
+  "template": "story"
+ },
+ {
+  "slug": "stories/lets-talk-about-ux-portfolios",
+  "title": "Let’s talk about UX portfolios",
+  "template": "story"
+ },
+ {
+  "slug": "stories/navigate-the-limitations-of-modern-ai-and-set-a-successful-strategy",
+  "title": "Navigate the limitations of modern AI and set a successful strategy",
+  "template": "story"
+ },
+ {
+  "slug": "stories/open-source-license-compliance-the-tl-dr-version",
+  "title": "Open source license compliance, the TL;DR version",
+  "template": "story"
+ },
+ {
+  "slug": "stories/post-traumatic-design-sprint-disorder",
+  "title": "Post Traumatic Design Sprint Disorder",
+  "template": "story"
+ },
+ {
+  "slug": "stories/selling-digital-by-the-hour-is-like-shooting-yourself-in-the-foot-before-going-for-a-run",
+  "title": "Selling Digital by the Hour is Like Shooting Yourself in the Foot Before Going For a Run",
+  "template": "story"
+ },
+ {
+  "slug": "stories/serverless-technologies-and-apis",
+  "title": "Serverless technologies and APIs",
+  "template": "story"
+ },
+ {
+  "slug": "stories/sound-is-the-new-oil",
+  "title": "Sound is the new oil",
+  "template": "story"
+ },
+ {
+  "slug": "stories/sprinting-fast",
+  "title": "Sprinting, fast",
+  "template": "story"
+ },
+ {
+  "slug": "stories/still-afraid-to-use-machine-learning-in-your-business",
+  "title": "Still afraid to use Machine Learning in your business?",
+  "template": "story"
+ },
+ {
+  "slug": "stories/storage-and-databases",
+  "title": "Storage and Databases",
+  "template": "story"
+ },
+ {
+  "slug": "stories/the-importance-of-a-design-system-and-how-it-saves-your-organisation-both-time-and-money",
+  "title": "The importance of a design system and how it saves your organisation both time and money",
+  "template": "story"
+ },
+ {
+  "slug": "stories/the-joy-of-learning",
+  "title": "The Joy of Learning",
+  "template": "story"
+ },
+ {
+  "slug": "stories/the-most-effective-weapon-any-company-can-use-but-most-choose-to-ignore",
+  "title": "The most effective weapon any company can use but most choose to ignore",
+  "template": "story"
+ },
+ {
+  "slug": "stories/the-new-era-of-post-it-innovation",
+  "title": "The new era of Post-it innovation",
+  "template": "story"
+ },
+ {
+  "slug": "stories/the-service-design-show-podcast",
+  "title": "The Service Design Show Podcast",
+  "template": "story"
+ },
+ {
+  "slug": "stories/virtual-machines-and-networking",
+  "title": "Virtual machines and networking",
+  "template": "story"
+ },
+ {
+  "slug": "stories/we-design-sprint-to-create-products-effectively",
+  "title": "We Design Sprint to create products effectively",
+  "template": "story"
+ },
+ {
+  "slug": "stories/we-go-from-idea-to-digital-product-at-rocket-speed",
+  "title": "We go from idea to digital product at rocket speed",
+  "template": "story"
+ },
+ {
+  "slug": "stories/web-based-3d-for-amazing-customer-experiences",
+  "title": "Web based 3D for amazing customer experiences",
+  "template": "story"
+ },
+ {
+  "slug": "stories/what-if-city-apps",
+  "title": "What if City Apps were more like this?",
+  "template": "story"
+ },
+ {
+  "slug": "stories/what-is-servitization-and-why-does-it-matter-to-you",
+  "title": "What is servitization and why does it matter to you?",
+  "template": "story"
+ },
+ {
+  "slug": "stories/what-is-the-cloud",
+  "title": "What is the cloud?",
+  "template": "story"
+ },
+ {
+  "slug": "stories/what-really-happens-in-the-hive-student-lab",
+  "title": "What really happens in the Hive student lab?",
+  "template": "story"
+ },
+ {
+  "slug": "stories/what-skills-to-learn-when-you-have-your-hands-full-with-nappies-but-still-want-to-take-over-the-world",
+  "title": "What skills to learn when you have your hands full with nappies but still want to take over the world",
+  "template": "story"
+ },
+ {
+  "slug": "stories/why-we-gamified-ux-literally",
+  "title": "Why we gamified UX. Literally.",
+  "template": "story"
+ },
+ {
+  "slug": "thanks",
+  "title": "Thanks",
+  "template": "legacy"
+ },
+ {
+  "slug": "work",
+  "title": "Our Work — Humblebee",
+  "template": "workIndex"
+ },
+ {
+  "slug": "work/a-press-information-app-for-polestar",
+  "title": "Press Information App — Humblebee",
+  "template": "case"
+ },
+ {
+  "slug": "work/a-service-for-tradesmen",
+  "title": "Material Estimation Service — Humblebee",
+  "template": "case"
+ },
+ {
+  "slug": "work/an-mvp-in-5-weeks-with-stena-metall",
+  "title": "MVP in 5 weeks — Humblebee",
+  "template": "case"
+ },
+ {
+  "slug": "work/building-a-lab-with-volvo-cars",
+  "title": "Innovation Lab — Humblebee",
+  "template": "case"
+ },
+ {
+  "slug": "work/corporate-social-responsibility-in-healthcare",
+  "title": "Corporate Social Responsibility App — Humblebee",
+  "template": "case"
+ },
+ {
+  "slug": "work/design-sprints-in-shanghai",
+  "title": "Design Sprints in Shanghai — Humblebee",
+  "template": "case"
+ },
+ {
+  "slug": "work/easycom",
+  "title": "Service for large scale returns — Humblebee",
+  "template": "case"
+ },
+ {
+  "slug": "work/gaining-insights-for-a-lawyer-app",
+  "title": "Gaining insights for a lawyer app — Humblebee",
+  "template": "case"
+ },
+ {
+  "slug": "work/hellberg-safety",
+  "title": "B2B Product Branding Site — Humblebee",
+  "template": "case"
+ },
+ {
+  "slug": "work/hultafors-group-a-web-platform-for-a-multi-brand-organisation",
+  "title": "Multi-brand Web Platform — Humblebee",
+  "template": "case"
+ },
+ {
+  "slug": "work/justr",
+  "title": "Construction Startup — Humblebee",
+  "template": "case"
+ },
+ {
+  "slug": "work/measuring-urban-biodiversity",
+  "title": "Measuring urban biodiversity  — Humblebee",
+  "template": "case"
+ },
+ {
+  "slug": "work/mental-health-care---for-women",
+  "title": "Mental health care for women — Humblebee",
+  "template": "case"
+ },
+ {
+  "slug": "work/parenting-meets-ai-agent-technology",
+  "title": "Parenting meets AI Agent — Humblebee",
+  "template": "case"
+ },
+ {
+  "slug": "work/polestar-hmi",
+  "title": "HMI Simulated in a mobile environment — Humblebee",
+  "template": "case"
+ },
+ {
+  "slug": "work/service-acceleration-at-polestar",
+  "title": "Digital Services Program — Humblebee",
+  "template": "case"
+ },
+ {
+  "slug": "work/snickers-workwear",
+  "title": "Workwear Size Guide — Humblebee",
+  "template": "case"
+ },
+ {
+  "slug": "work/solid-gear-footwear",
+  "title": "B2B Brand Site — Humblebee",
+  "template": "case"
+ },
+ {
+  "slug": "work/solving-the-right-problem",
+  "title": "Climate Saver App — Humblebee",
+  "template": "case"
+ },
+ {
+  "slug": "work/surgical-science-cloud-training",
+  "title": "Cloud Training Simulators — Humblebee",
+  "template": "case"
+ },
+ {
+  "slug": "work/sustainable-urban-last-mile-solutions",
+  "title": "Sustainable Urban Last Mile Solutions — Humblebee",
+  "template": "case"
+ },
+ {
+  "slug": "work/wallenius-wilhelmsen",
+  "title": "Informed decisions from emissions data — Humblebee",
+  "template": "case"
+ },
+ {
+  "slug": "work/wound-support-as-a-service",
+  "title": "Wound Support as a service — Humblebee",
+  "template": "case"
+ },
+ {
+  "slug": "studio-test",
+  "title": "New pageStudio Test",
+  "template": "freeform"
+ },
+ {
+  "slug": "testpage",
+  "title": "testpage",
+  "template": "freeform"
+ }
+]

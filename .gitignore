@@ -1,0 +1,14 @@
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+.DS_Store
+.env*
+public/thumbs/
+public/uploads/
+
+# CMS runtime state (Supabase is primary; these are local file fallbacks)
+src/lib/drafts/
+src/lib/chats/
+src/lib/board-positions.json

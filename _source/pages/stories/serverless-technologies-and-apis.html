@@ -1,0 +1,748 @@
+<!DOCTYPE html><!-- Last Published: Tue Sep 22 2026 16:47:28 GMT+0000 (Coordinated Universal Time) --><html data-wf-domain="www.humblebee.se" data-wf-page="65a843e474668d315ba2fe0d" data-wf-site="65a6d736d0f0686554aa673a" lang="en" data-wf-collection="65a843e474668d315ba2fe21" data-wf-item-slug="serverless-technologies-and-apis"><head><meta charset="utf-8"/><link href="https://cdn.prod.website-files.com" rel="preconnect" crossorigin="anonymous"/><title>Serverless technologies and APIs</title><meta content="Part 4 of Cloud Developer Basics using Google Cloud Platform" name="description"/><meta content="Serverless technologies and APIs" property="og:title"/><meta content="Part 4 of Cloud Developer Basics using Google Cloud Platform" property="og:description"/><meta content="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc4a63b03b8bd9e605d4f2_Thumb_1.avif" property="og:image"/><meta content="Serverless technologies and APIs" name="twitter:title"/><meta content="Part 4 of Cloud Developer Basics using Google Cloud Platform" name="twitter:description"/><meta content="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc4a63b03b8bd9e605d4f2_Thumb_1.avif" name="twitter:image"/><meta property="og:type" content="website"/><meta content="summary_large_image" name="twitter:card"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/css/humblebeese.webflow.shared.b17e47e4a.min.css" rel="stylesheet" type="text/css" integrity="sha384-sX5H5K/CCSOJeN4IKop0WrEeRpxTM+nwK6524SC7ALUTedLmpGxrkvDVySiicmMS" crossorigin="anonymous"/><script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script><link href="https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6633e37dac34ac17618c4a26_favicon.png" rel="shortcut icon" type="image/x-icon"/><link href="https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6633e3821d6ec78f553b5cd4_webclip.png" rel="apple-touch-icon"/><script src="https://www.google.com/recaptcha/api.js" type="text/javascript"></script><!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-54PZ2LQ');</script>
+<!-- End Google Tag Manager -->
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Humblebee AB",
+  "url": "https://www.humblebee.se",
+  "logo": "https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6633e3821d6ec78f553b5cd4_webclip.png",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+46761191201",
+    "contactType": "Customer Service",
+    "areaServed": "SE",
+    "availableLanguage": "English"
+  },
+  "sameAs": [
+    "https://www.instagram.com/wearehumblebee",
+    "https://www.facebook.com/wearehumblebee",
+    "https://www.linkedin.com/company/humblebee",
+    "https://medium.com/wearehumblebee",
+    "https://www.eventbrite.com/o/humblebee-18567327820"
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Kvarnbergsgatan 2",
+    "addressLocality": "Gothenburg",
+    "addressRegion": "Västra Götaland",
+    "postalCode": "41105",
+    "addressCountry": "Sweden"
+  },
+  "description": "Humblebee is a creative digital studio that provides services and solutions for agencies and brands."
+},
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "url": "https://www.humblebee.se",
+  "name": "Humblebee AB",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://www.humblebee.se/?s={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+},
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://www.humblebee.se"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Work",
+      "item": "https://www.humblebee.se/work"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Stories",
+      "item": "https://www.humblebee.se/stories"
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "name": "Services",
+      "item": "https://www.humblebee.se/services"
+    },
+    {
+      "@type": "ListItem",
+      "position": 5,
+      "name": "Careers",
+      "item": "https://www.humblebee.se/careers"
+    },
+    {
+      "@type": "ListItem",
+      "position": 6,
+      "name": "About us",
+      "item": "https://www.humblebee.se/about-us"
+    },
+    {
+      "@type": "ListItem",
+      "position": 7,
+      "name": "Contact us",
+      "item": "https://www.humblebee.se/contact"
+    }
+  ]
+}
+</script>
+
+<style>
+
+/* ── Navigation ── */
+.nav-overlay {
+  overflow: hidden;
+  height: 100vh;
+}
+.nav-overlay-inner {
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+@media (min-width: 992px) {
+  .nav-overlay-inner {
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+}
+@media (max-width: 991px) {
+  .marquee_image,
+  .marquee_image_597 {
+    height: 350px !important;
+    width: auto !important;
+  }
+}
+
+/* ── Scroll Pills ── */
+@media (max-width: 767px) {
+  #stw-stage {
+    height: auto !important;
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 80px 20px;
+  }
+  #stw-title {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+    text-align: center;
+    margin-bottom: 16px;
+    white-space: normal !important;
+    font-size: clamp(32px, 9vw, 42px) !important;
+  }
+  .stw-pill {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+  }
+}
+@media (max-width: 600px) {
+  #stw-title, .stw-pill span { letter-spacing: -1.5px !important; }
+}
+.nav-overlay { pointer-events: auto; }
+.nav-wrapper { pointer-events: none; }
+.nav-pill { pointer-events: auto; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.nav-link-large-overlay { width: fit-content; transition: opacity 0.4s ease; }
+.nav-links-large:hover .nav-link-large-overlay { opacity: 0.35; }
+.nav-links-large:hover .nav-link-large-overlay:hover { opacity: 1; }
+.nav-link-small { width: fit-content; transition: opacity 0.4s ease; }
+.nav-links-small:has(.nav-link-small:not(.email-copy-btn):hover) .nav-link-small:not(.email-copy-btn):not(:hover) { opacity: 0.35; }
+.nav-pill.is-open {
+  background-color: rgba(22, 22, 22, 0.7) !important;
+  border: 1px solid #FFFFFF !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+}
+.nav-pill.is-open .nav-brand {
+  color: #FFFFFF !important;
+  filter: brightness(0) invert(1);
+}
+/* ── Email Copy Button ── */
+.email-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  background-color: #FFFFFF;
+  border-radius: 100px;
+  padding: 12px 24px;
+  white-space: nowrap;
+  justify-content: center;
+  transition: background-color 0.3s ease, width 0.3s ease;
+  width: auto;
+  text-decoration: none;
+}
+.email-copy-btn .email-copy-text { color: #161616 !important; }
+.email-copy-text { transition: opacity 0.3s ease; }
+.email-copy-btn.is-copied { background-color: #FF8000; }
+.email-copy-btn.is-copied .email-copy-text { color: #FFFFFF !important; }
+/* ── Nav Story Cards ── */
+.nav-story-card {
+  border-radius: 12px;
+  padding: 12px;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  align-self: flex-start;
+}
+.nav-story-card:hover { background-color: rgba(255, 255, 255, 0.07); }
+.nav-story-card svg { transition: transform 0.3s ease; }
+.nav-story-card:hover svg { transform: translateX(6px); }
+.nav-story-label { font-size: 13px; color: rgba(255, 255, 255, 0.5); }
+.nav-story-title { font-size: 15px; color: #FFFFFF; }
+@media (max-width: 991px) {
+  .nav-story-card { align-self: center; width: 75%; max-width: 500px; }
+  .nav-overlay-right { width: 100%; display: flex; flex-direction: column; align-items: center; }
+}
+
+  
+/* ── Strategy Move Buttons ── */
+.strategymoves-btn:hover { background-color: #161616; }
+.strategymoves-btn .sm-icon svg path { fill: white !important; }
+.sm-icon { display: flex; align-items: center; }
+.strategymoves-btn .sm-icon,
+.strategymoves-btn-ghost .sm-icon { transition: transform 0.3s ease; }
+.strategymoves-btn:hover .sm-icon,
+.strategymoves-btn-ghost:hover .sm-icon { transform: translateX(5px); }
+
+
+
+  
+/* ── Footer nav hover (large links) ── */
+.nav-links-large-footer:hover .nav-link-large-overlay { opacity: 0.35; }
+.nav-links-large-footer:hover .nav-link-large-overlay:hover { opacity: 1; }
+
+/* ── Footer nav hover (small links) ── */
+.nav-link-small-footer { transition: opacity 0.4s ease; }
+.nav-links-small-footer:has(.nav-link-small-footer:not(.email-copy-btn):hover) .nav-link-small-footer:not(.email-copy-btn):not(:hover) { opacity: 0.35; }
+
+/* ── Footer bottom row ── */
+.nav-bottom-row:has(.nav-link-bottom:hover) .nav-link-bottom:not(:hover) { opacity: 0.35; }
+.nav-link-bottom { text-decoration: none; transition: opacity 0.6s ease; }
+.nav-bottom-text { transition: color 0.6s ease; }
+.nav-link-bottom:hover .nav-bottom-text { color: #ffffff !important; }
+
+/* ── Footer bottom row — mobile ── */
+@media (max-width: 767px) {
+  .nav-bottom-row { flex-direction: column; align-items: center; gap: 16px; }
+  .nav-bottom-right { align-items: center; }
+}
+  
+
+/* ── Programs Section ── */
+.programs-item { text-decoration: none; transition: background-color 0.4s ease; cursor: pointer; }
+.programs-item:hover { background-color: #FFF500; }
+.programs-item-btn { transition: background-color 0.4s ease, border-color 0.4s ease; flex-shrink: 0; }
+.programs-item:hover .programs-item-btn { background-color: #1A00FF; border-color: #1A00FF; }
+.programs-item:hover .programs-item-btn svg path { fill: white; }
+.programs-item-btn .w-embed { display: flex; align-items: center; justify-content: center; }
+
+</style><!-- [Attributes by Finsweet] Social Share -->
+<script defer src="https://cdn.jsdelivr.net/npm/@finsweet/attributes-socialshare@1/socialshare.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.humblebee.se/stories/serverless-technologies-and-apis"
+  },
+  "headline": "Serverless technologies and APIs",
+  "description": "Part 4 of Cloud Developer Basics using Google Cloud Platform",
+  "image": "https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc4a63b03b8bd9e605d4f2_Thumb_1.avif",
+  "author": {
+    "@type": "Person",
+    "name": "Russell Clark",
+    "url": "mailto:russell.clark@humblebee.se",
+    "image": "Russell Clark"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Humblebee AB",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6633e3821d6ec78f553b5cd4_webclip.png"
+    }
+  },
+  "datePublished": "Dec 15, 2019",
+  "dateModified": "Jun 30, 2026"
+}
+</script></head><body class="body-white"><div class="page-wrapper"><div class="global-styles w-embed w-iframe"><!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-54PZ2LQ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<style>
+
+/* Set color style to inherit */
+.inherit-color * {
+    color: inherit;
+}
+
+/* Focus state style for keyboard navigation for the focusable elements */
+*[tabindex]:focus-visible,
+  input[type="file"]:focus-visible {
+   outline: 0.125rem solid #4d65ff;
+   outline-offset: 0.125rem;
+}
+
+/* Get rid of top margin on first element in any rich text element */
+.w-richtext > :not(div):first-child, .w-richtext > div:first-child > :first-child {
+  margin-top: 0 !important;
+}
+
+/* Get rid of bottom margin on last element in any rich text element */
+.w-richtext>:last-child, .w-richtext ol li:last-child, .w-richtext ul li:last-child {
+	margin-bottom: 0 !important;
+}
+
+/* Prevent all click and hover interaction with an element */
+.pointer-events-off {
+	pointer-events: none;
+}
+
+/* Enables all click and hover interaction with an element */
+.pointer-events-on {
+  pointer-events: auto;
+}
+
+/* Create a class of .div-square which maintains a 1:1 dimension of a div */
+.div-square::after {
+	content: "";
+	display: block;
+	padding-bottom: 100%;
+}
+
+/* Make sure containers never lose their center alignment */
+.container-medium,.container-small, .container-large {
+	margin-right: auto !important;
+  margin-left: auto !important;
+}
+
+/* 
+Make the following elements inherit typography styles from the parent and not have hardcoded values. 
+Important: You will not be able to style for example "All Links" in Designer with this CSS applied.
+Uncomment this CSS to use it in the project. Leave this message for future hand-off.
+*/
+/*
+a,
+.w-input,
+.w-select,
+.w-tab-link,
+.w-nav-link,
+.w-dropdown-btn,
+.w-dropdown-toggle,
+.w-dropdown-link {
+  color: inherit;
+  text-decoration: inherit;
+  font-size: inherit;
+}
+*/
+
+/* Apply "..." after 3 lines of text */
+.text-style-3lines {
+	display: -webkit-box;
+	overflow: hidden;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+}
+
+/* Apply "..." after 2 lines of text */
+.text-style-2lines {
+	display: -webkit-box;
+	overflow: hidden;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+}
+
+/* Adds inline flex display */
+.display-inlineflex {
+  display: inline-flex;
+}
+
+/* These classes are never overwritten */
+.hide {
+  display: none !important;
+}
+
+@media screen and (max-width: 991px) {
+    .hide, .hide-tablet {
+        display: none !important;
+    }
+}
+  @media screen and (max-width: 767px) {
+    .hide-mobile-landscape{
+      display: none !important;
+    }
+}
+  @media screen and (max-width: 479px) {
+    .hide-mobile{
+      display: none !important;
+    }
+}
+ 
+.margin-0 {
+  margin: 0rem !important;
+}
+  
+.padding-0 {
+  padding: 0rem !important;
+}
+
+.spacing-clean {
+padding: 0rem !important;
+margin: 0rem !important;
+}
+
+.margin-top {
+  margin-right: 0rem !important;
+  margin-bottom: 0rem !important;
+  margin-left: 0rem !important;
+}
+
+.padding-top {
+  padding-right: 0rem !important;
+  padding-bottom: 0rem !important;
+  padding-left: 0rem !important;
+}
+  
+.margin-right {
+  margin-top: 0rem !important;
+  margin-bottom: 0rem !important;
+  margin-left: 0rem !important;
+}
+
+.padding-right {
+  padding-top: 0rem !important;
+  padding-bottom: 0rem !important;
+  padding-left: 0rem !important;
+}
+
+.margin-bottom {
+  margin-top: 0rem !important;
+  margin-right: 0rem !important;
+  margin-left: 0rem !important;
+}
+
+.padding-bottom {
+  padding-top: 0rem !important;
+  padding-right: 0rem !important;
+  padding-left: 0rem !important;
+}
+
+.margin-left {
+  margin-top: 0rem !important;
+  margin-right: 0rem !important;
+  margin-bottom: 0rem !important;
+}
+  
+.padding-left {
+  padding-top: 0rem !important;
+  padding-right: 0rem !important;
+  padding-bottom: 0rem !important;
+}
+  
+.margin-horizontal {
+  margin-top: 0rem !important;
+  margin-bottom: 0rem !important;
+}
+
+.padding-horizontal {
+  padding-top: 0rem !important;
+  padding-bottom: 0rem !important;
+}
+
+.margin-vertical {
+  margin-right: 0rem !important;
+  margin-left: 0rem !important;
+}
+  
+.padding-vertical {
+  padding-right: 0rem !important;
+  padding-left: 0rem !important;
+}
+
+/* Apply "..." at 100% width */
+.truncate-width { 
+		width: 100%; 
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+}
+/* Removes native scrollbar */
+.no-scrollbar {
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none; 
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+</style></div><div class="nav-wrapper"><div class="nav-overlay"><div class="nav-overlay-inner"><div class="nav-overlay-left"><div class="nav-links-large"><a href="/programs" class="nav-link-large-overlay w-inline-block"><div class="nav-link-largeoverlay-font">Programs</div></a><a href="/work" class="nav-link-large-overlay w-inline-block"><div class="nav-link-largeoverlay-font">Work</div></a><a href="/programs/coventures-program" class="nav-link-large-overlay w-inline-block"><div class="nav-link-largeoverlay-font">CoVentures</div></a></div><div class="nav-links-small"><a href="#" class="nav-link-small email-copy-btn w-inline-block"><div class="text-block-16 email-copy-text">Say Hello</div></a><a href="/about-us" class="nav-link-small w-inline-block"><div class="text-block-17">About</div></a><a href="/careers" class="nav-link-small w-inline-block"><div class="text-block-18">Careers</div></a><a href="/hire-us" class="nav-link-small w-inline-block"><div class="text-block-19">Hire Us</div></a></div></div><div class="nav-overlay-right"><a href="https://www.humblebee.se/stories/the-most-effective-weapon-any-company-can-use-but-most-choose-to-ignore" class="nav-story-card w-inline-block"><img loading="lazy" src="https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a5e16c557e3374ca569be7e_DSCF7762-cropped.jpg" alt="" sizes="(max-width: 2160px) 100vw, 2160px" srcset="https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a5e16c557e3374ca569be7e_DSCF7762-cropped-p-500.jpg 500w, https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a5e16c557e3374ca569be7e_DSCF7762-cropped-p-800.jpg 800w, https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a5e16c557e3374ca569be7e_DSCF7762-cropped-p-1080.jpg 1080w, https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a5e16c557e3374ca569be7e_DSCF7762-cropped.jpg 1351w" class="nav-story-thumb"/><div class="nav-story-info"><div class="nav-story-meta"><div class="nav-story-label">Story</div><div class="w-embed"><svg width="20" height="10" viewBox="0 0 34 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <line x1="0" y1="8" x2="28" y2="8" stroke="white" stroke-width="1.5"/>
+  <path d="M22 2L30 8L22 14" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></div></div><div class="nav-story-title">CoVentures unlock new growth</div></div></a><a href="https://www.humblebee.se/work/wallenius-wilhelmsen" class="nav-story-card w-inline-block"><img loading="lazy" src="https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a733b301003ff8c2cf9f06a_wal_wil_3.png" alt="" sizes="(max-width: 2160px) 100vw, 2160px" srcset="https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a733b301003ff8c2cf9f06a_wal_wil_3-p-500.png 500w, https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a733b301003ff8c2cf9f06a_wal_wil_3-p-800.png 800w, https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a733b301003ff8c2cf9f06a_wal_wil_3-p-1080.png 1080w, https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a733b301003ff8c2cf9f06a_wal_wil_3-p-1600.png 1600w, https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a733b301003ff8c2cf9f06a_wal_wil_3.png 2000w" class="nav-story-thumb"/><div class="nav-story-info"><div class="nav-story-meta"><div class="nav-story-label">Work</div><div class="w-embed"><svg width="20" height="10" viewBox="0 0 34 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <line x1="0" y1="8" x2="28" y2="8" stroke="white" stroke-width="1.5"/>
+  <path d="M22 2L30 8L22 14" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></div></div><div class="nav-story-title">Emissions data improvements</div></div></a><a href="https://www.humblebee.se/work/corporate-social-responsibility-in-healthcare" class="nav-story-card w-inline-block"><img loading="lazy" src="https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a5e21123feabb9506767bc7_mhc_csr.jpg" alt="" sizes="(max-width: 2160px) 100vw, 2160px" srcset="https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a5e21123feabb9506767bc7_mhc_csr-p-500.jpg 500w, https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a5e21123feabb9506767bc7_mhc_csr-p-800.jpg 800w, https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a5e21123feabb9506767bc7_mhc_csr-p-1080.jpg 1080w, https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a5e21123feabb9506767bc7_mhc_csr-p-1600.jpg 1600w, https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a5e21123feabb9506767bc7_mhc_csr-p-2000.jpg 2000w, https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a5e21123feabb9506767bc7_mhc_csr.jpg 2500w" class="nav-story-thumb"/><div class="nav-story-info"><div class="nav-story-meta"><div class="nav-story-label">Work</div><div class="w-embed"><svg width="20" height="10" viewBox="0 0 34 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <line x1="0" y1="8" x2="28" y2="8" stroke="white" stroke-width="1.5"/>
+  <path d="M22 2L30 8L22 14" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></div></div><div class="nav-story-title">CSR app initiative for Healthcare</div></div></a></div></div></div><nav class="nav-pill"><div data-w-id="83da14c1-edfc-28cf-6b16-3b66d810972e" class="nav-menu-btn"><div class="nav-menu-label">Menu</div><div class="nav-close-label">x</div></div><div class="nav-brand"><a href="https://www.humblebee.se" class="w-inline-block"><img loading="lazy" src="https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a500a6dffdb41cacb80a187_hblogo.svg" alt="" class="image-9"/></a></div><a href="/contact" class="nav-contact-btn w-inline-block"><img loading="lazy" src="https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a500cd6efaddf6c29f0294d_contact_env.svg" alt=""/></a></nav></div><div class="main-wrapper"><section><div class="padding-global"><div class="container-story"><div class="padding-section-xlarge"><div class="padding-section-story"><div class="margin-bottom margin-story"><a data-w-id="aea4a6d0-a66f-bc3e-3104-259d95707194" href="/stories" class="button-back w-inline-block"><div style="-webkit-transform:translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(180deg) skew(0, 0);-moz-transform:translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(180deg) skew(0, 0);-ms-transform:translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(180deg) skew(0, 0);transform:translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(180deg) skew(0, 0);opacity:1" class="icon-embed-xsmall is-reversed w-embed"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="34" height="16" viewBox="0 0 34 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity: 1; transform: translate(0px, 0px);"><path d="M0 8L33.0286 8" stroke="#000000" fill="none"></path><path d="M26.2285 1L33.0285 8L26.2285 15" stroke="#000000" fill="none"></path></svg></div><div>Back to Stories</div></a></div><div class="margin-bottom margin-xsmall"><h1 fs-socialshare-element="content" class="story-h1">Serverless technologies and APIs</h1></div><h5>Part 4 of Cloud Developer Basics using Google Cloud Platform</h5><div class="margin-bottom margin-large"><div class="author_wrapper"><img alt="Russell Clark" loading="lazy" src="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/6a708b3433e662d2b0f9fb08_DSCF7760-cropped.jpg" sizes="100vw" srcset="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/6a708b3433e662d2b0f9fb08_DSCF7760-cropped-p-500.jpg 500w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/6a708b3433e662d2b0f9fb08_DSCF7760-cropped-p-800.jpg 800w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/6a708b3433e662d2b0f9fb08_DSCF7760-cropped-p-1080.jpg 1080w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/6a708b3433e662d2b0f9fb08_DSCF7760-cropped.jpg 1600w" class="author-img"/><div class="author_info"><div class="author_name">Russell Clark</div><div class="author_date">December 15, 2019</div></div></div></div><div class="margin-bottom margin-large"><img src="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc4a63b03b8bd9e605d4f2_Thumb_1.avif" loading="lazy" alt="Serverless technologies and APIs" height="Auto" sizes="100vw" srcset="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc4a63b03b8bd9e605d4f2_Thumb_1-p-500.avif 500w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc4a63b03b8bd9e605d4f2_Thumb_1-p-800.avif 800w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc4a63b03b8bd9e605d4f2_Thumb_1-p-1080.avif 1080w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc4a63b03b8bd9e605d4f2_Thumb_1-p-1600.avif 1600w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc4a63b03b8bd9e605d4f2_Thumb_1-p-2000.avif 2000w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc4a63b03b8bd9e605d4f2_Thumb_1.avif 3840w"/></div><div class="story-text w-richtext"><p><em>It’s no longer enough to only think of development as either frontend or backend work — it’s all about having a wider, more rounded competency. Right now, the public cloud is the natural spot from which to grow one’s skills as it envelopes many of the ways-of-working and types of products you will want to be proficient in, when levelling up your know-how. This mini-course will take you through some of the most important concepts and services, always ending with you setting up actual micro projects.</em></p><p><em>This course is written as part of the internal skill development initiative at</em> <a href="https://www.humblebee.se/"><em>Humblebee</em></a><em>, but we share it since there is a great demand for these skills. Want to work with a cloud-savvy company that naturally marries tech and design (as in UX, service, business and visual), or just plain old want to work here at Humblebee?</em> <a href="mailto:mikael.vesavuori@humblebee.se/"><em>Get in touch</em></a><em>!</em></p><p>This mini-course is divided into six parts:</p><ol start="" role="list"><li>‍<a href="https://medium.com/wearehumblebee/what-is-the-cloud-59a435cf384d">What is the cloud?</a><a href="https://medium.com/wearehumblebee/virtual-machines-and-networking-65e0ca07f1a5">‍</a></li><li><a href="https://medium.com/wearehumblebee/virtual-machines-and-networking-65e0ca07f1a5">Virtual machines and networking</a><a href="https://itnext.io/containers-and-kubernetes-22380d3ef087">‍</a></li><li>‍<a href="https://itnext.io/containers-and-kubernetes-22380d3ef087">Containers and Kubernetes</a>‍</li><li>Serverless and APIs (This article!)<a href="https://medium.com/@MikaelVesavuori/storage-and-databases-b02b88f78214">‍</a></li><li><a href="https://medium.com/@MikaelVesavuori/storage-and-databases-b02b88f78214">Storage and database</a></li><li><a href="https://medium.com/@MikaelVesavuori/storage-and-databases-b02b88f78214">‍</a><a href="https://medium.com/@MikaelVesavuori/devops-commit-build-and-deploy-your-code-1d30c8f20a13">DevOps</a></li></ol><p>Before we begin, a few words about me. I’m <a href="https://www.mikaelvesavuori.se/"><strong>Mikael Vesavuori</strong></a>, a <a href="https://googlecloudcertified.credential.net/profile/12596e9b0a7fb0b30934777863a2f39c3f974566"><strong>Google Cloud-certified</strong></a> Professional Cloud Architect — working at <a href="https://www.humblebee.se/"><strong>Humblebee</strong></a> — and I love what the public cloud can help us achieve, regardless of job title. I’ve worked with clients such as the <a href="https://www.volvo.com/home.html"><strong>Volvo</strong></a> companies, <a href="http://www.hultaforsgroup.com/"><strong>Hultafors Group</strong></a>, and most recently <a href="https://www.polestar.com/"><strong>Polestar</strong></a> who are setting up a completely new architecture from the ground up.</p><p>Source code to follow along is available at <a href="https://github.com/mikaelvesavuori/cloud-developer-basics"><strong>https://github.com/mikaelvesavuori/cloud-developer-basics</strong></a>.</p><p><em>This mini-course is not sponsored by or connected to Google, other than us using their services.</em></p><h2>Learning objectives and services covered</h2><p>This session will give you a somewhat broad and comprehensive look at how to use <a href="https://cloud.google.com/functions/"><strong>Google Cloud Functions</strong></a> to drive a GraphQL-powered API complete with functions that work according to several different patterns: monolithic; microservice; and <em>message-triggered</em>. You will use Serverless Framework as your means of specifying your service features and as your deployment method.</p><p>Services covered:</p><ul role="list"><li>Cloud Functions</li><li>Cloud Pub/Sub</li><li>Cloud Vision API</li></ul><h2>Topic introduction and theory</h2><p>The natural evolution of infrastructure-as-a-service to platform-as-a-service may have seemed like a utopia for some. Suddenly you did not have to care about securing individual machines, or doing any acrobatics to solve high-availability scaling. But for many, even that wasn’t granular, powerful, or managed enough. Since Amazon Web Services released their service <a href="https://aws.amazon.com/lambda/"><strong>Lambda</strong></a> in 2014, the concept <em>serverless</em> has grown dramatically for each year since. Serverless technologies answer a number of interesting questions:</p><ul role="list"><li>Why pay per hour, when you can pay per execution?</li><li>Why think in terms of computers, if you can think in terms of the actual compute instead?</li><li>Why conduct your own low-level maintenance (like operating system installation and patching security vulnerabilities) if the entire platform can be standardized and trusted to be secure?</li><li>Why require persistence if you can outsource stateful actions to a domain that already does that, such as a database?</li><li>Why, when you think of it, provision capacity at all?</li></ul><p>Functions-as-a-service have become nearly synonymous with serverless, yet serverless as a concept can be applied to other types of functionality/domains as well, not the least being databases, for example <a href="https://cloud.google.com/firestore/"><strong>Google Cloud Firestore</strong></a> and <a href="https://aws.amazon.com/dynamodb/"><strong>AWS DynamoDB</strong></a>. We have previously looked at (and used) <a href="https://cloud.google.com/appengine/"><strong>Google App Engine</strong></a>, which indeed is a serverless service. It does however most closely resemble a PaaS offering in its high-level format of specifying a machine type and the long-running nature of it.</p><p>In this session, we will look at the most recent development which has to do with individual functions instead of complete applications.</p><h2>Serverless main characteristics</h2><p>There are many ways of slicing the concept “serverless” but here’s some common identifiers for a serverless service:</p><ul role="list"><li><strong>Short-running</strong>: Ideal for very short bursts, and will not run for more than a few minutes at most</li><li><strong>On-demand</strong>: Functions are ephemeral, so they don’t exist/run before being called</li><li><strong>Stateless</strong>: Serverless functions do not have built-in persistence</li><li>Their characteristics make them ideal, and <strong>highly compatible, with microservice architecture</strong></li><li><strong>Pay per execution</strong>, and usually also per 100ms of used compute time</li><li><strong>Managed and auto-scaling</strong>, ideal for bursty workloads like APIs and web services</li></ul><p>Some “negative” traits of serverless (especially functions-as-a-service) are:</p><ul role="list"><li>Microservices and serverless functions place a big burden on developers to be mature and stringent enough to write acceptable, “correct” services</li><li>Can be harder to monitor depending on your setup and operations (can also be relatively easy if you go all-in)</li><li>Impossible to figure out all potential hacking scenarios, involving for example event injection</li><li>Almost certainly requires a complete architecture that supports serverless, else will be cumbersome and strange to work with</li><li>Easy to get identity and access management (including permissions) wrong with serverless functions, potentially evolving into security problems</li><li>Can be hard to stitch together stepped events if your use case cannot be covered by native cloud event sourcing</li><li>Performance is not suitable for high-compute circumstances</li></ul><p>Needless to say, to do “serverless” right, a team of developers with low exposure to microservices and/or serverless functions must tread carefully and think through their plan. You can’t just run a traditional application architecture with FaaS if you expect it to be any good. With that said, doing them right is fantastic. You just won’t get a lot faster developer velocity than with FaaS, and the minute, exact detail you can go into with monitoring and security (again, when done right) is incredible.</p><figure class="w-richtext-align-center w-richtext-figure-type-image"><div><img loading="lazy" alt="structure" src="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc4d2bba9d1ff53a8e585e_262e282528616b6559be06677f96a0f3ee5d03fb-1400x1294.avif"/></div></figure><h2>Event-driven architecture</h2><p>Serverless functions are event-driven, meaning that they run in response to an event. An event can be that the function is simply called in a traditional way, but it can also be as the result of an event in a database, something happened on a queue, that an alarm was triggered or that a file was deleted in a bucket. This type of event sourcing is a unique aspect of the cloud. AWS offers around 50 different event sources, while Azure and GCP offer fewer. Typical event sources are changes in queues and databases, which both are perfect for web use cases.</p><figure class="w-richtext-align-center w-richtext-figure-type-image"><div><img loading="lazy" alt="data flow" src="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc4d2bb243ebe21b3c989f_0b07d62d938dac7717bd007ac9bec716d9d6001d-2750x804.avif"/></div></figure><h2>Integrations</h2><p>For applications and data (and anything else, technologically) to be able to communicate, we need some type of way of accessing them and then connecting those parts. An example of the most coarse-grained you can do would be to directly store data inside an application. The next step up would be to link and invoke your data layer within your presentation layer, i.e. a frontend web application directly fetches data from a database inside the same virtual machine. In both these cases (while the second is common and decidedly better than the first), you have very little separation between data and the application itself. You are “coupled”.</p><p>The glue that binds your business/app logic together could be called your <em>integrations</em>: creating a way for one system to communicate with another. As you just read, an event-driven architecture can greatly simplify your work with an integration layer.</p><p>Within the world of serverless, simple queue systems have come into fashion as they decouple the events themselves, and also acts as a replayable buffer. In GCP, this is easiest solved with <a href="https://cloud.google.com/pubsub/"><strong>Cloud Pub/Sub</strong></a>. The name comes from “Publish/Subscribe”, because you create messages that end up in topics that a system can subscribe to. You could use an implicit trigger with a <a href="https://cloud.google.com/functions/docs/calling/pubsub"><strong>Cloud Pub/Sub trigger</strong></a> or an explicit one, such as <a href="https://cloud.google.com/tasks/"><strong>Cloud Tasks</strong></a>.</p><figure class="w-richtext-align-center w-richtext-figure-type-image"><div><img loading="lazy" alt="event view" src="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc4d2b51c3f19e2df5981e_ec20c21e80f83ce5eb6751fd87bd964682d627c8-2866x944.avif"/></div></figure><h2>Backend patterns</h2><p>The basic backend patterns could be described as:</p><p>1. Deploy functions as part of a single package: gets bundled into a traditional “monolith”, all in one app</p><p>2. Deploy functions as individual HTTP(S) endpoints (de facto “microservices”)</p><p>3. Deploy functions that call each another (co-dependent microservices)</p><p>By some, it’s seen as an anti-pattern to let one function call another. This is because individual functions should resolve into something meaningful on their own. However, the reality of business requirements is often that you have a number of complex chains of events that make sense to decompose into a chain. For that you could use <a href="https://docs.microsoft.com/en-us/azure/azure-functions/durable/"><strong>Azure Durable Functions</strong></a> or <a href="https://aws.amazon.com/step-functions/"><strong>AWS Step Functions</strong></a>. Currently, Google does not have an immediate similar candidate. In those cases you would want to use a good invocation pattern to call other functions as a chain from an <em>orchestrator</em> function, maybe adding other previously mentioned capabilities to emulate similar functionality.</p><h2>APIs: From REST to GraphQL</h2><p>An API is a common way of accessing backend functionality.</p><p>When you’ve used (“consumed”) or written APIs before, that was probably in REST. REST is a type of format that uses the basic HTTP verbs to specify what you receive from a given endpoint. Another common pattern is to specify individual endpoints per type of transaction, such as <strong>getCustomers</strong> or <strong>createOrder</strong>. The problem of the classical REST endpoints has been that you soon have a great number of endpoints that may very well do their job, but have no way of easily stitching pieces of data together, and are unable to finely specify what data you expect.</p><p>GraphQL very elegantly solves those (and other) common problems. If you have ever heard about GraphQL, it’s probably precisely about the fact that it fixes the problem of under- or over-fetching data (i.e. you get or send no more and no less than asked for). A query can look like (watch closely, you’ll use it later):</p><p><code>query {<br/>getArtworkByTitle(title: “Splotch #3”) {<br/>artist<br/>imageUrl<br/>title<br/>year<br/>labels<br/>uuid<br/>}<br/>}</code></p><p>Here you are doing a query (“GET”-type operation) on the resolver (function) called <strong>getArtworkByTitle</strong> and passing the value “Splotch #3” for the <strong>title</strong> parameter.</p><figure class="w-richtext-align-center w-richtext-figure-type-image"><div><img loading="lazy" alt="graphql" src="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc4d2b01e813c73cca2cb6_4e654351d5542672c84dad321806ff38b107a367-2458x1224.avif"/></div></figure><p>The GQL specification is open and so therefore many implementations exist. Currently the big name player is <a href="https://www.apollographql.com/docs/apollo-server/"><strong>Apollo Server</strong></a> (there’s also Apollo Client for the frontend, plus some additional smaller services).</p><h2>Serverless Framework</h2><p>Google’s native format of specifying deployments (more exactly, cloud resources) is called <a href="https://cloud.google.com/deployment-manager/"><strong>Deployment Manager</strong></a>. <a href="https://serverless.com/"><strong>Serverless Framework</strong></a> is another similar tool, and is widely used to abstract those responsibilities into a somewhat more vendor-agnostic format while still virtually doing all the same things as Deployment Manager. You should know that Serverless Framework has a great deal of dependencies to its plugins which are unique per cloud vendor. Also, understand that therefore a configuration for Azure will not be immediately transferable to Google Cloud Platform. In this (and the next) session we will go with Serverless Framework because it’s used enough these days to warrant that we default to its usage and because it carries skills into other clouds as well.</p><h2>Core concepts</h2><ul role="list"><li>Serverless</li><li>Function-as-a-service</li><li>API</li><li>Integration</li><li>Microservice</li><li>GraphQL</li><li>Decoupling</li></ul><h3>Serverless</h3><p>A type of service offering that is usually pay-per-use, fully managed, stateless and completely on-demand. Is an evolutionary step in the IAAS-PAAS-Serverless continuum.</p><h3>Function-as-a-service</h3><p>A serverless compute offering. The big names are Google Cloud Function, AWS Lambda, and Azure Functions. There’s also open-source alternatives like <a href="https://fnproject.io/"><strong>Fn Project</strong></a> and <a href="https://www.openfaas.com/"><strong>OpenFaaS</strong></a>.</p><h3>API</h3><p>Application Programming Interface. Is a common way of interfacing applications with backend functionality.</p><h3>Integration</h3><p>A way of making two systems interact. In the typical scenario of moving data from one place to another, for example, the integration would sync data with one shape into a more well-suited shape for the second system.</p><h3>Microservice</h3><p>An independent functionality with a bounded (rigid, clear, “small”) context. Should normally be maximally decoupled from any other dependencies.</p><h3>GraphQL</h3><p>GraphQL is a query language initially developed by Facebook. It helps with many of the problems that especially web developers have had with REST, the last big “paradigm” before GraphQL came.</p><h3>Decoupling</h3><p>Decoupling a system means ensuring that its vital parts are kept separate and with a buffer zone. An example is that you could pad a database with an API so any request to the database must pass the API. In that way you can switch the database later without breaking the interface/API for any users of the system (since that won’t change).</p><h2>Workshop</h2><p>In this workshop we will:</p><ul role="list"><li>Install <a href="https://serverless.com/"><strong>Serverless Framework</strong></a>, a common tool to abstract and simplify the deployment procedure around serverless stacks</li><li>Set up a Google service account to provide credentials</li><li>Use Serverless Framework to deploy a <a href="https://www.apollographql.com/docs/apollo-server/"><strong>GraphQL server (Apollo Server)</strong></a></li><li>We will also deploy a separate image recognition (labeling) service that will be used by the API (a so-called “<a href="https://en.wikipedia.org/wiki/Microservices)"><strong>microservice</strong></a>”)</li></ul><h3>Step 1: Install Serverless Framework</h3><p>In your CLI or terminal, install Serverless Framework globally with <strong>yarn global add serverless</strong> or <strong>npm install -g serverless</strong>.</p><p><strong>Note:</strong> If you have used Serverless Framework before with other providers than Google (say, AWS), then you will know that some of them have robust support for offline testing of functions. Currently the GCP support is still somewhat rough, and you should probably accept (for now) that a lot of testing will require deploying code to try it out.</p><h3>Step 2: Clone the code for the image labeling service</h3><p>Run <strong>git clone</strong> <a href="https://github.com/mikaelvesavuori/gcp-ml-image-labeling-service%60."><strong>https://github.com/mikaelvesavuori/gcp-ml-image-labeling-service.</strong></a> After that, run <strong>yarn</strong> or <strong>npm install</strong> to install the API’s dependencies. In my experience Yarn has previously been unreliable on Google Cloud Platform, so if you get issues delete the lockfile and <strong>node_modules</strong> folder, and try using <strong>npm install</strong> instead.</p><h3>Step 3: Create a service account (set up your GCP credentials)</h3><p>Normally, Serverless Framework (SLS) will pick up your needed credentials from your environment. Pro tip: My experience using SLS for a long time, in all the big three clouds, is that for various reasons, those credentials may need to be “updated hard” sometimes.</p><p>Reminder: In Google Cloud Platform, the <strong>Service account</strong> is what gives you granular access to the cloud resources.</p><p>Go to <em>Service accounts</em> under <em>IAM &amp; admin</em>. Click the button to create a new service account. Give it a meaningful name and description. In the <em>Service account permissions</em>, specify:</p><ul role="list"><li><em>Cloud Functions Developer</em>,</li><li><em>Deployment Manager Editor</em>, and</li><li><em>Storage Object Admin</em></li></ul><p>as the roles. You need these since Serverless Framework requires access to upload a zipped version of your function(s) to Cloud Storage; to deal with the Google-native Deployment Manager (similar functionality to Serverless Framework); as well as have rights to create/delete/update the functions themselves.</p><p>Now, click <em>Create key</em> and download the key in JSON format.</p><p>When you’ve downloaded the file, place it in a secure location. The default expected location is <strong>~/.gcloud</strong>. When you’ve placed your file, open up <strong>serverless.yml</strong> and update the <strong>credentials</strong> field to use the path to your keyfile.</p><p>Best practice for security is to have minimum permissions per application: this is called the <strong>principle of least privilege</strong>. In a serverless functions environment it makes sense to give permissions on a per-function level. This way you can revoke rights where it makes sense, rather than doing a blanket revoke which can cause a lot of issues.</p><p><em>For this session, we will reuse the same keyfile (effectively: the same service account) between both the labeling service and the API, as that cuts a bit of time — but beware that for production, you might not want to share keys/roles like that.</em></p><p><strong>Also, go to the</strong> <a href="https://console.cloud.google.com/apis/library"><strong>APIs &amp; Services</strong></a> <strong>and enable the APIs for</strong> <strong><em>Deployment Manager v2 API</em></strong> <strong>and</strong> <strong><em>Cloud Vision API</em>.</strong></p><h3>Step 4: Deploy the labeling service with Serverless Framework</h3><p>Deploying is really easy, just run <strong>sls deploy</strong>. Given that there are no errors, this process should take no more than maybe a minute or two.</p><p>There are a few common errors I see coming up every now and then. The most common being that <strong>gaxios</strong> (a nested dependency) fails. This can bizarrely be fixed by changing the service name in <strong>serverless.yml</strong>, making sure it does not include dashes.</p><h3>Step 5: Testing the labeling service</h3><p>Do a POST request to your URL, which will look something similar to <strong>https://europe-west1-cloud-developer-basics.cloudfunctions.net/getLabels</strong>.</p><p>Send a payload with the body containing an <strong>imageUrl</strong> key with the value being the URL for an image, so it looks like this:</p><p>{“imageUrl”: “https://uploads1.wikiart.org/images/giorgio-de-chirico/mystery-and-melancholy-of-a-street-1914.jpg&quot;}</p><p>Your response should come back similar to the below:</p><p><code>[<br/>“Architecture”,<br/>“Illustration”,<br/>“Visual arts”,<br/>“Building”,<br/>“Arch”,<br/>“Art”,<br/>“Arcade”,<br/>“Facade”,<br/>“Column”,<br/>“Painting”<br/>]</code></p><h3>Step 6: Clone the API repo and set up its dependencies</h3><p>Run <strong>git clone</strong> <a href="https://github.com/mikaelvesavuori/cloud-developer-basics%60"><strong>https://github.com/mikaelvesavuori/cloud-developer-basics</strong></a> and step into the API folder with <strong>cd cloud-developer-basics/04-serverless-and-apis/backend</strong>. Next, install the dependencies with <strong>yarn</strong> or <strong>npm install</strong>.</p><h3>Step 7: Inspect the provided GraphQL API</h3><p>Take a look at the API files in <strong>/backend</strong>, especially if you have never seen a GraphQL server before. Frankly, <strong>api.js</strong> isn’t much magic — all of that happens in <strong>schema.js</strong>. Take a couple of minutes to look at <strong>schema.js</strong> and read the comments.</p><p>In case you are new to GraphQL, you should spend more time after the workshop <a href="https://graphql.org/learn/"><strong>learning about its basics</strong></a>. The code provided should be semantic enough for now though, even if you have no previous experience. I’ve documented quite a bit so I hope you will gain an understanding of what’s going on through those comments.</p><h3>Step 8: Deploy the API with Serverless Framework</h3><p>Set up your variables in <strong>configuration.js</strong> and <strong>serverless.yml</strong>. Use the same keyfile as for the image labeling service.</p><p>Now again, run <strong>sls deploy</strong> to deploy the API.</p><h3>Recommended: Add the API to a REST client</h3><p>I enjoy Insomnia and use it for all my REST client needs. I definitely encourage you to have a client ready-to-use to avoid hacking away with <strong>curl</strong> commands: it’s a lot more convenient, faster, and you can keep settings for later.</p><h3>Step 9: Try using the API</h3><p>Call your endpoint (something similar to <strong>https://europe-west1-cloud-developer-basics.cloudfunctions.net/api</strong>) and send it a GraphQL payload in this shape:</p><p><code>query {<br/>helloWorld<br/>}</code></p><p>You should get back:</p><p><code>{<br/>“data”: {<br/>“helloWorld”: “Hello World!”<br/>}<br/>}</code></p><p><strong>Note:</strong> GQL payloads can absolutely be sent in regular JSON as well. In Insomnia doing a conversion would give me <strong>{“query”:”{\n helloWorld\n}”}</strong>, while not nearly as readable, is still fully functional.</p><p><strong>Get all artworks</strong></p><p>Now try getting all artworks.</p><p><code>query {<br/>getArtworks {<br/>artist<br/>imageUrl<br/>title<br/>year<br/>labels<br/>uuid<br/>}<br/>}</code></p><p>Remove fields and you’ll see how GraphQL is nice enough to remove those for you in the response. No over-fetching!</p><p><strong>Get a single artwork by title</strong></p><p>This fetches a single artwork, based on title.</p><p><code>query {<br/>getArtworkByTitle(title: “Splotch #3”) {<br/>artist<br/>imageUrl<br/>title<br/>year<br/>labels<br/>uuid<br/>}<br/>}</code></p><p>The fields are the same as in the previous demo, so no surprises here. Remove or add fields as you want — it’ll work anyway.</p><p>You will probably have noticed that you now can pass a parameter (<strong>title</strong>). This is how you can easily see that this is a Mutation rather than a Query.</p><h3>Step 10: Create a Cloud Pub/Sub topic and subscription</h3><p>Next up, you will set up a <strong>topic</strong> (a message queue), <strong>subscription</strong> (a stream of messages from one topic), and a <strong>trigger function</strong> that listens (or “auto-fires”) on calls to a topic of your choice.</p><p>Go to <a href="https://console.cloud.google.com/cloudpubsub/"><strong>Cloud Pub/Sub</strong></a>. Click <em>Create topic</em> and give it a name — this will need to be matched in <strong>configuration.js</strong>, for <em>Topic name</em>. Create it.</p><p>When it’s done, click the name of the new topic. Click <em>Trigger Cloud Function</em>. Note that this can be done through Serverless Framework, but I want you to understand how this step can be manually handled. Use the source code provided, but give the function a meaningful name. The topic selector should point to the topic you made a minute ago. Click <em>Create</em>.</p><p>In the <strong>Topics</strong> view you should now see the new topic. Click the paperstack icon next to your topic to copy the name. Go to the <strong>Subscriptions</strong> panel. Click <em>Create subscription</em>. Name it something good and for <em>Topic name</em> paste in the name of the previously-created topic (looks like <strong>projects/${PROJECT_ID}/topics/integrationdemo</strong>). Read through the types of config and settings you can do, but leave the rest at default values. Click <em>Create</em>.</p><h3>Step 11: Call the integration function and view the queue</h3><p>This function will be a stand-in for a more common scenario, where the integration queue function is fired as a result of a user action.</p><p><code>{<br/>postMessageToPubSub<br/>}</code></p><p>The response should look similar to:</p><p>{<br/>“data”: {<br/>“postMessageToPubSub”: “Message 866419159497460 published.”<br/>}<br/>}</p><p>In <a href="https://console.cloud.google.com/cloudpubsub/subscription"><strong>Cloud Pub/Sub subscriptions view</strong></a>, click your subscription. Click <em>View messages</em> in the top bar, then click <em>Pull</em>. You should be able to see your dummy message being picked up!</p><figure class="w-richtext-align-center w-richtext-figure-type-image"><div><img loading="lazy" alt="database table" src="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc4d2b118eba1845c4c033_103e8ed4ba7061c488476926254133908f60ac82-1992x686.avif"/></div></figure><p>Just a last step, now: Go to <a href="https://console.cloud.google.com/functions/"><strong>Cloud Functions</strong></a> and click your integration function. View its logs. This can take a few seconds, but there should soon be visible proof that your trigger knows what’s going on. Now for some diabolically nifty app integrations! <strong>muahahaha</strong></p><figure class="w-richtext-align-center w-richtext-figure-type-image"><div><img loading="lazy" alt="database table" src="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc4d2b0804dac820bcc2d5_bcd4f4e950c1d362ba29b8f0cf0df5a0eaed5b78-1870x158.avif"/></div></figure><p>You rock! That’s it for this session. Next session we will continue using this foundation by, among other things, adding a database.</p><h2>Further studies</h2><p>Listed here are recommended additional resources and tasks to improve your understanding and build up your foundational experience.</p><h2>Explore more</h2><ul role="list"><li>Call functions from frontend and render something from the received data (you could use the <strong>getArtworks</strong> query and render the artworks with texts and images, for example)</li><li>Try to write some of your own resolvers and functions, adding those to the API layer</li><li>Attempt to do some actual type of integration based on what you now know about Pub/Sub; connect it to something you use</li><li>Require that functions are only run by authenticated users. For example, use Firebase authentication.</li><li>Secure your functions/API by putting them behind a Cloud Endpoint (one of the only ways I know of to ensure a real, secure environment)</li></ul><h2>References</h2><p><strong>Serverless in general</strong></p><ul role="list"><li><a href="https://cloud.google.com/serverless/">Google: Serverless computing</a></li><li><a href="https://cloud.google.com/serverless-options/">Google: What is serverless?</a></li><li><a href="https://cloud.google.com/blog/products/serverless/6-strategies-for-scaling-your-serverless-applications">6 strategies for scaling your serverless applications</a></li><li><a href="https://dzone.com/articles/serverless-on-gcp">Serverless on GCP: A Comprehensive Guide</a></li><li><a href="https://serverless.com/blog/serverless-architecture-code-patterns/">Serverless Code Patterns</a></li><li><a href="https://martinfowler.com/articles/serverless.html">Serverless Architectures</a></li></ul><p><strong>Cloud Functions and code</strong></p><ul role="list"><li><a href="https://cloud.google.com/functions/docs/bestpractices/tips">Cloud Functions: Tips &amp; Tricks</a></li><li><a href="https://github.com/GoogleCloudPlatform/serverless-store-demo">Serverless Store: Google Cloud Platform Serverless Demo Application</a></li><li><a href="https://serverless.com/framework/docs/providers/google/events/event/">Serverless Framework: Google Events</a></li></ul><p><strong>GraphQL</strong></p><ul role="list"><li><a href="https://graphql.org/learn/">Introduction to GraphQL</a></li><li><a href="https://www.apollographql.com/docs/apollo-server/">Introduction: What is Apollo Server and what does it do?</a></li><li><a href="https://github.com/apollographql/apollo-server/tree/master/packages/apollo-server-cloud-functions">Google Cloud Functions integration of GraphQL Server</a></li></ul><p><strong>Cloud Pub/Sub</strong></p><ul role="list"><li><a href="https://cloud.google.com/pubsub/docs/overview">What Is Cloud Pub/Sub?</a></li><li><a href="https://cloud.google.com/functions/docs/tutorials/pubsub">Cloud Pub/Sub Tutorial</a></li><li><a href="https://firebase.google.com/docs/functions/pubsub-events">Firebase: Cloud Pub/Sub triggers</a></li></ul><h2>Qwiklabs</h2><p>Qwiklabs are short and highly concrete lab-style tutorials. You need a free account to view them. To fully use these you need a paid membership — it should be possible to follow along and work your way through them on the free account though since the paid membership usually only adds the sandbox environment.</p><ul role="list"><li><a href="https://www.qwiklabs.com/focuses/8498?catalog_rank=%7B%22rank%22%3A4%2C%22num_filters%22%3A1%2C%22has_search%22%3Atrue%7D&amp;parent=catalog&amp;search_id=3878417">Serverless Compute: Microservices with Cloud Functions</a></li><li><a href="https://www.qwiklabs.com/focuses/8389?catalog_rank=%7B%22rank%22%3A10%2C%22num_filters%22%3A1%2C%22has_search%22%3Atrue%7D&amp;parent=catalog&amp;search_id=3878406">Build a Resilient, Asynchronous System with Cloud Run and Cloud PubSub</a></li></ul></div><div class="story-social"><div id="copy-link" class="social-link w-embed"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="19.5" stroke="currentColor" fill="none"></circle><path d="M14.343 18.5859C14.343 18.5859 12.9288 20.0001 12.9288 20.0001C10.9762 21.9527 10.9762 25.1185 12.9288 27.0712C14.8814 29.0238 18.0473 29.0238 19.9999 27.0712C19.9999 27.0712 21.4141 25.6569 21.4141 25.6569" stroke="#6C6E74" stroke-linecap="round" fill="none"></path><path d="M17.1715 22.8284L22.8283 17.1716" stroke="#6C6E74" stroke-linecap="round" fill="none"></path><path d="M25.657 21.4141C25.657 21.4141 27.0712 19.9999 27.0712 19.9999C29.0238 18.0473 29.0238 14.8815 27.0712 12.9288C25.1186 10.9762 21.9527 10.9762 20.0001 12.9288C20.0001 12.9288 18.5859 14.3431 18.5859 14.3431" stroke="#6C6E74" stroke-linecap="round" fill="none"></path></svg></div><div fs-socialshare-element="Twitter" class="social-link w-embed"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="41" height="40" viewBox="0 0 41 40" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="20.3335" cy="20" r="19.5" stroke="currentColor" fill="none"></circle><path fill-rule="evenodd" clip-rule="evenodd" d="M32.333 12.3086C31.4507 12.7006 30.5011 12.9646 29.5052 13.0838C30.5219 12.4742 31.3027 11.5095 31.6699 10.36C30.7195 10.9247 29.6644 11.3335 28.5437 11.5551C27.6453 10.5984 26.3646 10 24.9495 10C22.2305 10 20.0258 12.2047 20.0258 14.9237C20.0258 15.3092 20.0698 15.6852 20.1538 16.046C16.0613 15.8412 12.4335 13.8805 10.0049 10.9015C9.58092 11.6287 9.33854 12.4742 9.33854 13.3766C9.33854 15.0845 10.2065 16.5916 11.5288 17.4747C10.7208 17.4491 9.9625 17.2275 9.29774 16.8587V16.9203C9.29774 19.3066 10.996 21.296 13.2471 21.7496C12.8343 21.8616 12.3991 21.9224 11.9504 21.9224C11.6328 21.9224 11.324 21.8912 11.0232 21.8336C11.6496 23.7895 13.4687 25.2134 15.6229 25.2534C13.9382 26.5733 11.8152 27.3612 9.50813 27.3612C9.10975 27.3612 8.71778 27.338 8.33301 27.2916C10.5121 28.6884 13.0999 29.5043 15.8805 29.5043C24.9367 29.5043 29.8892 22.0016 29.8892 15.4956C29.8892 15.282 29.8852 15.0693 29.8748 14.8589C30.8379 14.1629 31.6731 13.2958 32.333 12.3086Z" fill="#6C6E74"></path></svg></div><div fs-socialshare-element="Linkedin" class="social-link w-embed"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="41" height="40" viewBox="0 0 41 40" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="20.3335" cy="20" r="19.5" stroke="currentColor" fill="none"></circle><path fill-rule="evenodd" clip-rule="evenodd" d="M15.1082 10.2839C15.1082 11.529 14.1602 12.5366 12.6776 12.5366C11.2529 12.5366 10.3048 11.529 10.3342 10.2839C10.3048 8.97828 11.2528 8 12.7061 8C14.1602 8 15.0798 8.97828 15.1082 10.2839ZM10.4534 28.8191V14.3162H14.9606V28.8181H10.4534V28.8191Z" fill="#6C6E74"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M18.5738 18.9446C18.5738 17.1357 18.5142 15.5935 18.4546 14.3182H22.3696L22.5777 16.305H22.6666C23.2598 15.3854 24.7424 13.9927 27.1446 13.9927C30.1097 13.9927 32.334 15.9502 32.334 20.219V28.821H27.8267V20.7838C27.8267 18.9144 27.1748 17.6399 25.5437 17.6399C24.2977 17.6399 23.5569 18.4999 23.2608 19.3297C23.1416 19.6268 23.0829 20.0412 23.0829 20.4574V28.821H18.5756V18.9446H18.5738Z" fill="#6C6E74"></path></svg></div><div fs-socialshare-element="Facebook" class="social-link w-embed"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="41" height="40" viewBox="0 0 41 40" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="20.3335" cy="20" r="19.5" stroke="currentColor" fill="none"></circle><path fill-rule="evenodd" clip-rule="evenodd" d="M25.6485 12.9578C25.0252 12.8331 24.1833 12.74 23.6539 12.74C22.2202 12.74 22.1271 13.3633 22.1271 14.3607V16.1361H25.7109L25.3985 19.8137H22.1271V31H17.6398V19.8137H15.3335V16.1361H17.6398V13.8613C17.6398 10.7453 19.1043 9 22.7812 9C24.0587 9 24.9937 9.187 26.2088 9.43633L25.6485 12.9578Z" fill="#6C6E74"></path></svg></div><div fs-socialshare-element="twitter-username" class="hide">wearehumblebee</div></div><div class="author_wrapper is-story"><img alt="Russell Clark" loading="lazy" src="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/6a708b3433e662d2b0f9fb08_DSCF7760-cropped.jpg" sizes="100vw" srcset="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/6a708b3433e662d2b0f9fb08_DSCF7760-cropped-p-500.jpg 500w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/6a708b3433e662d2b0f9fb08_DSCF7760-cropped-p-800.jpg 800w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/6a708b3433e662d2b0f9fb08_DSCF7760-cropped-p-1080.jpg 1080w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/6a708b3433e662d2b0f9fb08_DSCF7760-cropped.jpg 1600w" class="author-img-story"/><div class="author_info"><div class="author_date">Written by</div><div>Russell Clark</div><a href="mailto:russell.clark@humblebee.se" class="text-color-purple">russell.clark@humblebee.se</a></div></div></div></div></div><div class="container-large is-more"><h4>More stories</h4><div class="blog_component is-more w-dyn-list"><div role="list" class="blog_list w-dyn-items"><div role="listitem" class="teamitems w-dyn-item"><a data-w-id="40b06251-e986-6588-c687-0755c6aade2b" href="/stories/what-is-servitization-and-why-does-it-matter-to-you" class="work_image-wrapper w-inline-block"><img style="-webkit-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)" alt="What is servitization and why does it matter to you? " src="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/671faf2b66ead61889aea7bb_products_to_services.avif" loading="lazy" sizes="100vw" srcset="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/671faf2b66ead61889aea7bb_products_to_services-p-500.avif 500w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/671faf2b66ead61889aea7bb_products_to_services-p-800.avif 800w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/671faf2b66ead61889aea7bb_products_to_services-p-1080.avif 1080w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/671faf2b66ead61889aea7bb_products_to_services-p-1600.avif 1600w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/671faf2b66ead61889aea7bb_products_to_services.avif 2160w" class="work_image"/></a><div><div class="margin-bottom margin-xxsmall"><a href="/stories/what-is-servitization-and-why-does-it-matter-to-you" class="link-heading w-inline-block"><h4>What is servitization and why does it matter to you? </h4></a></div><div class="margin-bottom margin-xsmall"><div>Grappling with strategic level servitization or a hands-on manager in the middle of a project, this short servitization guide is for you.</div></div><div class="author_wrapper"><img alt="David Joelsson" loading="lazy" src="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65a7bfc448cf741c8a8d7833_d047b30944b0f09fc96501918786cb9a177b62e1-2000x2000.avif" sizes="100vw" srcset="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65a7bfc448cf741c8a8d7833_d047b30944b0f09fc96501918786cb9a177b62e1-2000x2000-p-500.avif 500w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65a7bfc448cf741c8a8d7833_d047b30944b0f09fc96501918786cb9a177b62e1-2000x2000.avif 1200w" class="author-img"/><div class="author_info"><div class="author_name">David Joelsson</div><div class="author_date">July 3, 2025</div></div></div></div></div><div role="listitem" class="teamitems w-dyn-item"><a data-w-id="40b06251-e986-6588-c687-0755c6aade2b" href="/stories/how-we-put-ai-to-real-use-in-our-daily-work" class="work_image-wrapper w-inline-block"><img style="-webkit-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)" alt="How we put AI to real use in our daily work" src="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/667d72abd2ee3406a18c30e3_Frame%2021.avif" loading="lazy" sizes="100vw" srcset="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/667d72abd2ee3406a18c30e3_Frame%2021-p-500.avif 500w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/667d72abd2ee3406a18c30e3_Frame%2021-p-800.avif 800w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/667d72abd2ee3406a18c30e3_Frame%2021.avif 2160w" class="work_image"/></a><div><div class="margin-bottom margin-xxsmall"><a href="/stories/how-we-put-ai-to-real-use-in-our-daily-work" class="link-heading w-inline-block"><h4>How we put AI to real use in our daily work</h4></a></div><div class="margin-bottom margin-xsmall"><div>It’s hard to navigate through the hyperbole of AI. It’s on the news, it’s in your LinkedIn feed, even Grandma has started asking you about it. What business problems can you solve with it? </div></div><div class="author_wrapper"><img alt="Andreas Litzell Ivarsson" loading="lazy" src="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/663a1310d5737ea726315ba2_AndreasLitzellIvarsson.avif" sizes="100vw" srcset="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/663a1310d5737ea726315ba2_AndreasLitzellIvarsson-p-500.avif 500w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/663a1310d5737ea726315ba2_AndreasLitzellIvarsson.avif 640w" class="author-img"/><div class="author_info"><div class="author_name">Andreas Litzell Ivarsson</div><div class="author_date">July 3, 2025</div></div></div></div></div><div role="listitem" class="teamitems w-dyn-item"><a data-w-id="40b06251-e986-6588-c687-0755c6aade2b" href="/stories/10-in-5-olga-dergachyova-data-scientist" class="work_image-wrapper w-inline-block"><img style="-webkit-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)" alt="10 in 5 Olga Dergachyova, Data Scientist" src="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc38deb356ac2fd37c916d_Thumb_1.avif" loading="lazy" sizes="100vw" srcset="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc38deb356ac2fd37c916d_Thumb_1-p-500.avif 500w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc38deb356ac2fd37c916d_Thumb_1.avif 1080w" class="work_image"/></a><div><div class="margin-bottom margin-xxsmall"><a href="/stories/10-in-5-olga-dergachyova-data-scientist" class="link-heading w-inline-block"><h4>10 in 5 Olga Dergachyova, Data Scientist</h4></a></div><div class="margin-bottom margin-xsmall"><div>Meet Olga, our Data Scientist at Humblebee with a background in Computer Science and a knack for problem-solving. In this interview, she discusses her journey into Data Science, recommends a great book for enthusiasts, and shares insights on the future of the field.</div></div><div class="author_wrapper"><img alt="Karina Sivolap" loading="lazy" src="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65a7bf53a8ab7dbd18e6afb7_c7bd2a8bc1c2d7cbde822c81d9c99cb84373747b-2000x2000.avif" sizes="100vw" srcset="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65a7bf53a8ab7dbd18e6afb7_c7bd2a8bc1c2d7cbde822c81d9c99cb84373747b-2000x2000-p-500.avif 500w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65a7bf53a8ab7dbd18e6afb7_c7bd2a8bc1c2d7cbde822c81d9c99cb84373747b-2000x2000-p-800.avif 800w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65a7bf53a8ab7dbd18e6afb7_c7bd2a8bc1c2d7cbde822c81d9c99cb84373747b-2000x2000.avif 1200w" class="author-img"/><div class="author_info"><div class="author_name">Karina Sivolap</div><div class="author_date">April 21, 2025</div></div></div></div></div></div></div></div></div></section></div><section class="footer-component-black background-color-black"><div class="padding-global"><div class="container-large"><div class="footer-nav-black2026"><div class="nav-links-large-footer"><a href="/programs" class="nav-link-large-overlay w-inline-block"><div class="nav-link-largeoverlay-font">Programs</div></a><a href="/work" class="nav-link-large-overlay w-inline-block"><div class="nav-link-largeoverlay-font">Work</div></a><a href="/programs/coventures-program" class="nav-link-large-overlay w-inline-block"><div class="nav-link-largeoverlay-font">CoVentures</div></a></div><div class="nav-links-small-footer"><a href="#" class="nav-link-small-footer email-copy-btn w-inline-block"><div class="nav-links-small-footer email-copy-text">Say Hello</div></a><a href="/about-us" class="nav-link-small-footer w-inline-block"><div class="nav-links-small-footer">About</div></a><a href="/careers" class="nav-link-small-footer w-inline-block"><div class="nav-links-small-footer">Careers</div></a><a href="/hire-us" class="nav-link-small-footer w-inline-block"><div class="nav-links-small-footer">Hire Us</div></a></div><div class="nav-bottom-row"><div class="nav-bottom-left"><a href="/stories" class="nav-link-bottom w-inline-block"><div class="nav-bottom-text">Stories</div></a><a href="/responsible-ai" class="nav-link-bottom w-inline-block"><div class="nav-bottom-text">Responsible AI</div></a><div class="nav-link-bottom"><div class="nav-bottom-text w-embed"><a href="javascript:CookieScript.instance.show()" class="nav-bottom-text" style="text-decoration: none;">Cookie settings</a></div></div></div><div class="nav-bottom-right"><a href="https://www.linkedin.com/company/humblebee" class="nav-link-bottom w-inline-block"><div class="nav-bottom-text">LinkedIn</div></a><a href="https://www.instagram.com/wearehumblebee" class="nav-link-bottom w-inline-block"><div class="nav-bottom-text">Instagram</div></a><a href="https://www.facebook.com/wearehumblebee" class="nav-link-bottom w-inline-block"><div class="nav-bottom-text">Facebook</div></a></div></div></div></div></div></section></div><script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=65a6d736d0f0686554aa673a" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script><script src="https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/js/webflow.schunk.36b8fb49256177c8.js" type="text/javascript" integrity="sha384-4abIlA5/v7XaW1HMXKBgnUuhnjBYJ/Z9C1OSg4OhmVw9O3QeHJ/qJqFBERCDPv7G" crossorigin="anonymous"></script><script src="https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/js/webflow.schunk.a862ec9479ab9bfc.js" type="text/javascript" integrity="sha384-kQhUGkpLNlD3NmlSjIdLVlD2cXllpoWWGEx1alThdc5wmcPUD19zMQYijbJSXQuc" crossorigin="anonymous"></script><script src="https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/js/webflow.9d2e191f.1e35891e48f0e27b.js" type="text/javascript" integrity="sha384-RlD+ykANFQ7DY0dy8dTxgGJXHrfFf5vwVOsTRhgMN/M2T67cPd9fsN325D9qkUCJ" crossorigin="anonymous"></script><!-- ── External Libraries ── -->
+<script src="https://cdn.jsdelivr.net/gh/Wrapp-dev/public-scripts@main/dist/marquee.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+
+<script>
+(function() {
+
+  // ── Nav overlay toggle ──
+  function initNav() {
+    var navBtn = document.querySelector('.nav-menu-btn');
+    var navPill = document.querySelector('.nav-pill');
+    if (!navBtn || !navPill) return;
+    navBtn.addEventListener('click', function() {
+      navPill.classList.toggle('is-open');
+    });
+  }
+
+  // ── Email copy button ──
+  function initEmailCopy() {
+    document.querySelectorAll('.email-copy-btn').forEach(function(btn) {
+      var label = btn.querySelector('.email-copy-text');
+      if (!label) return;
+      var email = 'hello@humblebee.se';
+      var copied = false;
+      btn.addEventListener('mouseenter', function() {
+        if (!copied) {
+          label.style.opacity = '0';
+          setTimeout(function() { label.textContent = email; label.style.opacity = '1'; }, 150);
+        }
+      });
+      btn.addEventListener('mouseleave', function() {
+        if (!copied) {
+          label.style.opacity = '0';
+          setTimeout(function() { label.textContent = 'Say Hello'; label.style.opacity = '1'; }, 150);
+        }
+      });
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (copied) return;
+        navigator.clipboard.writeText(email).then(function() {
+          copied = true;
+          label.style.opacity = '0';
+          setTimeout(function() {
+           label.innerHTML = 'Email copied &nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+label.style.flexDirection = 'row';
+label.style.alignItems = 'center';
+btn.classList.add('is-copied'); label.style.opacity = '1';
+          }, 150);
+          setTimeout(function() {
+            copied = false;
+            btn.classList.remove('is-copied');
+            label.style.opacity = '0';
+            setTimeout(function() { label.textContent = 'Say Hello'; label.style.opacity = '1'; }, 150);
+          }, 3000);
+        });
+      });
+    });
+  }
+
+  // ── Scroll pills animation (home page only) ──
+ function initPills() {
+  if (!window.gsap || !window.ScrollTrigger) { setTimeout(initPills, 60); return; }
+  var root = document.getElementById("stw-root");
+  var stage = document.getElementById("stw-stage");
+  var title = document.getElementById("stw-title");
+  if (!root || !stage || !title) return;
+  var gsap = window.gsap;
+  var ST = window.ScrollTrigger;
+  gsap.registerPlugin(ST);
+  var pills = Array.from(root.querySelectorAll(".stw-pill"));
+  var data = [
+    { x: 0, y: 0, tilt: -5 }, { x: 0, y: 0, tilt: 4 }, { x: 0, y: 0, tilt: -3 },
+    { x: 0, y: 0, tilt: 5 }, { x: 0, y: 0, tilt: -4 }, { x: 0, y: 0, tilt: 3 },
+    { x: 0, y: 0, tilt: -6 }, { x: 0, y: 0, tilt: 4 }, { x: 0, y: 0, tilt: -5 },
+    { x: 0, y: 0, tilt: 3 },
+  ];
+
+  if (window.innerWidth < 768) {
+    ST.config({ ignoreMobileResize: true });
+    var items = pills.map(function(pill) {
+      var span = pill.querySelector('span');
+      return { text: span ? span.textContent.trim() : '', color: span ? span.style.color : 'rgb(255,128,0)' };
+    }).filter(function(item) { return item.text; });
+    pills.forEach(function(el) { el.style.display = 'none'; });
+    stage.style.cssText = 'position:relative;width:100%;height:auto;min-height:420px;overflow:hidden;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px 80px;';
+    title.style.position = 'relative';
+    title.style.left = 'auto';
+    title.style.top = 'auto';
+    title.style.transform = 'none';
+    title.style.whiteSpace = 'normal';
+    title.style.marginBottom = '40px';
+    title.style.textAlign = 'center';
+    gsap.set(title, { opacity: 0, y: 16 });
+    var stackWrap = document.createElement('div');
+    stackWrap.style.cssText = 'position:relative;width:min(280px,82vw);height:148px;flex-shrink:0;';
+    stage.appendChild(stackWrap);
+    var angles = [2, -4, 3.5, -2.5, 4, -1.5, 2.5, -3, 4.5, -2];
+    var cardEls = items.map(function(item) {
+      var card = document.createElement('div');
+      card.style.cssText = [
+        'position:absolute;top:0;left:0;width:100%;height:128px',
+        'background:#ffffff',
+        'border:2.5px solid ' + item.color,
+        'border-radius:20px',
+        'padding:0 22px',
+        'box-sizing:border-box',
+        'display:flex;align-items:center;justify-content:center',
+        'font-family:Inter,sans-serif',
+        'font-weight:700',
+        'font-size:clamp(13px,4vw,17px)',
+        'line-height:1.25',
+        'letter-spacing:-0.2px',
+        'color:' + item.color,
+        'text-align:center'
+      ].join(';');
+      card.textContent = item.text;
+      stackWrap.appendChild(card);
+      return card;
+    });
+    gsap.set(cardEls, { opacity: 0 });
+    cardEls.forEach(function(card, i) {
+      gsap.set(card, { y: i * 10, scale: 1 - i * 0.048, rotation: angles[i % angles.length], zIndex: cardEls.length - i });
+    });
+    var busy = false;
+    function advance() {
+      if (busy) return;
+      busy = true;
+      var top = cardEls[0];
+      gsap.to(top, {
+        x: '-145%', rotation: -22, opacity: 0, duration: 0.42, ease: 'power2.in',
+        onComplete: function() {
+          cardEls.push(cardEls.shift());
+          gsap.set(top, { x: 0, y: cardEls.length * 10, scale: 0.82, rotation: 3, opacity: 0, zIndex: 0 });
+          cardEls.forEach(function(card, i) {
+            gsap.to(card, {
+              y: i * 10, scale: 1 - i * 0.048, rotation: angles[i % angles.length],
+              opacity: i === 0 ? 1 : i === 1 ? 0.75 : i === 2 ? 0.45 : 0,
+              zIndex: cardEls.length - i, duration: 0.38, ease: 'power2.out'
+            });
+          });
+          gsap.delayedCall(0.4, function() { busy = false; });
+        }
+      });
+    }
+    var introTl = gsap.timeline({
+      scrollTrigger: { trigger: stage, start: 'top 70%' },
+      onComplete: function() { setInterval(advance, 2800); }
+    });
+    introTl.to(title, { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' });
+    introTl.to(cardEls[2], { opacity: 0.45, duration: 0.4, ease: 'power2.out' }, '-=0.1');
+    introTl.to(cardEls[1], { opacity: 0.75, duration: 0.4, ease: 'power2.out' }, '-=0.25');
+    introTl.to(cardEls[0], { opacity: 1, duration: 0.6, ease: 'back.out(1.3)' }, '-=0.25');
+    return;
+  }
+
+  pills.forEach(function(el, i) {
+    var d = data[i] || { x: 0, y: 0, tilt: 0 };
+    gsap.set(el, { xPercent: -50, yPercent: -50, x: d.x, y: d.y, rotation: d.tilt, opacity: 0, scale: 0.8 });
+  });
+  gsap.set(title, { opacity: 1 });
+  var tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: root, start: "top top",
+      end: "+=" + (300 + pills.length * 600),
+      scrub: 0.6, pin: stage, anticipatePin: 1
+    }
+  });
+  tl.to({}, { duration: 0.4 });
+  tl.to(title, { opacity: 0.18, scale: 0.92, duration: 1, ease: "power1.out" }, ">");
+  pills.forEach(function(el, i) {
+    var d = data[i];
+    tl.fromTo(el,
+      { opacity: 0, scale: 0.8, y: d.y + 70, rotation: d.tilt - 6 },
+      { opacity: 1, scale: 1, y: d.y, rotation: d.tilt, duration: 1.6, ease: "back.out(1.4)" },
+      i === 0 ? ">-0.4" : ">+0.4"
+    );
+    tl.to({}, { duration: 1.1 });
+  });
+  tl.to({}, { duration: 0.5 });
+  ST.refresh();
+}
+
+
+// ── Reveal text animation ──
+function initRevealText() {
+  var elements = document.querySelectorAll('.reveal-text');
+  if (!elements.length) return;
+  elements.forEach(function(el) {
+    el.innerHTML = el.innerText.split(' ').map(function(word) {
+      return '<span style="color:#aaa;">' + word + '</span>';
+    }).join(' ');
+    var spans = Array.from(el.querySelectorAll('span'));
+    var last = -1;
+    function tick() {
+      var rect = el.getBoundingClientRect();
+      var vh = window.innerHeight;
+      var progress = Math.min(1, Math.max(0,
+        (vh * 0.95 - rect.top) / (vh * 0.65 + el.offsetHeight)
+      ));
+      if (Math.abs(progress - last) > 0.005) {
+        last = progress;
+        spans.forEach(function(span, i) {
+          span.style.color = progress > (i / spans.length) ? '#161616' : '#aaa';
+        });
+      }
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  });
+}
+
+  // ── Init all on DOM ready ──
+  function initAll() {
+    initNav();
+    initEmailCopy();
+    initPills();
+    initRevealText();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initAll);
+  } else {
+    initAll();
+  }
+
+})();
+</script>
+<script>
+document.querySelector('#copy-link').addEventListener('click', function() {
+    var url = window.location.href;
+    
+    navigator.clipboard.writeText(url).then(function() {
+        console.log('URL copied to clipboard:', url);
+        // Show success message
+        alert('Link copied to clipboard!');
+    }).catch(function(err) {
+        console.error('Failed to copy URL:', err);
+        // Handle any errors that may occur during the copy operation
+    });
+});
+</script><script src="https://hubspotonwebflow.com/assets/js/form-124.js" type="text/javascript" integrity="sha384-bjyNIOqAKScdeQ3THsDZLGagNN56B4X2Auu9YZIGu+tA/PlggMk4jbWruG/P6zYj" crossorigin="anonymous"></script></body></html>

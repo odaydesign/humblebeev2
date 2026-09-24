@@ -1,0 +1,748 @@
+<!DOCTYPE html><!-- Last Published: Tue Sep 22 2026 16:47:28 GMT+0000 (Coordinated Universal Time) --><html data-wf-domain="www.humblebee.se" data-wf-page="65a843e474668d315ba2fe0d" data-wf-site="65a6d736d0f0686554aa673a" lang="en" data-wf-collection="65a843e474668d315ba2fe21" data-wf-item-slug="virtual-machines-and-networking"><head><meta charset="utf-8"/><link href="https://cdn.prod.website-files.com" rel="preconnect" crossorigin="anonymous"/><title>Virtual machines and networking</title><meta content="Part 2 of Cloud Developer Basics using Google Cloud Platform" name="description"/><meta content="Virtual machines and networking" property="og:title"/><meta content="Part 2 of Cloud Developer Basics using Google Cloud Platform" property="og:description"/><meta content="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc4a63b03b8bd9e605d4f2_Thumb_1.avif" property="og:image"/><meta content="Virtual machines and networking" name="twitter:title"/><meta content="Part 2 of Cloud Developer Basics using Google Cloud Platform" name="twitter:description"/><meta content="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc4a63b03b8bd9e605d4f2_Thumb_1.avif" name="twitter:image"/><meta property="og:type" content="website"/><meta content="summary_large_image" name="twitter:card"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/css/humblebeese.webflow.shared.b17e47e4a.min.css" rel="stylesheet" type="text/css" integrity="sha384-sX5H5K/CCSOJeN4IKop0WrEeRpxTM+nwK6524SC7ALUTedLmpGxrkvDVySiicmMS" crossorigin="anonymous"/><script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script><link href="https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6633e37dac34ac17618c4a26_favicon.png" rel="shortcut icon" type="image/x-icon"/><link href="https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6633e3821d6ec78f553b5cd4_webclip.png" rel="apple-touch-icon"/><script src="https://www.google.com/recaptcha/api.js" type="text/javascript"></script><!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-54PZ2LQ');</script>
+<!-- End Google Tag Manager -->
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Humblebee AB",
+  "url": "https://www.humblebee.se",
+  "logo": "https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6633e3821d6ec78f553b5cd4_webclip.png",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+46761191201",
+    "contactType": "Customer Service",
+    "areaServed": "SE",
+    "availableLanguage": "English"
+  },
+  "sameAs": [
+    "https://www.instagram.com/wearehumblebee",
+    "https://www.facebook.com/wearehumblebee",
+    "https://www.linkedin.com/company/humblebee",
+    "https://medium.com/wearehumblebee",
+    "https://www.eventbrite.com/o/humblebee-18567327820"
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Kvarnbergsgatan 2",
+    "addressLocality": "Gothenburg",
+    "addressRegion": "Västra Götaland",
+    "postalCode": "41105",
+    "addressCountry": "Sweden"
+  },
+  "description": "Humblebee is a creative digital studio that provides services and solutions for agencies and brands."
+},
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "url": "https://www.humblebee.se",
+  "name": "Humblebee AB",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://www.humblebee.se/?s={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+},
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://www.humblebee.se"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Work",
+      "item": "https://www.humblebee.se/work"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Stories",
+      "item": "https://www.humblebee.se/stories"
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "name": "Services",
+      "item": "https://www.humblebee.se/services"
+    },
+    {
+      "@type": "ListItem",
+      "position": 5,
+      "name": "Careers",
+      "item": "https://www.humblebee.se/careers"
+    },
+    {
+      "@type": "ListItem",
+      "position": 6,
+      "name": "About us",
+      "item": "https://www.humblebee.se/about-us"
+    },
+    {
+      "@type": "ListItem",
+      "position": 7,
+      "name": "Contact us",
+      "item": "https://www.humblebee.se/contact"
+    }
+  ]
+}
+</script>
+
+<style>
+
+/* ── Navigation ── */
+.nav-overlay {
+  overflow: hidden;
+  height: 100vh;
+}
+.nav-overlay-inner {
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+@media (min-width: 992px) {
+  .nav-overlay-inner {
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+}
+@media (max-width: 991px) {
+  .marquee_image,
+  .marquee_image_597 {
+    height: 350px !important;
+    width: auto !important;
+  }
+}
+
+/* ── Scroll Pills ── */
+@media (max-width: 767px) {
+  #stw-stage {
+    height: auto !important;
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 80px 20px;
+  }
+  #stw-title {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+    text-align: center;
+    margin-bottom: 16px;
+    white-space: normal !important;
+    font-size: clamp(32px, 9vw, 42px) !important;
+  }
+  .stw-pill {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+  }
+}
+@media (max-width: 600px) {
+  #stw-title, .stw-pill span { letter-spacing: -1.5px !important; }
+}
+.nav-overlay { pointer-events: auto; }
+.nav-wrapper { pointer-events: none; }
+.nav-pill { pointer-events: auto; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.nav-link-large-overlay { width: fit-content; transition: opacity 0.4s ease; }
+.nav-links-large:hover .nav-link-large-overlay { opacity: 0.35; }
+.nav-links-large:hover .nav-link-large-overlay:hover { opacity: 1; }
+.nav-link-small { width: fit-content; transition: opacity 0.4s ease; }
+.nav-links-small:has(.nav-link-small:not(.email-copy-btn):hover) .nav-link-small:not(.email-copy-btn):not(:hover) { opacity: 0.35; }
+.nav-pill.is-open {
+  background-color: rgba(22, 22, 22, 0.7) !important;
+  border: 1px solid #FFFFFF !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+}
+.nav-pill.is-open .nav-brand {
+  color: #FFFFFF !important;
+  filter: brightness(0) invert(1);
+}
+/* ── Email Copy Button ── */
+.email-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  background-color: #FFFFFF;
+  border-radius: 100px;
+  padding: 12px 24px;
+  white-space: nowrap;
+  justify-content: center;
+  transition: background-color 0.3s ease, width 0.3s ease;
+  width: auto;
+  text-decoration: none;
+}
+.email-copy-btn .email-copy-text { color: #161616 !important; }
+.email-copy-text { transition: opacity 0.3s ease; }
+.email-copy-btn.is-copied { background-color: #FF8000; }
+.email-copy-btn.is-copied .email-copy-text { color: #FFFFFF !important; }
+/* ── Nav Story Cards ── */
+.nav-story-card {
+  border-radius: 12px;
+  padding: 12px;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  align-self: flex-start;
+}
+.nav-story-card:hover { background-color: rgba(255, 255, 255, 0.07); }
+.nav-story-card svg { transition: transform 0.3s ease; }
+.nav-story-card:hover svg { transform: translateX(6px); }
+.nav-story-label { font-size: 13px; color: rgba(255, 255, 255, 0.5); }
+.nav-story-title { font-size: 15px; color: #FFFFFF; }
+@media (max-width: 991px) {
+  .nav-story-card { align-self: center; width: 75%; max-width: 500px; }
+  .nav-overlay-right { width: 100%; display: flex; flex-direction: column; align-items: center; }
+}
+
+  
+/* ── Strategy Move Buttons ── */
+.strategymoves-btn:hover { background-color: #161616; }
+.strategymoves-btn .sm-icon svg path { fill: white !important; }
+.sm-icon { display: flex; align-items: center; }
+.strategymoves-btn .sm-icon,
+.strategymoves-btn-ghost .sm-icon { transition: transform 0.3s ease; }
+.strategymoves-btn:hover .sm-icon,
+.strategymoves-btn-ghost:hover .sm-icon { transform: translateX(5px); }
+
+
+
+  
+/* ── Footer nav hover (large links) ── */
+.nav-links-large-footer:hover .nav-link-large-overlay { opacity: 0.35; }
+.nav-links-large-footer:hover .nav-link-large-overlay:hover { opacity: 1; }
+
+/* ── Footer nav hover (small links) ── */
+.nav-link-small-footer { transition: opacity 0.4s ease; }
+.nav-links-small-footer:has(.nav-link-small-footer:not(.email-copy-btn):hover) .nav-link-small-footer:not(.email-copy-btn):not(:hover) { opacity: 0.35; }
+
+/* ── Footer bottom row ── */
+.nav-bottom-row:has(.nav-link-bottom:hover) .nav-link-bottom:not(:hover) { opacity: 0.35; }
+.nav-link-bottom { text-decoration: none; transition: opacity 0.6s ease; }
+.nav-bottom-text { transition: color 0.6s ease; }
+.nav-link-bottom:hover .nav-bottom-text { color: #ffffff !important; }
+
+/* ── Footer bottom row — mobile ── */
+@media (max-width: 767px) {
+  .nav-bottom-row { flex-direction: column; align-items: center; gap: 16px; }
+  .nav-bottom-right { align-items: center; }
+}
+  
+
+/* ── Programs Section ── */
+.programs-item { text-decoration: none; transition: background-color 0.4s ease; cursor: pointer; }
+.programs-item:hover { background-color: #FFF500; }
+.programs-item-btn { transition: background-color 0.4s ease, border-color 0.4s ease; flex-shrink: 0; }
+.programs-item:hover .programs-item-btn { background-color: #1A00FF; border-color: #1A00FF; }
+.programs-item:hover .programs-item-btn svg path { fill: white; }
+.programs-item-btn .w-embed { display: flex; align-items: center; justify-content: center; }
+
+</style><!-- [Attributes by Finsweet] Social Share -->
+<script defer src="https://cdn.jsdelivr.net/npm/@finsweet/attributes-socialshare@1/socialshare.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.humblebee.se/stories/virtual-machines-and-networking"
+  },
+  "headline": "Virtual machines and networking",
+  "description": "Part 2 of Cloud Developer Basics using Google Cloud Platform",
+  "image": "https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc4a63b03b8bd9e605d4f2_Thumb_1.avif",
+  "author": {
+    "@type": "Person",
+    "name": "Russell Clark",
+    "url": "mailto:russell.clark@humblebee.se",
+    "image": "Russell Clark"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Humblebee AB",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6633e3821d6ec78f553b5cd4_webclip.png"
+    }
+  },
+  "datePublished": "Nov 07, 2019",
+  "dateModified": "Jun 30, 2026"
+}
+</script></head><body class="body-white"><div class="page-wrapper"><div class="global-styles w-embed w-iframe"><!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-54PZ2LQ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<style>
+
+/* Set color style to inherit */
+.inherit-color * {
+    color: inherit;
+}
+
+/* Focus state style for keyboard navigation for the focusable elements */
+*[tabindex]:focus-visible,
+  input[type="file"]:focus-visible {
+   outline: 0.125rem solid #4d65ff;
+   outline-offset: 0.125rem;
+}
+
+/* Get rid of top margin on first element in any rich text element */
+.w-richtext > :not(div):first-child, .w-richtext > div:first-child > :first-child {
+  margin-top: 0 !important;
+}
+
+/* Get rid of bottom margin on last element in any rich text element */
+.w-richtext>:last-child, .w-richtext ol li:last-child, .w-richtext ul li:last-child {
+	margin-bottom: 0 !important;
+}
+
+/* Prevent all click and hover interaction with an element */
+.pointer-events-off {
+	pointer-events: none;
+}
+
+/* Enables all click and hover interaction with an element */
+.pointer-events-on {
+  pointer-events: auto;
+}
+
+/* Create a class of .div-square which maintains a 1:1 dimension of a div */
+.div-square::after {
+	content: "";
+	display: block;
+	padding-bottom: 100%;
+}
+
+/* Make sure containers never lose their center alignment */
+.container-medium,.container-small, .container-large {
+	margin-right: auto !important;
+  margin-left: auto !important;
+}
+
+/* 
+Make the following elements inherit typography styles from the parent and not have hardcoded values. 
+Important: You will not be able to style for example "All Links" in Designer with this CSS applied.
+Uncomment this CSS to use it in the project. Leave this message for future hand-off.
+*/
+/*
+a,
+.w-input,
+.w-select,
+.w-tab-link,
+.w-nav-link,
+.w-dropdown-btn,
+.w-dropdown-toggle,
+.w-dropdown-link {
+  color: inherit;
+  text-decoration: inherit;
+  font-size: inherit;
+}
+*/
+
+/* Apply "..." after 3 lines of text */
+.text-style-3lines {
+	display: -webkit-box;
+	overflow: hidden;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+}
+
+/* Apply "..." after 2 lines of text */
+.text-style-2lines {
+	display: -webkit-box;
+	overflow: hidden;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+}
+
+/* Adds inline flex display */
+.display-inlineflex {
+  display: inline-flex;
+}
+
+/* These classes are never overwritten */
+.hide {
+  display: none !important;
+}
+
+@media screen and (max-width: 991px) {
+    .hide, .hide-tablet {
+        display: none !important;
+    }
+}
+  @media screen and (max-width: 767px) {
+    .hide-mobile-landscape{
+      display: none !important;
+    }
+}
+  @media screen and (max-width: 479px) {
+    .hide-mobile{
+      display: none !important;
+    }
+}
+ 
+.margin-0 {
+  margin: 0rem !important;
+}
+  
+.padding-0 {
+  padding: 0rem !important;
+}
+
+.spacing-clean {
+padding: 0rem !important;
+margin: 0rem !important;
+}
+
+.margin-top {
+  margin-right: 0rem !important;
+  margin-bottom: 0rem !important;
+  margin-left: 0rem !important;
+}
+
+.padding-top {
+  padding-right: 0rem !important;
+  padding-bottom: 0rem !important;
+  padding-left: 0rem !important;
+}
+  
+.margin-right {
+  margin-top: 0rem !important;
+  margin-bottom: 0rem !important;
+  margin-left: 0rem !important;
+}
+
+.padding-right {
+  padding-top: 0rem !important;
+  padding-bottom: 0rem !important;
+  padding-left: 0rem !important;
+}
+
+.margin-bottom {
+  margin-top: 0rem !important;
+  margin-right: 0rem !important;
+  margin-left: 0rem !important;
+}
+
+.padding-bottom {
+  padding-top: 0rem !important;
+  padding-right: 0rem !important;
+  padding-left: 0rem !important;
+}
+
+.margin-left {
+  margin-top: 0rem !important;
+  margin-right: 0rem !important;
+  margin-bottom: 0rem !important;
+}
+  
+.padding-left {
+  padding-top: 0rem !important;
+  padding-right: 0rem !important;
+  padding-bottom: 0rem !important;
+}
+  
+.margin-horizontal {
+  margin-top: 0rem !important;
+  margin-bottom: 0rem !important;
+}
+
+.padding-horizontal {
+  padding-top: 0rem !important;
+  padding-bottom: 0rem !important;
+}
+
+.margin-vertical {
+  margin-right: 0rem !important;
+  margin-left: 0rem !important;
+}
+  
+.padding-vertical {
+  padding-right: 0rem !important;
+  padding-left: 0rem !important;
+}
+
+/* Apply "..." at 100% width */
+.truncate-width { 
+		width: 100%; 
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+}
+/* Removes native scrollbar */
+.no-scrollbar {
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none; 
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+</style></div><div class="nav-wrapper"><div class="nav-overlay"><div class="nav-overlay-inner"><div class="nav-overlay-left"><div class="nav-links-large"><a href="/programs" class="nav-link-large-overlay w-inline-block"><div class="nav-link-largeoverlay-font">Programs</div></a><a href="/work" class="nav-link-large-overlay w-inline-block"><div class="nav-link-largeoverlay-font">Work</div></a><a href="/programs/coventures-program" class="nav-link-large-overlay w-inline-block"><div class="nav-link-largeoverlay-font">CoVentures</div></a></div><div class="nav-links-small"><a href="#" class="nav-link-small email-copy-btn w-inline-block"><div class="text-block-16 email-copy-text">Say Hello</div></a><a href="/about-us" class="nav-link-small w-inline-block"><div class="text-block-17">About</div></a><a href="/careers" class="nav-link-small w-inline-block"><div class="text-block-18">Careers</div></a><a href="/hire-us" class="nav-link-small w-inline-block"><div class="text-block-19">Hire Us</div></a></div></div><div class="nav-overlay-right"><a href="https://www.humblebee.se/stories/the-most-effective-weapon-any-company-can-use-but-most-choose-to-ignore" class="nav-story-card w-inline-block"><img loading="lazy" src="https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a5e16c557e3374ca569be7e_DSCF7762-cropped.jpg" alt="" sizes="(max-width: 2160px) 100vw, 2160px" srcset="https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a5e16c557e3374ca569be7e_DSCF7762-cropped-p-500.jpg 500w, https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a5e16c557e3374ca569be7e_DSCF7762-cropped-p-800.jpg 800w, https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a5e16c557e3374ca569be7e_DSCF7762-cropped-p-1080.jpg 1080w, https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a5e16c557e3374ca569be7e_DSCF7762-cropped.jpg 1351w" class="nav-story-thumb"/><div class="nav-story-info"><div class="nav-story-meta"><div class="nav-story-label">Story</div><div class="w-embed"><svg width="20" height="10" viewBox="0 0 34 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <line x1="0" y1="8" x2="28" y2="8" stroke="white" stroke-width="1.5"/>
+  <path d="M22 2L30 8L22 14" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></div></div><div class="nav-story-title">CoVentures unlock new growth</div></div></a><a href="https://www.humblebee.se/work/wallenius-wilhelmsen" class="nav-story-card w-inline-block"><img loading="lazy" src="https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a733b301003ff8c2cf9f06a_wal_wil_3.png" alt="" sizes="(max-width: 2160px) 100vw, 2160px" srcset="https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a733b301003ff8c2cf9f06a_wal_wil_3-p-500.png 500w, https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a733b301003ff8c2cf9f06a_wal_wil_3-p-800.png 800w, https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a733b301003ff8c2cf9f06a_wal_wil_3-p-1080.png 1080w, https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a733b301003ff8c2cf9f06a_wal_wil_3-p-1600.png 1600w, https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a733b301003ff8c2cf9f06a_wal_wil_3.png 2000w" class="nav-story-thumb"/><div class="nav-story-info"><div class="nav-story-meta"><div class="nav-story-label">Work</div><div class="w-embed"><svg width="20" height="10" viewBox="0 0 34 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <line x1="0" y1="8" x2="28" y2="8" stroke="white" stroke-width="1.5"/>
+  <path d="M22 2L30 8L22 14" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></div></div><div class="nav-story-title">Emissions data improvements</div></div></a><a href="https://www.humblebee.se/work/corporate-social-responsibility-in-healthcare" class="nav-story-card w-inline-block"><img loading="lazy" src="https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a5e21123feabb9506767bc7_mhc_csr.jpg" alt="" sizes="(max-width: 2160px) 100vw, 2160px" srcset="https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a5e21123feabb9506767bc7_mhc_csr-p-500.jpg 500w, https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a5e21123feabb9506767bc7_mhc_csr-p-800.jpg 800w, https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a5e21123feabb9506767bc7_mhc_csr-p-1080.jpg 1080w, https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a5e21123feabb9506767bc7_mhc_csr-p-1600.jpg 1600w, https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a5e21123feabb9506767bc7_mhc_csr-p-2000.jpg 2000w, https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a5e21123feabb9506767bc7_mhc_csr.jpg 2500w" class="nav-story-thumb"/><div class="nav-story-info"><div class="nav-story-meta"><div class="nav-story-label">Work</div><div class="w-embed"><svg width="20" height="10" viewBox="0 0 34 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <line x1="0" y1="8" x2="28" y2="8" stroke="white" stroke-width="1.5"/>
+  <path d="M22 2L30 8L22 14" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></div></div><div class="nav-story-title">CSR app initiative for Healthcare</div></div></a></div></div></div><nav class="nav-pill"><div data-w-id="83da14c1-edfc-28cf-6b16-3b66d810972e" class="nav-menu-btn"><div class="nav-menu-label">Menu</div><div class="nav-close-label">x</div></div><div class="nav-brand"><a href="https://www.humblebee.se" class="w-inline-block"><img loading="lazy" src="https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a500a6dffdb41cacb80a187_hblogo.svg" alt="" class="image-9"/></a></div><a href="/contact" class="nav-contact-btn w-inline-block"><img loading="lazy" src="https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/6a500cd6efaddf6c29f0294d_contact_env.svg" alt=""/></a></nav></div><div class="main-wrapper"><section><div class="padding-global"><div class="container-story"><div class="padding-section-xlarge"><div class="padding-section-story"><div class="margin-bottom margin-story"><a data-w-id="aea4a6d0-a66f-bc3e-3104-259d95707194" href="/stories" class="button-back w-inline-block"><div style="-webkit-transform:translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(180deg) skew(0, 0);-moz-transform:translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(180deg) skew(0, 0);-ms-transform:translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(180deg) skew(0, 0);transform:translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(180deg) skew(0, 0);opacity:1" class="icon-embed-xsmall is-reversed w-embed"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="34" height="16" viewBox="0 0 34 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity: 1; transform: translate(0px, 0px);"><path d="M0 8L33.0286 8" stroke="#000000" fill="none"></path><path d="M26.2285 1L33.0285 8L26.2285 15" stroke="#000000" fill="none"></path></svg></div><div>Back to Stories</div></a></div><div class="margin-bottom margin-xsmall"><h1 fs-socialshare-element="content" class="story-h1">Virtual machines and networking</h1></div><h5>Part 2 of Cloud Developer Basics using Google Cloud Platform</h5><div class="margin-bottom margin-large"><div class="author_wrapper"><img alt="Russell Clark" loading="lazy" src="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/6a708b3433e662d2b0f9fb08_DSCF7760-cropped.jpg" sizes="100vw" srcset="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/6a708b3433e662d2b0f9fb08_DSCF7760-cropped-p-500.jpg 500w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/6a708b3433e662d2b0f9fb08_DSCF7760-cropped-p-800.jpg 800w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/6a708b3433e662d2b0f9fb08_DSCF7760-cropped-p-1080.jpg 1080w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/6a708b3433e662d2b0f9fb08_DSCF7760-cropped.jpg 1600w" class="author-img"/><div class="author_info"><div class="author_name">Russell Clark</div><div class="author_date">November 7, 2019</div></div></div></div><div class="margin-bottom margin-large"><img src="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc4a63b03b8bd9e605d4f2_Thumb_1.avif" loading="lazy" alt="Virtual machines and networking" height="Auto" sizes="100vw" srcset="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc4a63b03b8bd9e605d4f2_Thumb_1-p-500.avif 500w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc4a63b03b8bd9e605d4f2_Thumb_1-p-800.avif 800w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc4a63b03b8bd9e605d4f2_Thumb_1-p-1080.avif 1080w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc4a63b03b8bd9e605d4f2_Thumb_1-p-1600.avif 1600w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc4a63b03b8bd9e605d4f2_Thumb_1-p-2000.avif 2000w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc4a63b03b8bd9e605d4f2_Thumb_1.avif 3840w"/></div><div class="story-text w-richtext"><p><em>It’s no longer enough to only think of development as either frontend or backend work — it’s all about having a wider, more rounded competency. Right now, the public cloud is the natural spot from which to grow one’s skills as it envelopes many of the ways-of-working and types of products you will want to be proficient in, when levelling up your know-how. This mini-course will take you through some of the most important concepts and services, always ending with you setting up actual micro projects.</em></p><p><em>This course is written as part of the internal skill development initiative at</em> <a href="https://www.humblebee.se/"><strong><em>Humblebee</em></strong></a><em>, but we share it since there is a great demand for these skills. Want to work with a cloud-savvy company that naturally marries tech and design (as in UX, service, business and visual), or just plain old want to work here at Humblebee?</em> <a href="mailto:mikael.vesavuori@humblebee.se/"><strong><em>Get in touch</em></strong></a><em>!</em></p><p>This mini-course is divided into six parts:</p><ol role="list"><li><a href="https://medium.com/wearehumblebee/what-is-the-cloud-59a435cf384d"><strong>What is the cloud?</strong></a></li><li><strong>Virtual machines and networking (This article!)</strong></li><li><a href="https://medium.com/@MikaelVesavuori/containers-and-kubernetes-22380d3ef087"><strong>Containers and Kubernetes</strong></a></li><li><a href="https://medium.com/@MikaelVesavuori/serverless-technologies-and-apis-1096a99b77f0"><strong>Serverless and APIs</strong></a></li><li><a href="https://medium.com/@MikaelVesavuori/storage-and-databases-b02b88f78214"><strong>Storage and databases</strong></a></li><li><a href="https://medium.com/@MikaelVesavuori/devops-commit-build-and-deploy-your-code-1d30c8f20a13"><strong>DevOps</strong></a></li></ol><p>Before we begin, a few words about me. I’m <a href="https://www.mikaelvesavuori.se/"><strong>Mikael Vesavuori</strong></a>, a <a href="https://googlecloudcertified.credential.net/profile/12596e9b0a7fb0b30934777863a2f39c3f974566"><strong>Google Cloud-certified</strong></a> Professional Cloud Architect — working at <a href="https://www.humblebee.se/"><strong>Humblebee</strong></a> — and I love what the public cloud can help us achieve, regardless of job title. I’ve worked with clients such as the <a href="https://www.volvo.com/home.html"><strong>Volvo</strong></a> companies, <a href="http://www.hultaforsgroup.com/"><strong>Hultafors Group</strong></a>, and most recently <a href="https://www.polestar.com/"><strong>Polestar</strong></a> who are setting up a completely new architecture from the ground up.</p><p>Source code to follow along is available at <a href="https://github.com/mikaelvesavuori/cloud-developer-basics"><strong>https://github.com/mikaelvesavuori/cloud-developer-basics</strong></a>.</p><p><em>This mini-course is not sponsored by or connected to Google, other than us using their services.</em></p><h2>Learning objectives and services covered</h2><p>At the end of this session you will have enough understanding and know-how to set up an application using App Engine and Compute Engine, you will understand the central concerns of virtualization, and you will be able to provision firewall rules to secure your App Engine instance.</p><p><strong>Services covered:</strong></p><ul role="list"><li>App Engine</li><li>Compute Engine</li></ul><h2>Virtualization is the core of the cloud…</h2><p>Without virtualization there would be no cloud. Virtualization is the means of emulating hardware/software/storage with another tool, such as splitting a powerful computer into hundreds of smaller ones. This practice is most apparent within the context of compute.</p><p>As you learned in the last session, there are several models for how cloud services are made available to you as a user/customer:</p><ul role="list"><li>Infrastructure-as-a-service,</li><li>Platform-as-a-service,</li><li>Serverless,</li><li>Software-as-a-service, and so on.</li></ul><p>Virtualization as a technology is not bound to the service model. Instead, it’s bound to factors such as how long-living (persistent) the instance is. In this session we will work a bit with the two “classic” models, IAAS and PAAS.</p><p>These types of products offer a somewhat wide scope of configuration possibilities, meaning you will have to make a choice of machine type when using them. A higher-configuration machine type will allow greater performance, but for a higher cost. Sometimes you may want to go higher in performance to allow yourself to use fewer instances, and in some cases it’s smart to use a higher number of small machines for offloading purposes. Both GAE and GCE offer a high degree of flexibility and persistence, with GCE being billed by the second and GAE billed on an per-second or per-hour basis. GCE is covered to a small part within Google’s free tier as well.</p><h2>..but no virtualization without networking</h2><p>Virtual resources, like machine instances, need IP addresses and ways of communicating in between them. In the cloud, this is managed with VPCs: Virtual Private Clouds. A VPC groups resources and provides unique IPs. The IPs follow CIDR notation, resulting in patterns such as giving the main network a range of <strong>10.0.0.0/16</strong> (65536 addresses minus a few Google-reserved ones).</p><figure class="w-richtext-align-center w-richtext-figure-type-image"><div><img loading="lazy" alt="ip adress" src="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc4e62c753144221eff931_5ea1715b5fbddfe73a4103b077e82d0078121552-1400x362.avif"/></div></figure><figure class="w-richtext-align-center w-richtext-figure-type-image"><div><img loading="lazy" alt="google cloud platform" src="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc4e6214cf8874ea22540d_1176dbd396b0bb3002f989667957413e73bcc21e-816x550.avif"/></div></figure><p>When you require a finer encapsulation of groups into for example a range of IPs per office or per department, the big groups can be easily divided into smaller subnetworks. The above IP range could then be carved out, for example using <strong>10.10.0.0/24</strong>, to provide a space of 256 unique IPs to your office. Google Cloud Platform is pretty nifty in that anything in the VPC is global, rather than regional, which can cut down on overhead and managing cross-region connectivity. VPCs also allow you to connect to pre-existing physical networks if you need that.</p><figure class="w-richtext-align-center w-richtext-figure-type-image"><div><img loading="lazy" alt="ip adress" src="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc4e6243eeed8a173aa5b7_df37e1f4d5c78c9cc5e4609e8506c6473e3fd732-1400x369.avif"/></div></figure><p>On top of the networks you will want to add security measures — In GCP these are called <strong>firewall rules</strong>. With them comes the possibility to granularly allow or deny ingress or egress (incoming or outgoing) data according to their source and/or target IP, IP range, and tagging.</p><h2>Compute Engine: Infrastructure-as-a-service</h2><p>The short way of summarizing Compute Engine is that it is veeeeeeeeery flexible. In the end, a GCE instance is very little less than a regular computer (minus of course the fact that the instance is virtual, maintained and sandboxed to some degree, etc etc), so you can pretty much do anything on it that you would on your own computer. Personally I have not done any high-performance jobs on one, but this is where you’d go for those concerns. Where I find Compute Engine to have its magic is when you need an actual computer and you have a wider scale of tasks to do. In that case a regular <strong>n1-standard-1</strong> or even the free <strong>f1-micro</strong> is going to get you a long way.</p><figure class="w-richtext-align-center w-richtext-figure-type-image"><div><img loading="lazy" alt="information" src="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc4e623e89339bc493ef5b_860d48d675a7962fc7ff8de43f02c73165aba83f-1000x929.avif"/></div></figure><h2>App Engine: Platform-as-a-service</h2><p>I am putting App Engine in the PAAS category, even though Google brands it as serverless. I do this because of historical reasons, as contenders like <a href="https://www.heroku.com/"><strong>Heroku</strong></a> and <a href="https://www.digitalocean.com/"><strong>DigitalOcean</strong></a> have been offering similar services since way back when PAAS was the “big” thing.</p><figure class="w-richtext-align-center w-richtext-figure-type-image"><div><img loading="lazy" alt="information" src="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc4e62118eba1845c5ee78_816721013a931f9a8f05c56e1d5a9d33d9dfd414-1000x622.avif"/></div></figure><p>App Engine is fully managed, and can auto-scale based on usage, and can do so according to your own policy if you want it to max out, for example, at a reasonable cost/performance point. It’s also very easy to do things like A/B testing, splitting, and monitoring with GAE. At the end of the day, you only have to specify an instance type and that would suffice for App Engine, who would bring you on an absolute honey moon but with less of the feeling of being completely broke at the end (as long as you DO specify a maximum for scaling).</p><p><strong>Standard vs Flex</strong><br/><a href="https://cloud.google.com/appengine/docs/the-appengine-environments"><strong>App Engine offers two environments with a range of differences.</strong></a> You would probably do good to stick with standard if you are using a supported runtime and expect bursty patterns of no/low and high volume traffic. It’s also likely cheaper in most cases. The Flex environment, however, offers greater degree of freedom in that you can mount Docker images with any language in it, and directly use Compute Engine resources.</p><p>Note that App Engine keeps multiple versions running at the same time. This is very good for flexibility and reliability <a href="https://stackoverflow.com/questions/47125661/pricing-of-google-app-engine-flexible-env-a-500-lesson"><strong>but can become very expensive if used carelessly</strong></a>.</p><h2>Making a choice</h2><p>You will need to consider a number of effects when choosing a model for your compute:</p><ul role="list"><li><strong>Pricing</strong>: Per use, per-hour/second; additional costs or free inclusions available; is traffic included?</li><li><strong>Persistence</strong>: Can it be preemptible?; need to attach disk/state storage?</li><li><strong>Security model</strong>: Operating System access; who manages security, like credentials, system updates etc.?</li><li><strong>How managed the solution should be</strong>: Fully managed or entirely in your hands?</li><li><strong>Requirements on networking and latency</strong>: Are cold starts acceptable or do you need an always-on machine? VPC and custom networking? Public or open, interactions through which protocols?</li></ul><figure class="w-richtext-align-center w-richtext-figure-type-image"><div><img loading="lazy" alt="data structure" src="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc4e622fabda024c2b554b_7b2a501e40dbe35cd64d9174a09993e7b9821ebf-3360x1218.avif"/></div></figure><p>Check the <a href="https://cloud.google.com/products/calculator/"><strong>pricing calculator</strong></a> to get details and cost estimates.</p><h2>Concepts</h2><p>The following concepts will be briefly touched upon.</p><ul role="list"><li>Instance &amp; tenancy</li><li>Machine type</li><li>Preemptibility</li><li>VPC (Virtual Private Cloud) and networking</li><li>Subnet/subnetwork</li><li>Reservations/reserved instances</li><li>VPN (Virtual Private Network)</li><li>Network service tiers (Premium or Standard)</li></ul><h3>Instance &amp; tenancy</h3><p>The individual machine entity. Instances are most usually multi-tenant, which means you would share hardware with other users.</p><h3>Machine type</h3><p>This describes the hardware and performance of the machine instance. They are grouped under certain categories, like <em>General purpose</em> and <em>Memory optimized</em>. It’s important for cost and performance to make a considered choice when deciding on a machine type.</p><h3>Preemptibility</h3><p>You can use preemptible instances which are much cheaper than normal ones. They may not always be available, will remain for max 24 hours, and can be shut down at any time. These are good for error-tolerant workloads.</p><h3>VPC (Virtual Private Cloud) and networking</h3><p>Networking within GCP is completely virtual, since what you do is actually to set up virtual configurations for incoming and outgoing traffic. The grand picture includes VPC networks as global resources, which you can subdivide into regional subnetworks (the ones you actually assign to your own resources), and then you can further control traffic with firewall rules. You can extend VPC even into on-premises systems.</p><h3>Subnet/subnetwork</h3><p>A smaller division of a bigger network (in Google Cloud, a VPC network). This is what you use to segment the network.</p><h3>Reservations/reserved instances</h3><p>A reserved instance is one you commit to, rather than using it on-demand. Reservations are cheaper but you are tied to them. This is a great choice when you have expect a highly predictable workload.</p><h3>VPN (Virtual Private Network)</h3><p>VPN is a way to securely connect networks, by encrypting traffic in one end and decrypting it in the other.</p><h3>Network service tiers</h3><p>Premium or Standard variants. Google offers to handle your traffic within its own infrastructure. This will mean it is faster and more secure than hopping into the public internet via transit ISPs. Some functionality requires the Premium tier.</p><h2>Workshop</h2><p>We are going to run a webserver in both the serverless/PAAS offering App Engine (using Standard and Flex modes) as well as in the IAAS offering Compute Engine. We will end with a brief exercise in configuring a basic setup with a public and a private instance.</p><h3>Step 1: Clone the node-simple-webserver repo</h3><p>We are going to use a small application, <a href="https://github.com/mikaelvesavuori/node-simple-webserver"><strong>node-simple-webserver</strong></a> for the duration of this workshop. Go ahead and clone it to your computer.</p><h3>Step 2: Install gcloud CLI tool or update it</h3><p>Install the <a href="https://cloud.google.com/sdk/docs/downloads-interactive"><strong>gcloud</strong></a> CLI tool so you can work with Google Cloud Platform from your own computer. If you have them installed, update them with <strong>gcloud components update</strong>.</p><h3>Step 3: Enable APIs</h3><p>Go to <a href="https://console.cloud.google.com/apis/library"><strong>APIs and services</strong></a> and enable APIs for services that may not already be active:</p><ul role="list"><li>App Engine Admin API</li><li>Compute Engine API</li></ul><h3>Step 4: App Engine (Flex)</h3><p>The Flex environment gives a fair bit of…well…flexibility, but also adds some work on your end. It is however very convenient in that it accepts using Docker images to specify how to bundle your application.</p><p><em>We will deploy the webserver to App Engine according to the Dockerfile present in the webserver folder. Don’t worry if you are new to Docker, we will learn more in the next workshop. For App Engine to work, you need to have a configuration/definition file.</em></p><p>Copy <strong>gae/flex/app.yaml</strong> into the root of the webserver folder. Now, run <strong>gcloud app deploy</strong> and answer “yes” to the question that you’re prompted with. Wait for a few minutes as the version gets deployed.</p><p>You should see the webserver working. Try to go to <strong>{URL}/hello</strong> to see another type of response.</p><h3>Step 5: App Engine (Standard)</h3><p><em>This time we will use the “easy”, regular way of using App Engine. We’ll take care of the app structure first.</em></p><p>Inside of the webserver source code, drag the two files in <strong>/src</strong> into the root. Copy <strong>gae/standard/app.yaml</strong> from this repo (Cloud Developers Basics) into the webserver’s root folder, replacing the old <strong>app.yaml</strong> file.</p><p>We also need to do a minor code change to make the change more visible. In <strong>app/index.js</strong>, update the <strong>reply.send()</strong> block to return the below markup.</p><p><br/>&lt;html&gt;&lt;head&gt;&lt;title&gt;Simple Node.js webserver&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;Simple Node.js webserver that has cats!&lt;/p&gt;&lt;img src=”https://flo.health/uploads/media/sulu-1230x-inset/06/1326-woman%20with%20cat%20acting%20funny%20around%20its%20pregnant%20owner.jpg?v=1-0&amp;inline=1&quot;&gt;&lt;/body&gt;&lt;/html&gt;<br/></p><p>After making the above changes, run <strong>gcloud app deploy</strong> from the root folder again. When it’s done, run <strong>gcloud app browse</strong> to launch the application in your default browser. Make sure it still works. As you visit your URL, you’ll see the most recent version (the one with the cat image).</p><h3>Step 6: App Engine Dashboard and settings</h3><p>In the <a href="https://console.cloud.google.com/appengine"><strong>Dashboard</strong></a> view you will find an overview of what’s going on with your application, such as errors, traffic and billing status.</p><h3>Step 7: Set up a firewall rule to block yourself</h3><p>Search Google (or whatever search engine you prefer) for “what is my ip” and you should get back your IP address; else follow relevant links to services that help you get it. Now go to <a href="https://console.cloud.google.com/appengine/firewall"><strong>Firewall rules</strong></a> and click <em>Create rule</em>. Let the rule have priority 100 (priorities are by convention in increments of a hundred, and lower values equal higher priority). the action should be “Deny” and “IP range” should be the IP you just got back. Click “Save” and try to visit the page again. It shouldn’t work! Remove the rule when you are happy knowing that it’s sooooo easy to lock yourself out.</p><h3>Step 8: Traffic routing</h3><p>We will attempt to split traffic to the new AND the previous version. In the <a href="https://console.cloud.google.com/appengine/versions"><strong>Versions</strong></a> view, click the boxes of the two most recent versions and the select <em>Split traffic</em>. Select splitting by <em>Random</em> and adjust traffic for a 50/50 split, then save. Once again, visit your URL, reloading a few times, and you should see that about half of all reloads use the new variant. Great for split testing or doing slow, controlled rollouts!</p><h3>Step 9: Shut down the GAE application</h3><p>Go to <a href="https://console.cloud.google.com/appengine/settings"><strong>Settings</strong></a>. Click <em>Disable application</em>; confirm the prompt. Shutting down will take a few seconds.</p><h3>Step 10: Creating a Google Compute Engine instance</h3><p>Go to <a href="https://console.cloud.google.com/compute/instances"><strong>Compute Engine</strong></a>. Click <em>Create</em>.</p><p>While it’s almost free to have a small VM up for the duration of this workshop, you should probably already learn that you get to run one (very small) instance for free for the duration of an entire month. That instance type is called <strong>f1-micro</strong>.</p><p>Give the instance a meaningful name, such as <strong>gce-demo-manual</strong>. You will find that you need to specify both region AND a zone, which you haven’t needed to do for other services in this course. Choose a nearby region, which for us means <strong>europe-west1</strong>. Any zone will do. Machine type should be the previously mentioned <strong>f1-micro</strong>.</p><p>Leave everything as it is, except <strong>Allow HTTP traffic</strong> and <strong>Allow HTTPS traffic</strong> which you should enable.</p><p>Make sure to pop out the <strong>Management, security, disks, networking, sole tenancy</strong> tab at the bottom before you move on. Take a gander at some of the options available. No need for changes at the moment, but get used to the wording and options for a few seconds. Click <em>Create</em>.</p><h3>Step 11: Create a GCE web server with a startup script</h3><p>Now try doing what you just did, but add a startup script that will run when the machine starts/reboots. The only difference, beyond giving it a new name, is that you need to open the <strong>Management, security, disks, networking, sole tenancy</strong> section, go to “Startup script” and copy-paste the contents of <strong>gce/startup-script-webserver.sh</strong>. With that only change, create it.</p><p>Look for your external URL when the machine has completed its boot-up. If it works, you should see a bit of HTML being rendered.</p><h3>Bonus: Accessing private VM from public VM</h3><p>Finally, we will do a dumb little demo where a private computer will serve a website. It will only be accessible to a public instance.</p><p>Begin by creating a VM called “instance-public”. Set “Firewall” to allow HTTP traffic. Open the <strong>Management, security, disks, networking, sole tenancy</strong> menu. Select the “Networking” tab. Click <em>Create</em>.</p><p>Now for a private machine. Create a new VM, name it “instance-private”. Use the same region you used for the public machine. Set it to a <strong>f1-micro</strong> machine type. <em>DO NOT SET</em> allow HTTP traffic. Under the <strong>Management, security, disks, networking, sole tenancy</strong> section, go to “Startup script” and copy-paste the contents of <strong>gce/startup-script-webserver.sh</strong>. Next, navigate to the <strong>Networking</strong> tab. Click the box under “Network interface”, then switch “External IP” to <strong>None</strong>. Create the machine.</p><p>With that finished, you should see both machines listed in the Compute Engine view. SSH into the public machine. Run <strong>curl instance-private</strong>. It should return the HTML successfully. Notice how you were able to successfully communicate with the private machine by its readable name, rather than using an IP.</p><p>This is just a very short preview of how you could apply some practical networking. I highly recommend that you look into the linked resources and do testing of your own, especially with multiple VPCs.</p><h2>Further studies</h2><p>Listed here are recommended additional resources and tasks to improve your understanding and build up your foundational experience.</p><h3>Explore more</h3><ul role="list"><li>While we did use firewall rules, which are a feature of VPC, we used them via App Engine in the session. Now, take the next step: Go to <a href="https://console.cloud.google.com/networking/networks/list"><strong>VPC Networks</strong></a> and create your own networks and subnets, then start placing machines in them. Try to see what happens if you have machines in different networks.</li><li>Set up a Compute Engine instance template and toy around with it. It’s a neat way of creating similar (though individual) replicas of a configuration. You can also string them together as a Managed Instance Group which adds several scaling benefits like load balancing, auto-healing, and auto-scaling. There is a script ready to use in <strong>gcloud</strong> or in the Cloud Shell, located at <strong>gce/instance-from-instance-template.sh</strong>. See below for more references and links regarding instance groups and templates.</li></ul><h2>References</h2><ul role="list"><li><a href="https://www.youtube.com/watch?v=3aNDcgoJ-_8"><strong>Introduction to Virtual Machines, Cloud Next ‘19</strong></a></li></ul><p><strong>App Engine</strong></p><ul role="list"><li><a href="https://cloud.google.com/appengine/"><strong>App Engine</strong></a></li><li><a href="https://cloud.google.com/appengine/docs/standard/nodejs/building-app/"><strong>Building a Node.js App on App Engine</strong></a></li><li><a href="https://cloud.google.com/appengine/docs/the-appengine-environments"><strong>Choosing an App Engine environment</strong></a></li></ul><p><strong>Compute Engine</strong></p><ul role="list"><li><a href="https://cloud.google.com/compute/"><strong>Compute Engine</strong></a></li><li><a href="https://medium.com/google-cloud/hosting-a-website-on-google-cloud-using-google-compute-engine-c6fe84d76f51"><strong>5 Steps to deploy Website using Google Compute Engine</strong></a></li><li><a href="https://medium.com/google-cloud/scaling-web-app-on-google-compute-engine-d21d6ce3e837"><strong>Scaling Web Apps on Google Compute Engine</strong></a></li><li><a href="https://cloud.google.com/compute/docs/machine-types"><strong>Machine types</strong></a></li><li><a href="https://cloud.google.com/compute/docs/instance-groups/"><strong>Instance groups</strong></a></li><li><a href="https://cloud.google.com/compute/docs/instance-templates/"><strong>Instance templates</strong></a></li><li><a href="https://cloud.google.com/compute/docs/instance-groups/creating-groups-of-managed-instances"><strong>Creating managed instance groups</strong></a></li></ul><p><strong>Networking</strong></p><ul role="list"><li><a href="http://cidr.xyz/"><strong>CIDR.xyz</strong></a></li><li><a href="https://cloud.google.com/network-tiers"><strong>Network Service Tiers</strong></a></li><li><a href="https://codelabs.developers.google.com/codelabs/gcp-infra-bastion-host/index.html"><strong>Google Codelabs: Bastion Host</strong></a></li><li><a href="https://codelabs.developers.google.com/codelabs/cloud-subnetworks/index.html?index=..%2F..index#0"><strong>Customize Network Topology with Subnetworks</strong></a></li><li><a href="https://codelabs.developers.google.com/codelabs/gcp-aws-custom-networks/index.html?#0"><strong>Secure Instances and Apps with Custom Networks</strong></a></li><li><a href="https://cloud.google.com/vpc/docs/vpc#subnetworks_and_firewall_rules"><strong>Virtual Private Cloud (VPC) network overview</strong></a></li></ul><h2>Qwiklabs</h2><p>Qwiklabs are short and highly concrete lab-style tutorials. You need a free account to view them. To fully use these you need a paid membership — it should be possible to follow along and work your way through them on the free account though since the paid membership usually only adds the sandbox environment.</p><ul role="list"><li><a href="https://www.qwiklabs.com/focuses/3340?catalog_rank=%7B%22rank%22%3A27%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&amp;parent=catalog&amp;search_id=3752336"><strong>Deploy Node.js Express Application in App Engine</strong></a></li><li><a href="https://www.qwiklabs.com/focuses/1138?parent=catalog"><strong>Running WordPress on App Engine Flexible Environment</strong></a></li><li><a href="https://www.qwiklabs.com/focuses/1230?parent=catalog"><strong>Multiple VPC Networks</strong></a></li></ul></div><div class="story-social"><div id="copy-link" class="social-link w-embed"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="19.5" stroke="currentColor" fill="none"></circle><path d="M14.343 18.5859C14.343 18.5859 12.9288 20.0001 12.9288 20.0001C10.9762 21.9527 10.9762 25.1185 12.9288 27.0712C14.8814 29.0238 18.0473 29.0238 19.9999 27.0712C19.9999 27.0712 21.4141 25.6569 21.4141 25.6569" stroke="#6C6E74" stroke-linecap="round" fill="none"></path><path d="M17.1715 22.8284L22.8283 17.1716" stroke="#6C6E74" stroke-linecap="round" fill="none"></path><path d="M25.657 21.4141C25.657 21.4141 27.0712 19.9999 27.0712 19.9999C29.0238 18.0473 29.0238 14.8815 27.0712 12.9288C25.1186 10.9762 21.9527 10.9762 20.0001 12.9288C20.0001 12.9288 18.5859 14.3431 18.5859 14.3431" stroke="#6C6E74" stroke-linecap="round" fill="none"></path></svg></div><div fs-socialshare-element="Twitter" class="social-link w-embed"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="41" height="40" viewBox="0 0 41 40" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="20.3335" cy="20" r="19.5" stroke="currentColor" fill="none"></circle><path fill-rule="evenodd" clip-rule="evenodd" d="M32.333 12.3086C31.4507 12.7006 30.5011 12.9646 29.5052 13.0838C30.5219 12.4742 31.3027 11.5095 31.6699 10.36C30.7195 10.9247 29.6644 11.3335 28.5437 11.5551C27.6453 10.5984 26.3646 10 24.9495 10C22.2305 10 20.0258 12.2047 20.0258 14.9237C20.0258 15.3092 20.0698 15.6852 20.1538 16.046C16.0613 15.8412 12.4335 13.8805 10.0049 10.9015C9.58092 11.6287 9.33854 12.4742 9.33854 13.3766C9.33854 15.0845 10.2065 16.5916 11.5288 17.4747C10.7208 17.4491 9.9625 17.2275 9.29774 16.8587V16.9203C9.29774 19.3066 10.996 21.296 13.2471 21.7496C12.8343 21.8616 12.3991 21.9224 11.9504 21.9224C11.6328 21.9224 11.324 21.8912 11.0232 21.8336C11.6496 23.7895 13.4687 25.2134 15.6229 25.2534C13.9382 26.5733 11.8152 27.3612 9.50813 27.3612C9.10975 27.3612 8.71778 27.338 8.33301 27.2916C10.5121 28.6884 13.0999 29.5043 15.8805 29.5043C24.9367 29.5043 29.8892 22.0016 29.8892 15.4956C29.8892 15.282 29.8852 15.0693 29.8748 14.8589C30.8379 14.1629 31.6731 13.2958 32.333 12.3086Z" fill="#6C6E74"></path></svg></div><div fs-socialshare-element="Linkedin" class="social-link w-embed"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="41" height="40" viewBox="0 0 41 40" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="20.3335" cy="20" r="19.5" stroke="currentColor" fill="none"></circle><path fill-rule="evenodd" clip-rule="evenodd" d="M15.1082 10.2839C15.1082 11.529 14.1602 12.5366 12.6776 12.5366C11.2529 12.5366 10.3048 11.529 10.3342 10.2839C10.3048 8.97828 11.2528 8 12.7061 8C14.1602 8 15.0798 8.97828 15.1082 10.2839ZM10.4534 28.8191V14.3162H14.9606V28.8181H10.4534V28.8191Z" fill="#6C6E74"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M18.5738 18.9446C18.5738 17.1357 18.5142 15.5935 18.4546 14.3182H22.3696L22.5777 16.305H22.6666C23.2598 15.3854 24.7424 13.9927 27.1446 13.9927C30.1097 13.9927 32.334 15.9502 32.334 20.219V28.821H27.8267V20.7838C27.8267 18.9144 27.1748 17.6399 25.5437 17.6399C24.2977 17.6399 23.5569 18.4999 23.2608 19.3297C23.1416 19.6268 23.0829 20.0412 23.0829 20.4574V28.821H18.5756V18.9446H18.5738Z" fill="#6C6E74"></path></svg></div><div fs-socialshare-element="Facebook" class="social-link w-embed"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="41" height="40" viewBox="0 0 41 40" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="20.3335" cy="20" r="19.5" stroke="currentColor" fill="none"></circle><path fill-rule="evenodd" clip-rule="evenodd" d="M25.6485 12.9578C25.0252 12.8331 24.1833 12.74 23.6539 12.74C22.2202 12.74 22.1271 13.3633 22.1271 14.3607V16.1361H25.7109L25.3985 19.8137H22.1271V31H17.6398V19.8137H15.3335V16.1361H17.6398V13.8613C17.6398 10.7453 19.1043 9 22.7812 9C24.0587 9 24.9937 9.187 26.2088 9.43633L25.6485 12.9578Z" fill="#6C6E74"></path></svg></div><div fs-socialshare-element="twitter-username" class="hide">wearehumblebee</div></div><div class="author_wrapper is-story"><img alt="Russell Clark" loading="lazy" src="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/6a708b3433e662d2b0f9fb08_DSCF7760-cropped.jpg" sizes="100vw" srcset="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/6a708b3433e662d2b0f9fb08_DSCF7760-cropped-p-500.jpg 500w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/6a708b3433e662d2b0f9fb08_DSCF7760-cropped-p-800.jpg 800w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/6a708b3433e662d2b0f9fb08_DSCF7760-cropped-p-1080.jpg 1080w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/6a708b3433e662d2b0f9fb08_DSCF7760-cropped.jpg 1600w" class="author-img-story"/><div class="author_info"><div class="author_date">Written by</div><div>Russell Clark</div><a href="mailto:russell.clark@humblebee.se" class="text-color-purple">russell.clark@humblebee.se</a></div></div></div></div></div><div class="container-large is-more"><h4>More stories</h4><div class="blog_component is-more w-dyn-list"><div role="list" class="blog_list w-dyn-items"><div role="listitem" class="teamitems w-dyn-item"><a data-w-id="40b06251-e986-6588-c687-0755c6aade2b" href="/stories/what-is-servitization-and-why-does-it-matter-to-you" class="work_image-wrapper w-inline-block"><img style="-webkit-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)" alt="What is servitization and why does it matter to you? " src="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/671faf2b66ead61889aea7bb_products_to_services.avif" loading="lazy" sizes="100vw" srcset="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/671faf2b66ead61889aea7bb_products_to_services-p-500.avif 500w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/671faf2b66ead61889aea7bb_products_to_services-p-800.avif 800w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/671faf2b66ead61889aea7bb_products_to_services-p-1080.avif 1080w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/671faf2b66ead61889aea7bb_products_to_services-p-1600.avif 1600w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/671faf2b66ead61889aea7bb_products_to_services.avif 2160w" class="work_image"/></a><div><div class="margin-bottom margin-xxsmall"><a href="/stories/what-is-servitization-and-why-does-it-matter-to-you" class="link-heading w-inline-block"><h4>What is servitization and why does it matter to you? </h4></a></div><div class="margin-bottom margin-xsmall"><div>Grappling with strategic level servitization or a hands-on manager in the middle of a project, this short servitization guide is for you.</div></div><div class="author_wrapper"><img alt="David Joelsson" loading="lazy" src="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65a7bfc448cf741c8a8d7833_d047b30944b0f09fc96501918786cb9a177b62e1-2000x2000.avif" sizes="100vw" srcset="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65a7bfc448cf741c8a8d7833_d047b30944b0f09fc96501918786cb9a177b62e1-2000x2000-p-500.avif 500w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65a7bfc448cf741c8a8d7833_d047b30944b0f09fc96501918786cb9a177b62e1-2000x2000.avif 1200w" class="author-img"/><div class="author_info"><div class="author_name">David Joelsson</div><div class="author_date">July 3, 2025</div></div></div></div></div><div role="listitem" class="teamitems w-dyn-item"><a data-w-id="40b06251-e986-6588-c687-0755c6aade2b" href="/stories/how-we-put-ai-to-real-use-in-our-daily-work" class="work_image-wrapper w-inline-block"><img style="-webkit-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)" alt="How we put AI to real use in our daily work" src="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/667d72abd2ee3406a18c30e3_Frame%2021.avif" loading="lazy" sizes="100vw" srcset="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/667d72abd2ee3406a18c30e3_Frame%2021-p-500.avif 500w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/667d72abd2ee3406a18c30e3_Frame%2021-p-800.avif 800w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/667d72abd2ee3406a18c30e3_Frame%2021.avif 2160w" class="work_image"/></a><div><div class="margin-bottom margin-xxsmall"><a href="/stories/how-we-put-ai-to-real-use-in-our-daily-work" class="link-heading w-inline-block"><h4>How we put AI to real use in our daily work</h4></a></div><div class="margin-bottom margin-xsmall"><div>It’s hard to navigate through the hyperbole of AI. It’s on the news, it’s in your LinkedIn feed, even Grandma has started asking you about it. What business problems can you solve with it? </div></div><div class="author_wrapper"><img alt="Andreas Litzell Ivarsson" loading="lazy" src="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/663a1310d5737ea726315ba2_AndreasLitzellIvarsson.avif" sizes="100vw" srcset="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/663a1310d5737ea726315ba2_AndreasLitzellIvarsson-p-500.avif 500w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/663a1310d5737ea726315ba2_AndreasLitzellIvarsson.avif 640w" class="author-img"/><div class="author_info"><div class="author_name">Andreas Litzell Ivarsson</div><div class="author_date">July 3, 2025</div></div></div></div></div><div role="listitem" class="teamitems w-dyn-item"><a data-w-id="40b06251-e986-6588-c687-0755c6aade2b" href="/stories/10-in-5-olga-dergachyova-data-scientist" class="work_image-wrapper w-inline-block"><img style="-webkit-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)" alt="10 in 5 Olga Dergachyova, Data Scientist" src="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc38deb356ac2fd37c916d_Thumb_1.avif" loading="lazy" sizes="100vw" srcset="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc38deb356ac2fd37c916d_Thumb_1-p-500.avif 500w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65fc38deb356ac2fd37c916d_Thumb_1.avif 1080w" class="work_image"/></a><div><div class="margin-bottom margin-xxsmall"><a href="/stories/10-in-5-olga-dergachyova-data-scientist" class="link-heading w-inline-block"><h4>10 in 5 Olga Dergachyova, Data Scientist</h4></a></div><div class="margin-bottom margin-xsmall"><div>Meet Olga, our Data Scientist at Humblebee with a background in Computer Science and a knack for problem-solving. In this interview, she discusses her journey into Data Science, recommends a great book for enthusiasts, and shares insights on the future of the field.</div></div><div class="author_wrapper"><img alt="Karina Sivolap" loading="lazy" src="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65a7bf53a8ab7dbd18e6afb7_c7bd2a8bc1c2d7cbde822c81d9c99cb84373747b-2000x2000.avif" sizes="100vw" srcset="https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65a7bf53a8ab7dbd18e6afb7_c7bd2a8bc1c2d7cbde822c81d9c99cb84373747b-2000x2000-p-500.avif 500w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65a7bf53a8ab7dbd18e6afb7_c7bd2a8bc1c2d7cbde822c81d9c99cb84373747b-2000x2000-p-800.avif 800w, https://cdn.prod.website-files.com/65a7b4090aa344a2bbaeadb9/65a7bf53a8ab7dbd18e6afb7_c7bd2a8bc1c2d7cbde822c81d9c99cb84373747b-2000x2000.avif 1200w" class="author-img"/><div class="author_info"><div class="author_name">Karina Sivolap</div><div class="author_date">April 21, 2025</div></div></div></div></div></div></div></div></div></section></div><section class="footer-component-black background-color-black"><div class="padding-global"><div class="container-large"><div class="footer-nav-black2026"><div class="nav-links-large-footer"><a href="/programs" class="nav-link-large-overlay w-inline-block"><div class="nav-link-largeoverlay-font">Programs</div></a><a href="/work" class="nav-link-large-overlay w-inline-block"><div class="nav-link-largeoverlay-font">Work</div></a><a href="/programs/coventures-program" class="nav-link-large-overlay w-inline-block"><div class="nav-link-largeoverlay-font">CoVentures</div></a></div><div class="nav-links-small-footer"><a href="#" class="nav-link-small-footer email-copy-btn w-inline-block"><div class="nav-links-small-footer email-copy-text">Say Hello</div></a><a href="/about-us" class="nav-link-small-footer w-inline-block"><div class="nav-links-small-footer">About</div></a><a href="/careers" class="nav-link-small-footer w-inline-block"><div class="nav-links-small-footer">Careers</div></a><a href="/hire-us" class="nav-link-small-footer w-inline-block"><div class="nav-links-small-footer">Hire Us</div></a></div><div class="nav-bottom-row"><div class="nav-bottom-left"><a href="/stories" class="nav-link-bottom w-inline-block"><div class="nav-bottom-text">Stories</div></a><a href="/responsible-ai" class="nav-link-bottom w-inline-block"><div class="nav-bottom-text">Responsible AI</div></a><div class="nav-link-bottom"><div class="nav-bottom-text w-embed"><a href="javascript:CookieScript.instance.show()" class="nav-bottom-text" style="text-decoration: none;">Cookie settings</a></div></div></div><div class="nav-bottom-right"><a href="https://www.linkedin.com/company/humblebee" class="nav-link-bottom w-inline-block"><div class="nav-bottom-text">LinkedIn</div></a><a href="https://www.instagram.com/wearehumblebee" class="nav-link-bottom w-inline-block"><div class="nav-bottom-text">Instagram</div></a><a href="https://www.facebook.com/wearehumblebee" class="nav-link-bottom w-inline-block"><div class="nav-bottom-text">Facebook</div></a></div></div></div></div></div></section></div><script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=65a6d736d0f0686554aa673a" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script><script src="https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/js/webflow.schunk.36b8fb49256177c8.js" type="text/javascript" integrity="sha384-4abIlA5/v7XaW1HMXKBgnUuhnjBYJ/Z9C1OSg4OhmVw9O3QeHJ/qJqFBERCDPv7G" crossorigin="anonymous"></script><script src="https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/js/webflow.schunk.a862ec9479ab9bfc.js" type="text/javascript" integrity="sha384-kQhUGkpLNlD3NmlSjIdLVlD2cXllpoWWGEx1alThdc5wmcPUD19zMQYijbJSXQuc" crossorigin="anonymous"></script><script src="https://cdn.prod.website-files.com/65a6d736d0f0686554aa673a/js/webflow.9d2e191f.1e35891e48f0e27b.js" type="text/javascript" integrity="sha384-RlD+ykANFQ7DY0dy8dTxgGJXHrfFf5vwVOsTRhgMN/M2T67cPd9fsN325D9qkUCJ" crossorigin="anonymous"></script><!-- ── External Libraries ── -->
+<script src="https://cdn.jsdelivr.net/gh/Wrapp-dev/public-scripts@main/dist/marquee.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+
+<script>
+(function() {
+
+  // ── Nav overlay toggle ──
+  function initNav() {
+    var navBtn = document.querySelector('.nav-menu-btn');
+    var navPill = document.querySelector('.nav-pill');
+    if (!navBtn || !navPill) return;
+    navBtn.addEventListener('click', function() {
+      navPill.classList.toggle('is-open');
+    });
+  }
+
+  // ── Email copy button ──
+  function initEmailCopy() {
+    document.querySelectorAll('.email-copy-btn').forEach(function(btn) {
+      var label = btn.querySelector('.email-copy-text');
+      if (!label) return;
+      var email = 'hello@humblebee.se';
+      var copied = false;
+      btn.addEventListener('mouseenter', function() {
+        if (!copied) {
+          label.style.opacity = '0';
+          setTimeout(function() { label.textContent = email; label.style.opacity = '1'; }, 150);
+        }
+      });
+      btn.addEventListener('mouseleave', function() {
+        if (!copied) {
+          label.style.opacity = '0';
+          setTimeout(function() { label.textContent = 'Say Hello'; label.style.opacity = '1'; }, 150);
+        }
+      });
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (copied) return;
+        navigator.clipboard.writeText(email).then(function() {
+          copied = true;
+          label.style.opacity = '0';
+          setTimeout(function() {
+           label.innerHTML = 'Email copied &nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+label.style.flexDirection = 'row';
+label.style.alignItems = 'center';
+btn.classList.add('is-copied'); label.style.opacity = '1';
+          }, 150);
+          setTimeout(function() {
+            copied = false;
+            btn.classList.remove('is-copied');
+            label.style.opacity = '0';
+            setTimeout(function() { label.textContent = 'Say Hello'; label.style.opacity = '1'; }, 150);
+          }, 3000);
+        });
+      });
+    });
+  }
+
+  // ── Scroll pills animation (home page only) ──
+ function initPills() {
+  if (!window.gsap || !window.ScrollTrigger) { setTimeout(initPills, 60); return; }
+  var root = document.getElementById("stw-root");
+  var stage = document.getElementById("stw-stage");
+  var title = document.getElementById("stw-title");
+  if (!root || !stage || !title) return;
+  var gsap = window.gsap;
+  var ST = window.ScrollTrigger;
+  gsap.registerPlugin(ST);
+  var pills = Array.from(root.querySelectorAll(".stw-pill"));
+  var data = [
+    { x: 0, y: 0, tilt: -5 }, { x: 0, y: 0, tilt: 4 }, { x: 0, y: 0, tilt: -3 },
+    { x: 0, y: 0, tilt: 5 }, { x: 0, y: 0, tilt: -4 }, { x: 0, y: 0, tilt: 3 },
+    { x: 0, y: 0, tilt: -6 }, { x: 0, y: 0, tilt: 4 }, { x: 0, y: 0, tilt: -5 },
+    { x: 0, y: 0, tilt: 3 },
+  ];
+
+  if (window.innerWidth < 768) {
+    ST.config({ ignoreMobileResize: true });
+    var items = pills.map(function(pill) {
+      var span = pill.querySelector('span');
+      return { text: span ? span.textContent.trim() : '', color: span ? span.style.color : 'rgb(255,128,0)' };
+    }).filter(function(item) { return item.text; });
+    pills.forEach(function(el) { el.style.display = 'none'; });
+    stage.style.cssText = 'position:relative;width:100%;height:auto;min-height:420px;overflow:hidden;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px 80px;';
+    title.style.position = 'relative';
+    title.style.left = 'auto';
+    title.style.top = 'auto';
+    title.style.transform = 'none';
+    title.style.whiteSpace = 'normal';
+    title.style.marginBottom = '40px';
+    title.style.textAlign = 'center';
+    gsap.set(title, { opacity: 0, y: 16 });
+    var stackWrap = document.createElement('div');
+    stackWrap.style.cssText = 'position:relative;width:min(280px,82vw);height:148px;flex-shrink:0;';
+    stage.appendChild(stackWrap);
+    var angles = [2, -4, 3.5, -2.5, 4, -1.5, 2.5, -3, 4.5, -2];
+    var cardEls = items.map(function(item) {
+      var card = document.createElement('div');
+      card.style.cssText = [
+        'position:absolute;top:0;left:0;width:100%;height:128px',
+        'background:#ffffff',
+        'border:2.5px solid ' + item.color,
+        'border-radius:20px',
+        'padding:0 22px',
+        'box-sizing:border-box',
+        'display:flex;align-items:center;justify-content:center',
+        'font-family:Inter,sans-serif',
+        'font-weight:700',
+        'font-size:clamp(13px,4vw,17px)',
+        'line-height:1.25',
+        'letter-spacing:-0.2px',
+        'color:' + item.color,
+        'text-align:center'
+      ].join(';');
+      card.textContent = item.text;
+      stackWrap.appendChild(card);
+      return card;
+    });
+    gsap.set(cardEls, { opacity: 0 });
+    cardEls.forEach(function(card, i) {
+      gsap.set(card, { y: i * 10, scale: 1 - i * 0.048, rotation: angles[i % angles.length], zIndex: cardEls.length - i });
+    });
+    var busy = false;
+    function advance() {
+      if (busy) return;
+      busy = true;
+      var top = cardEls[0];
+      gsap.to(top, {
+        x: '-145%', rotation: -22, opacity: 0, duration: 0.42, ease: 'power2.in',
+        onComplete: function() {
+          cardEls.push(cardEls.shift());
+          gsap.set(top, { x: 0, y: cardEls.length * 10, scale: 0.82, rotation: 3, opacity: 0, zIndex: 0 });
+          cardEls.forEach(function(card, i) {
+            gsap.to(card, {
+              y: i * 10, scale: 1 - i * 0.048, rotation: angles[i % angles.length],
+              opacity: i === 0 ? 1 : i === 1 ? 0.75 : i === 2 ? 0.45 : 0,
+              zIndex: cardEls.length - i, duration: 0.38, ease: 'power2.out'
+            });
+          });
+          gsap.delayedCall(0.4, function() { busy = false; });
+        }
+      });
+    }
+    var introTl = gsap.timeline({
+      scrollTrigger: { trigger: stage, start: 'top 70%' },
+      onComplete: function() { setInterval(advance, 2800); }
+    });
+    introTl.to(title, { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' });
+    introTl.to(cardEls[2], { opacity: 0.45, duration: 0.4, ease: 'power2.out' }, '-=0.1');
+    introTl.to(cardEls[1], { opacity: 0.75, duration: 0.4, ease: 'power2.out' }, '-=0.25');
+    introTl.to(cardEls[0], { opacity: 1, duration: 0.6, ease: 'back.out(1.3)' }, '-=0.25');
+    return;
+  }
+
+  pills.forEach(function(el, i) {
+    var d = data[i] || { x: 0, y: 0, tilt: 0 };
+    gsap.set(el, { xPercent: -50, yPercent: -50, x: d.x, y: d.y, rotation: d.tilt, opacity: 0, scale: 0.8 });
+  });
+  gsap.set(title, { opacity: 1 });
+  var tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: root, start: "top top",
+      end: "+=" + (300 + pills.length * 600),
+      scrub: 0.6, pin: stage, anticipatePin: 1
+    }
+  });
+  tl.to({}, { duration: 0.4 });
+  tl.to(title, { opacity: 0.18, scale: 0.92, duration: 1, ease: "power1.out" }, ">");
+  pills.forEach(function(el, i) {
+    var d = data[i];
+    tl.fromTo(el,
+      { opacity: 0, scale: 0.8, y: d.y + 70, rotation: d.tilt - 6 },
+      { opacity: 1, scale: 1, y: d.y, rotation: d.tilt, duration: 1.6, ease: "back.out(1.4)" },
+      i === 0 ? ">-0.4" : ">+0.4"
+    );
+    tl.to({}, { duration: 1.1 });
+  });
+  tl.to({}, { duration: 0.5 });
+  ST.refresh();
+}
+
+
+// ── Reveal text animation ──
+function initRevealText() {
+  var elements = document.querySelectorAll('.reveal-text');
+  if (!elements.length) return;
+  elements.forEach(function(el) {
+    el.innerHTML = el.innerText.split(' ').map(function(word) {
+      return '<span style="color:#aaa;">' + word + '</span>';
+    }).join(' ');
+    var spans = Array.from(el.querySelectorAll('span'));
+    var last = -1;
+    function tick() {
+      var rect = el.getBoundingClientRect();
+      var vh = window.innerHeight;
+      var progress = Math.min(1, Math.max(0,
+        (vh * 0.95 - rect.top) / (vh * 0.65 + el.offsetHeight)
+      ));
+      if (Math.abs(progress - last) > 0.005) {
+        last = progress;
+        spans.forEach(function(span, i) {
+          span.style.color = progress > (i / spans.length) ? '#161616' : '#aaa';
+        });
+      }
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  });
+}
+
+  // ── Init all on DOM ready ──
+  function initAll() {
+    initNav();
+    initEmailCopy();
+    initPills();
+    initRevealText();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initAll);
+  } else {
+    initAll();
+  }
+
+})();
+</script>
+<script>
+document.querySelector('#copy-link').addEventListener('click', function() {
+    var url = window.location.href;
+    
+    navigator.clipboard.writeText(url).then(function() {
+        console.log('URL copied to clipboard:', url);
+        // Show success message
+        alert('Link copied to clipboard!');
+    }).catch(function(err) {
+        console.error('Failed to copy URL:', err);
+        // Handle any errors that may occur during the copy operation
+    });
+});
+</script><script src="https://hubspotonwebflow.com/assets/js/form-124.js" type="text/javascript" integrity="sha384-bjyNIOqAKScdeQ3THsDZLGagNN56B4X2Auu9YZIGu+tA/PlggMk4jbWruG/P6zYj" crossorigin="anonymous"></script></body></html>

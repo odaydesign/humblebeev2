@@ -1,0 +1,336 @@
+[
+  {
+    "type": "custom:faq",
+    "component": "FaqSection",
+    "name": "FAQ",
+    "icon": "▤",
+    "blurb": "Accordion of questions — details/summary, one border per row.",
+    "unique": false,
+    "fields": [
+      {
+        "k": "heading",
+        "l": "Heading",
+        "t": "text"
+      },
+      {
+        "k": "items",
+        "l": "Questions",
+        "t": "list",
+        "item": "Question",
+        "fields": [
+          {
+            "k": "q",
+            "l": "Question",
+            "t": "text"
+          },
+          {
+            "k": "a",
+            "l": "Answer",
+            "t": "textarea"
+          }
+        ]
+      }
+    ],
+    "skeleton": {
+      "type": "custom:faq",
+      "heading": "Common questions",
+      "items": [
+        {
+          "q": "How fast can we start?",
+          "a": "Most engagements kick off within two weeks of the first conversation."
+        },
+        {
+          "q": "Do you work with early-stage teams?",
+          "a": "Yes — from venture-backed startups to global organisations, the model adapts to your stage."
+        }
+      ]
+    }
+  },
+  {
+    "type": "custom:testimonials",
+    "component": "TestimonialsSection",
+    "name": "Testimonials",
+    "icon": "❞",
+    "blurb": "Client quote cards in a responsive grid — quote, name and role.",
+    "unique": false,
+    "fields": [
+      {
+        "k": "heading",
+        "l": "Heading",
+        "t": "text"
+      },
+      {
+        "k": "items",
+        "l": "Testimonials",
+        "t": "list",
+        "item": "Testimonial",
+        "fields": [
+          {
+            "k": "quote",
+            "l": "Quote",
+            "t": "textarea"
+          },
+          {
+            "k": "name",
+            "l": "Name",
+            "t": "text"
+          },
+          {
+            "k": "role",
+            "l": "Role",
+            "t": "text"
+          }
+        ]
+      }
+    ],
+    "skeleton": {
+      "type": "custom:testimonials",
+      "heading": "What our clients say",
+      "items": [
+        {
+          "quote": "They rebuilt our platform in eight weeks and it has not skipped a beat since. The team felt like an extension of ours.",
+          "name": "Lena Andersson",
+          "role": "Head of Digital, Nordkap"
+        },
+        {
+          "quote": "Humblebee asked better questions than any agency we have worked with. The strategy work paid for itself within a quarter.",
+          "name": "Marcus Berg",
+          "role": "CEO, Fjord Retail"
+        },
+        {
+          "quote": "Clear thinking, sharp delivery, no drama. Exactly what we needed to move our organisation forward.",
+          "name": "Priya Raman",
+          "role": "Product Director, Volta"
+        }
+      ]
+    }
+  },
+  {
+    "type": "custom:people",
+    "component": "PeopleSection",
+    "name": "People",
+    "icon": "☺",
+    "blurb": "Portrait cards for the people behind an offer — name, role and bio.",
+    "unique": false,
+    "fields": [
+      {
+        "k": "heading",
+        "l": "Heading",
+        "t": "text"
+      },
+      {
+        "k": "people",
+        "l": "People",
+        "t": "list",
+        "item": "Person",
+        "fields": [
+          {
+            "k": "name",
+            "l": "Name",
+            "t": "text"
+          },
+          {
+            "k": "role",
+            "l": "Role",
+            "t": "text"
+          },
+          {
+            "k": "bio",
+            "l": "Bio",
+            "t": "textarea"
+          },
+          {
+            "k": "image",
+            "l": "Portrait",
+            "t": "image"
+          },
+          {
+            "k": "email",
+            "l": "Email",
+            "t": "email"
+          }
+        ]
+      }
+    ],
+    "skeleton": {
+      "type": "custom:people",
+      "heading": "The people behind it",
+      "people": [
+        {
+          "name": "Russell Clark",
+          "role": "CEO",
+          "bio": "Russell leads Humblebee and has overseen co-ventures and spin-outs from first idea to standalone company. He's more bullish than ever about building new businesses inside established ones.",
+          "image": {
+            "src": "/assets/images/russell-clark.webp",
+            "alt": "Russell Clark"
+          },
+          "email": "russell.clark@humblebee.se"
+        },
+        {
+          "name": "Martin Gaffron",
+          "role": "Business Designer",
+          "bio": "Martin is a business designer who helps organisations turn internal ideas, data and expertise into ventures with a clear market, customer and revenue model.",
+          "image": {
+            "src": "/assets/images/6d0b8675d463674ae1ecd068c3bc9603d5f2ee16-2000x2000.avif",
+            "alt": "Martin Gaffron"
+          },
+          "email": "martin.gaffron@humblebee.se"
+        }
+      ]
+    }
+  },
+  {
+    "type": "custom:morph-menu",
+    "component": "MorphMenuSection",
+    "name": "Morph menu",
+    "icon": "☰",
+    "blurb": "Frosted pill menu (mark · wordmark · hamburger) that grows its own box into a full panel. Place at the top of a page.",
+    "unique": true,
+    "fields": [
+      {
+        "k": "markImage",
+        "l": "Symbol (masked)",
+        "t": "image"
+      },
+      {
+        "k": "wordmarkImage",
+        "l": "Wordmark (masked)",
+        "t": "image"
+      },
+      {
+        "k": "links",
+        "l": "Menu links",
+        "t": "list",
+        "item": "Link",
+        "fields": [
+          {
+            "k": "label",
+            "l": "Label",
+            "t": "text"
+          },
+          {
+            "k": "href",
+            "l": "Link",
+            "t": "href"
+          }
+        ]
+      },
+      {
+        "k": "cases",
+        "l": "Featured cases",
+        "t": "list",
+        "item": "Case",
+        "fields": [
+          {
+            "k": "title",
+            "l": "Title",
+            "t": "text"
+          },
+          {
+            "k": "blurb",
+            "l": "Blurb",
+            "t": "text"
+          },
+          {
+            "k": "href",
+            "l": "Link",
+            "t": "href"
+          },
+          {
+            "k": "image",
+            "l": "Image",
+            "t": "image"
+          }
+        ]
+      },
+      {
+        "k": "studioLine",
+        "l": "Studio line",
+        "t": "text"
+      },
+      {
+        "k": "location",
+        "l": "Location",
+        "t": "text"
+      },
+      {
+        "k": "cta",
+        "l": "Closing CTA",
+        "t": "cta"
+      }
+    ],
+    "skeleton": {
+      "type": "custom:morph-menu",
+      "markImage": {
+        "src": "/uploads/symbol.png",
+        "alt": "Humblebee symbol"
+      },
+      "wordmarkImage": {
+        "src": "/uploads/wordmark.png",
+        "alt": "Humblebee"
+      },
+      "links": [
+        {
+          "label": "Programs",
+          "href": "/programs"
+        },
+        {
+          "label": "Work",
+          "href": "/work"
+        },
+        {
+          "label": "Services",
+          "href": "/services"
+        },
+        {
+          "label": "Stories",
+          "href": "/stories"
+        },
+        {
+          "label": "Responsible AI",
+          "href": "/responsible-ai"
+        },
+        {
+          "label": "Hire us",
+          "href": "/hire-us"
+        }
+      ],
+      "cases": [
+        {
+          "title": "Polestar",
+          "blurb": "In-car experience and configurator",
+          "href": "/work/polestar-hmi",
+          "image": {
+            "src": "/uploads/polestar-interior.png",
+            "alt": "Polestar interior"
+          }
+        },
+        {
+          "title": "Weld control",
+          "blurb": "Industrial UI for the shop floor",
+          "href": "/work/an-mvp-in-5-weeks-with-stena-metall",
+          "image": {
+            "src": "/uploads/welding-ui.png",
+            "alt": "Welding interface"
+          }
+        },
+        {
+          "title": "Justr.",
+          "blurb": "Heavy machinery, light interface",
+          "href": "/work/justr",
+          "image": {
+            "src": "/uploads/justr-app.png",
+            "alt": "Justr app"
+          }
+        }
+      ],
+      "studioLine": "AI-native design studio",
+      "location": "Gothenburg",
+      "cta": {
+        "label": "Start a project",
+        "href": "/contact",
+        "variant": "ghost"
+      }
+    }
+  }
+]
