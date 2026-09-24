@@ -230,47 +230,71 @@ export function Hero({ section }: { section: HeroSection }) {
     });
   }
 
-  function respond(userText: string) {
+  function stream(reply: string) {
+    if (reduce) {
+      patchLastAI(reply, false);
+      setResponding(false);
+      return;
+    }
+    sound.aiStart();
+    let i = 0;
+    let lastTickAt = 0;
+    const step = () => {
+      i += 1;
+      patchLastAI(reply.slice(0, i), i < reply.length);
+      const ch = reply[i - 1];
+      if (ch && ch !== " " && performance.now() - lastTickAt > 90) {
+        sound.aiType();
+        lastTickAt = performance.now();
+      }
+      if (i < reply.length) {
+        timer.current = window.setTimeout(step, 16 + Math.random() * 24);
+      } else {
+        setResponding(false);
+      }
+    };
+    step();
+  }
+
+  // Real reply via /api/site-chat; the keyword replyFor stays as the silent
+  // offline/failure fallback so visitors never see an error.
+  function respond(userText: string, history: { role: string; content: string }[]) {
     setResponding(true);
-    const reply = replyFor(userText);
     setMessages((prev) => [...prev, { id: nextId.current++, role: "ai", text: "", thinking: true }]);
 
-    const stream = () => {
-      if (reduce) {
-        patchLastAI(reply, false);
-        setResponding(false);
-        return;
-      }
-      sound.aiStart();
-      let i = 0;
-      let lastTickAt = 0;
-      const step = () => {
-        i += 1;
-        patchLastAI(reply.slice(0, i), i < reply.length);
-        const ch = reply[i - 1];
-        if (ch && ch !== " " && performance.now() - lastTickAt > 90) {
-          sound.aiType();
-          lastTickAt = performance.now();
-        }
-        if (i < reply.length) {
-          timer.current = window.setTimeout(step, 16 + Math.random() * 24);
-        } else {
-          setResponding(false);
-        }
-      };
-      step();
-    };
+    const replyP = (async () => {
+      try {
+        const r = await fetch("/api/site-chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ messages: history }),
+        });
+        const j = await r.json();
+        if (r.ok && typeof j.reply === "string" && j.reply) return j.reply as string;
+      } catch { /* fall through to keyword reply */ }
+      return replyFor(userText);
+    })();
 
-    timer.current = window.setTimeout(stream, reduce ? 0 : 620);
+    const minThink = new Promise<void>((res) => {
+      timer.current = window.setTimeout(res, reduce ? 0 : 620);
+    });
+
+    void Promise.all([replyP, minThink]).then(([reply]) => stream(reply));
   }
 
   function send() {
     const text = value.trim();
     if (!text || responding) return;
     sound.enter();
+    const history = [
+      ...messages
+        .filter((m) => !m.thinking && m.text)
+        .map((m) => ({ role: m.role === "ai" ? "assistant" : "user", content: m.text })),
+      { role: "user", content: text },
+    ];
     setMessages((prev) => [...prev, { id: nextId.current++, role: "user", text }]);
     setValue("");
-    respond(text);
+    respond(text, history);
   }
 
   function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {

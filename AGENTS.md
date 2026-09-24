@@ -260,11 +260,22 @@ page renders mount `SiteHeader`.
 `src/components/hero/` — ported from `Humblebeev3/docs/agent-components/03-hero`
 (Tailwind classes → `hb-hero-*` rules in `src/app/hero.css`, lucide icons →
 inline SVG, `--honey`/`--honey-deep` tokens → brand yellow/orange). Spec
-must-keeps: caret boot orbit → dot → line, keyword `replyFor` routing +
-simulated streaming, `data-section="hero"`/`data-page-tone`, mute toggle
-(`hb-typing-muted` in localStorage), reduced-motion path. `use-typing-sound.ts`
-= Web Audio pentatonic sfx, unlocked on first gesture. CMS surface:
-`heading` = the greeting h1 (`data-hb-f` editable), `subheading` = input
-aria-label; old `marqueeImages`/`clientLogos` stay optional on `HeroSection`
-for old docs but are not rendered.
+must-keeps: caret boot orbit → dot → line, `data-section="hero"`/
+`data-page-tone`, mute toggle (`hb-typing-muted` in localStorage),
+reduced-motion path. `use-typing-sound.ts` = Web Audio pentatonic sfx,
+unlocked on first gesture. CMS surface: `heading` = the greeting h1
+(`data-hb-f` editable), `subheading` = input aria-label; old
+`marqueeImages`/`clientLogos` stay optional on `HeroSection` for old docs
+but are not rendered.
+
+Replies are **real AI** — `respond()` POSTs the conversation to
+`/api/site-chat` (server-side OpenRouter, `OPENROUTER_MODEL`/DeepSeek
+Flash); the typewriter loop streams the returned text unchanged. On any
+failure the keyword `replyFor` runs silently — visitors never see an
+error. The harness lives in `agent/brand/site-knowledge.md` (persona,
+offer ladder, programs, voice, hard rules) + a live catalog injected from
+`collections.json`; both are assembled in `src/lib/site-chat.ts`, which
+also holds the per-IP rate limit (15/min, sliding window). Route caps:
+500 chars/msg, last 8 turns. Tune the chat's voice/scope by editing the
+knowledge file — no code changes needed.
 

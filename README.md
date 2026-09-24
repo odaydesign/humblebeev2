@@ -38,6 +38,7 @@ src/
     design-system/     Catalog + live embeds (/design-system/embed/<id>)
     api/cms/           pages · home · collections · assets · board · thumb · upload
     api/agent/         agent · action (confirmed ops) · chats · test-tools
+    api/site-chat/     public hero chat (rate-limited, OpenRouter)
   components/          Section components (Hero, Challenges, …) + SectionRenderer
     subpages/          Page templates (program / case / story / legacy / indexes)
     custom/            AI-generated components + generated index.ts
@@ -104,6 +105,25 @@ OpenRouter-backed (DeepSeek Flash by default) tool-use loop in `src/lib/agent.ts
   to `/uploads/` for use in image fields.
 - **Threads** — conversations persist; the last thread restores on load, and
   pages the agent touched auto-open in the canvas.
+
+## The hero chat (public)
+
+The homepage hero's ask-anything input is a real AI concierge — same
+interface as the spec (caret boot, thinking dots, typewriter streaming,
+typing sounds), but replies come from `/api/site-chat` → OpenRouter
+(server-side; the key never ships to the browser).
+
+- **Knowledge harness** — `agent/brand/site-knowledge.md`: positioning,
+  the seven programs, representative cases, voice rules, next-step rules,
+  hard limits (only recommend real offers, never quote prices, always end
+  with a next step). Plus a live catalog auto-injected from
+  `collections.json` so program/case names never go stale.
+- **Safety** — public by design, no auth needed: per-IP sliding-window
+  rate limit (15/min), 500-char messages, last-8-turns memory.
+- **Fallback** — if the API fails, the original keyword `replyFor`
+  answers silently; visitors never see an error.
+- **Tuning** — edit `site-knowledge.md` to change what it says; no code
+  changes needed.
 
 ## Design system (`/design-system`)
 
