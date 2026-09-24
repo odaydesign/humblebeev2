@@ -84,8 +84,6 @@ public/uploads/        Chat attachments (gitignored)
   pages on the canvas.
 - **Menu** — Workspace → Menu edits the morphing site header (`__menu` doc):
   nav links, featured cases, footer + CTA; live in-canvas preview.
-- **Menu** — Workspace → Menu edits the morphing site header (`__menu` doc):
-  nav links, featured cases, footer + CTA; live in-canvas preview.
 - **Agent tab** — chat that drives the whole CMS.
 
 ## The AI agent
