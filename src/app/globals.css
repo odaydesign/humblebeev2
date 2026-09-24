@@ -50,6 +50,7 @@
   --yellow: #fff500;
   --font-heading: "Inter", Arial, sans-serif;
   --font-body: "Maison Neue Book", "Maison Neue", sans-serif;
+  --font-humblebee: var(--font-body);
   --pad-global: 5vw;
   --pad-section: 120px;
 }

@@ -13,6 +13,7 @@ import path from "path";
 import { db, dbEnabled, type CmsRow } from "./db";
 import type { PageData, PageIndexEntry, Collections } from "./pages";
 import { getPage as fileGetPage, getPageIndex, getCollections as fileGetCollections } from "./pages";
+import { menuDoc, defaultMenu, type MenuConfig } from "./menu";
 
 const DRAFTS_DIR = path.join(process.cwd(), "src/lib/drafts");
 const PAGES_DIR = path.join(process.cwd(), "src/lib/pages");
@@ -66,15 +67,19 @@ function mergeDraftFlags(list: PageListItem[]): PageListItem[] {
 
 /** Editing view: draft if present, else published. */
 export async function getDoc(slug: string): Promise<PageData | null> {
+  let doc: PageData | null = null;
   if (dbEnabled) {
     try {
       const row = await db.get(slug);
-      if (row) return row.draft ?? row.published;
+      if (row) doc = row.draft ?? row.published;
     } catch {}
   }
-  if (fs.existsSync(draftFor(slug)))
-    return JSON.parse(fs.readFileSync(draftFor(slug), "utf8"));
-  return fileGetPage(slug);
+  if (!doc && fs.existsSync(draftFor(slug)))
+    doc = JSON.parse(fs.readFileSync(draftFor(slug), "utf8"));
+  if (!doc) doc = fileGetPage(slug);
+  // __menu has no file row — the editable doc materialises from defaults.
+  if (!doc && slug === "__menu") return menuDoc() as unknown as PageData;
+  return doc;
 }
 
 /** Public render view: published only. Never fetches the draft column so
@@ -97,6 +102,12 @@ export async function getCollectionsStore(): Promise<Collections> {
     } catch {}
   }
   return fileGetCollections();
+}
+
+/** Public render view for the site menu — published __menu doc, else defaults. */
+export async function getMenuConfig(): Promise<MenuConfig> {
+  const doc = await getPublished("__menu");
+  return (doc?.data as unknown as MenuConfig) ?? defaultMenu;
 }
 
 /* ── write ────────────────────────────────────────────────── */

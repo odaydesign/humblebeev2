@@ -241,3 +241,29 @@ rearrange. Positions persist in `src/lib/board-positions.json` via
 `/api/cms/board`. Thumbnails are puppeteer screenshots cached to
 `public/thumbs/` by `/api/cms/thumb` (lazy-generates on first view,
 regenerates on publish; needs local Chrome, CHROME_PATH overrides).
+
+### Site menu (`__menu` doc)
+
+The site header is `src/components/menu/site-header.tsx` (morphing frosted
+pill, ported from `Humblebeev3/docs/agent-components/01-menu` — class names
+`hb-menu*`/`hb-scrim`/`data-hive-target`, `@property --menu-w/h` morph and
+glass `data-tone` sampling are spec-mandated; `menu.css` imported in
+layout). Config = `MenuConfig` in `src/lib/menu.ts`, stored as the `__menu`
+doc's `data` (links, cases, footnote, city, cta). `getMenuConfig()` in
+store.ts = published-or-default. Studio: Workspace → Menu pin edits it like
+a structured template; canvas shows the menu over the real homepage, and
+nav/case/CTA labels are `data-hb-f` inline-editable. `SiteNav` is retired —
+page renders mount `SiteHeader`.
+
+### Site menu (`__menu` doc)
+
+The site header is `src/components/menu/site-header.tsx` (morphing frosted
+pill, ported from `Humblebeev3/docs/agent-components/01-menu` — class names
+`hb-menu*`/`hb-scrim`/`data-hive-target`, `@property --menu-w/h` morph and
+glass `data-tone` sampling are spec-mandated; `menu.css` imported in
+layout). Config = `MenuConfig` in `src/lib/menu.ts`, stored as the `__menu`
+doc's `data` (links, cases, footnote, city, cta). `getMenuConfig()` in
+store.ts = published-or-default. Studio: Workspace → Menu pin edits it like
+a structured template; canvas shows the menu over the real homepage, and
+nav/case/CTA labels are `data-hb-f` inline-editable. `SiteNav` is retired —
+page renders mount `SiteHeader`.

@@ -341,7 +341,7 @@ export function StudioApp() {
           </optgroup>
           <option value="__new">＋ New page</option>
         </select>
-        {doc && !isColl && doc.slug !== "__home" && (
+        {doc && !isColl && doc.slug !== "__home" && doc.slug !== "__menu" && (
           <>
             <input
               className="st-in st-slug"
@@ -379,7 +379,7 @@ export function StudioApp() {
           </div>
         )}
         <div className="st-top-right">
-          {doc && !isColl && doc.slug && doc.slug !== "__home" && !isNew && (
+          {doc && !isColl && doc.slug && doc.slug !== "__home" && doc.slug !== "__menu" && !isNew && (
             <a className="st-btn st-ghost" href={`/${doc.slug}`} target="_blank">
               View ↗
             </a>
@@ -501,6 +501,13 @@ export function StudioApp() {
                 >
                   <span>Collections</span>
                   <code>shared</code>
+                </button>
+                <button
+                  className={`st-page-row special ${doc?.slug === "__menu" ? "on" : ""}`}
+                  onClick={() => openDoc("__menu")}
+                >
+                  <span>Menu</span>
+                  <code>nav</code>
                 </button>
               </div>
               {filter ? (

@@ -101,6 +101,23 @@ export const TEMPLATE_SCHEMAS: Record<string, { name: string; fields: Field[] }>
       TA("css", "Page CSS"),
     ],
   },
+  /** Site menu — the __menu doc. Edited like any structured template. */
+  menu: {
+    name: "Menu",
+    fields: [
+      LIST("links", "Nav links", "link", [T("label", "Label"), HREF("href", "Link")]),
+      LIST("cases", "Featured cases", "case", [
+        IMG("img", "Image"),
+        T("title", "Title"),
+        T("blurb", "Blurb"),
+        HREF("href", "Link"),
+      ]),
+      T("footnote", "Footnote"),
+      T("city", "City"),
+      T("ctaLabel", "CTA label"),
+      HREF("ctaHref", "CTA link"),
+    ],
+  },
 };
 
 /** The shared collections doc — edited as one pseudo-page. */

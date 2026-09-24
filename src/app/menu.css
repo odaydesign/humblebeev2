@@ -1,0 +1,521 @@
+/* Morph menu standalone */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+:root {
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --font-humblebee: ui-sans-serif, system-ui, sans-serif;
+}
+/* ── Morphing menu ────────────────────────────────────────────────────
+   A pill that grows into a panel. The box animates its own width and
+   height; the contents sit in normal flow and are simply clipped by the
+   travelling edges, which is what makes it read as one object changing
+   shape rather than a card fading in over a button.
+
+   The easing was sampled frame-by-frame from the reference recording: a
+   fast rise to ~92% within 125ms, a 2.4% overshoot peaking near 255ms,
+   then a slow settle. linear() replays those samples directly. Opening
+   and closing share the curve. */
+/* Length custom props so open↔close width/height actually interpolate
+   (including the bounce overshoot) instead of snapping. */
+@property --menu-w {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 330px;
+}
+@property --menu-h {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 60px;
+}
+
+:root {
+  /* Committed from Menu lab HUD — soft overshoot, shared open/close. */
+  --menu-dur-open: 700ms;
+  --menu-dur-close: 700ms;
+  --menu-ease-open: linear(
+    0,
+    0.0787 3.7%,
+    0.2279 7.41%,
+    0.3967 11.11%,
+    0.5181 14.81%,
+    0.6605 18.52%,
+    0.7752 22.22%,
+    0.8619 25.93%,
+    0.9237 29.63%,
+    0.9651 33.33%,
+    0.991 37.04%,
+    1.0029 40.74%,
+    1.0116 44.44%,
+    1.0148 48.15%,
+    1.0148 51.85%,
+    1.013 55.56%,
+    1.0106 59.26%,
+    1.0087 62.96%,
+    1.0063 66.67%,
+    1.0043 70.37%,
+    1.0028 74.07%,
+    1.0017 77.78%,
+    1.0009 81.48%,
+    1.0003 85.19%,
+    1.0001 88.89%,
+    0.9999 92.59%,
+    0.9998 96.3%,
+    1
+  );
+  --menu-ease-close: var(--menu-ease-open);
+  /* Active pair (closed state uses close; open state swaps below). */
+  --menu-dur: var(--menu-dur-close);
+  --menu-ease: var(--menu-ease-close);
+
+  /* Glass — committed with the same lab pass. */
+  --menu-blur: 24px;
+  --menu-saturate: 1.35;
+  --menu-glass-alpha-light: 0.6;
+  --menu-glass-alpha-dark: 0.5;
+  --menu-open-alpha: 1;
+  --menu-stroke-alpha: 0.1;
+  --menu-radius: 12px;
+
+  /* Specs sampled from sunday.ai: closed 330×60, open ~876×392,
+     radius 12px, blur 40px. A bit taller for six nav links. */
+  --menu-bar: 60px;
+  --menu-pad: 20px;
+  --menu-pad-open: 24px;
+  --menu-top: 24px;
+  --menu-w: 330px;
+  --menu-h: 60px;
+  --menu-w-open: 1100px;
+  --menu-h-open: 520px;
+}
+
+/* Brand symbol — black asset masked so currentColor paints it. */
+.hb-mark {
+  display: inline-block;
+  flex: none;
+  aspect-ratio: 66 / 80;
+  width: 1.15em;
+  height: auto;
+  background: currentColor;
+  -webkit-mask: url("/brand/symbol.png") center / contain no-repeat;
+  mask: url("/brand/symbol.png") center / contain no-repeat;
+}
+
+.hb-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: oklch(0 0 0 / 0.45);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--menu-dur) var(--menu-ease),
+    visibility 0s linear var(--menu-dur);
+}
+
+.hb-scrim[data-open="true"] {
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity var(--menu-dur) var(--menu-ease),
+    visibility 0s;
+}
+
+.hb-menu-wrap {
+  position: fixed;
+  top: var(--menu-top);
+  left: 0;
+  right: 0;
+  z-index: 70;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+/* Keeps pages from jumping now that the header no longer sits in flow. */
+.hb-menu-spacer {
+  height: calc(var(--menu-top) * 2 + var(--menu-bar));
+  flex: none;
+}
+
+.hb-menu {
+  /* Closing uses close timing (this rule is active as soon as open ends). */
+  --menu-dur: var(--menu-dur-close);
+  --menu-ease: var(--menu-ease-close);
+  --menu-fg: oklch(0.13 0 0);
+  --menu-fg-soft: oklch(0.556 0 0);
+  --menu-bg: oklch(1 0 0 / var(--menu-glass-alpha-light));
+  --menu-stroke: oklch(0.13 0 0 / var(--menu-stroke-alpha));
+  --menu-shadow: none;
+  --menu-media-bg: oklch(0.9 0 0 / 0.55);
+  --menu-chip-bg: oklch(0.13 0 0 / 0.72);
+  --menu-chip-fg: oklch(1 0 0);
+
+  pointer-events: auto;
+  width: var(--menu-w);
+  height: var(--menu-h);
+  overflow: hidden;
+  border-radius: var(--menu-radius);
+  color: var(--menu-fg);
+  background: var(--menu-bg);
+  border: 1px solid var(--menu-stroke);
+  box-shadow: var(--menu-shadow);
+  -webkit-backdrop-filter: blur(var(--menu-blur)) saturate(var(--menu-saturate));
+  backdrop-filter: blur(var(--menu-blur)) saturate(var(--menu-saturate));
+  transition:
+    --menu-w var(--menu-dur) var(--menu-ease),
+    --menu-h var(--menu-dur) var(--menu-ease),
+    width var(--menu-dur) var(--menu-ease),
+    height var(--menu-dur) var(--menu-ease),
+    background-color 0.45s var(--ease-out-soft),
+    color 0.45s var(--ease-out-soft),
+    border-color 0.45s var(--ease-out-soft),
+    border-radius var(--menu-dur) var(--menu-ease);
+}
+
+/* Dark backdrop → darker glass, light ink (matches Sunday on photo heroes). */
+.hb-menu[data-tone="dark"] {
+  --menu-fg: oklch(0.98 0 0);
+  --menu-fg-soft: oklch(0.98 0 0 / 0.55);
+  --menu-bg: rgba(26, 26, 26, var(--menu-glass-alpha-dark));
+  --menu-stroke: rgba(255, 255, 255, calc(var(--menu-stroke-alpha) * 2));
+  --menu-media-bg: oklch(1 0 0 / 0.08);
+  --menu-chip-bg: oklch(1 0 0 / 0.82);
+  --menu-chip-fg: oklch(0.13 0 0);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .hb-menu {
+    --menu-bg: oklch(0.96 0 0 / 0.94);
+  }
+  .hb-menu[data-tone="dark"] {
+    --menu-bg: oklch(0.16 0 0 / 0.94);
+  }
+}
+
+.hb-menu[data-open="true"] {
+  /* Opening picks up open timing while data-open is set. */
+  --menu-dur: var(--menu-dur-open);
+  --menu-ease: var(--menu-ease-open);
+  --menu-w: var(--menu-w-open);
+  --menu-h: var(--menu-h-open);
+  --menu-pad: var(--menu-pad-open);
+  --menu-bg: oklch(1 0 0 / var(--menu-open-alpha));
+  --menu-fg: oklch(0.13 0 0);
+  --menu-fg-soft: oklch(0.556 0 0);
+  --menu-stroke: oklch(0.13 0 0 / var(--menu-stroke-alpha));
+}
+
+/* Lab: keep frost on the open panel when :root[data-menu-frost-open] is set. */
+:root[data-menu-frost-open="true"] .hb-menu[data-open="true"] {
+  -webkit-backdrop-filter: blur(var(--menu-blur)) saturate(var(--menu-saturate));
+  backdrop-filter: blur(var(--menu-blur)) saturate(var(--menu-saturate));
+}
+
+@media (max-width: 924px) and (min-width: 46.01rem) {
+  :root {
+    --menu-w-open: calc(100vw - 48px);
+  }
+
+  .hb-menu[data-open="true"] {
+    --menu-w: calc(100vw - 48px);
+  }
+}
+
+.hb-menu[data-tone="dark"][data-open="true"] {
+  --menu-bg: oklch(1 0 0 / var(--menu-open-alpha));
+  --menu-fg: oklch(0.13 0 0);
+  --menu-fg-soft: oklch(0.556 0 0);
+  --menu-stroke: oklch(0.13 0 0 / var(--menu-stroke-alpha));
+}
+
+/* Equal side columns keep the wordmark optically centred in both states. */
+.hb-menu-bar {
+  height: var(--menu-bar);
+  flex: none;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding-inline: var(--menu-pad);
+  color: var(--menu-fg);
+}
+
+.hb-menu-mark {
+  display: flex;
+  justify-self: start;
+  color: var(--menu-fg);
+}
+
+.hb-menu-symbol-wrap {
+  display: flex;
+  transform-origin: 50% 70%;
+  will-change: transform;
+}
+
+.hb-menu-symbol {
+  width: 15px;
+  height: auto;
+}
+
+.hb-menu-word {
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  color: var(--menu-fg);
+}
+
+/* Official wordmark asset — masked so currentColor follows glass tone. */
+.hb-menu-wordmark {
+  display: block;
+  width: 132px;
+  height: 16px;
+  background: currentColor;
+  -webkit-mask: url("/brand/wordmark.png") center / contain no-repeat;
+  mask: url("/brand/wordmark.png") center / contain no-repeat;
+}
+
+.hb-menu-toggle {
+  display: grid;
+  place-items: center;
+  justify-self: end;
+  width: 22px;
+  height: 22px;
+  margin-right: 2px;
+  cursor: pointer;
+  background: none;
+  color: var(--menu-fg);
+}
+
+.hb-menu-bars {
+  position: relative;
+  display: block;
+  width: 18px;
+  height: 12px;
+}
+
+/* Two rules that rotate into a cross. Mid-rotation they read as a chevron,
+   exactly as in the reference. */
+.hb-menu-bars i {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 18px;
+  height: 1.5px;
+  border-radius: 1px;
+  background: currentColor;
+  transition: transform var(--menu-dur) var(--menu-ease);
+}
+
+.hb-menu-bars i:first-child {
+  transform: translateY(-3.5px);
+}
+
+.hb-menu-bars i:last-child {
+  transform: translateY(3.5px);
+}
+
+.hb-menu[data-open="true"] .hb-menu-bars i:first-child {
+  transform: translateY(0) rotate(45deg);
+}
+
+.hb-menu[data-open="true"] .hb-menu-bars i:last-child {
+  transform: translateY(0) rotate(-45deg);
+}
+
+/* Pinned to the open height in both states, so the contents never reflow
+   vertically — the panel edge just travels over them. */
+.hb-menu-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2rem;
+  height: calc(var(--menu-h-open) - var(--menu-bar));
+  padding: var(--menu-pad-open);
+  opacity: 0;
+  transition: opacity var(--menu-dur) var(--menu-ease);
+}
+
+.hb-menu[data-open="true"] .hb-menu-content {
+  opacity: 1;
+}
+
+.hb-menu-body {
+  display: grid;
+  grid-template-columns: minmax(11rem, 0.78fr) minmax(0, 1.55fr);
+  align-items: start;
+  gap: 1.75rem 2rem;
+  min-height: 0;
+}
+
+.hb-menu-nav {
+  display: grid;
+  justify-items: start;
+  align-content: start;
+}
+
+.hb-menu-nav a {
+  font-family: var(--font-humblebee), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 2.5rem; /* 40px rhythm like Sunday */
+  white-space: nowrap;
+  color: var(--menu-fg);
+  opacity: 1;
+  transition: opacity 0.35s var(--ease-out-soft);
+}
+
+.hb-menu-nav a:hover,
+.hb-menu-nav a[aria-current="page"] {
+  opacity: 0.4;
+}
+
+/* Three featured cases — square thumbs + caption under each. */
+.hb-menu-cases {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem 1rem;
+  min-width: 0;
+  align-self: stretch;
+}
+
+.hb-menu-case {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  min-width: 0;
+  color: var(--menu-fg);
+  text-decoration: none;
+}
+
+.hb-menu-case-media {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--menu-media-bg);
+}
+
+.hb-menu-case-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s var(--ease-out-soft);
+}
+
+.hb-menu-case:hover .hb-menu-case-media img {
+  transform: scale(1.04);
+}
+
+.hb-menu-case-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.hb-menu-case-title {
+  font-family: var(--font-humblebee), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.hb-menu-case-blurb {
+  font-family: var(--font-humblebee), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--menu-fg-soft);
+}
+
+/* Narrow screens: the panel goes near-full-width and drops the cases so
+   the links never have to compete for room. */
+@media (max-width: 46rem) {
+  :root {
+    --menu-pad: 18px;
+    --menu-pad-open: 20px;
+    --menu-w-open: calc(100vw - 32px);
+    --menu-h-open: 420px;
+  }
+
+  .hb-menu[data-open="true"] {
+    --menu-w: calc(100vw - 32px);
+    --menu-h: 420px;
+  }
+
+  .hb-menu-body {
+    grid-template-columns: 1fr;
+  }
+
+  .hb-menu-cases {
+    display: none;
+  }
+
+  .hb-menu-foot {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .hb-menu-nav a {
+    font-size: 1.35rem;
+    line-height: 2.25rem;
+  }
+}
+
+.hb-menu-foot {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 1.5rem;
+  font-family: var(--font-humblebee), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.875rem;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  color: var(--menu-fg-soft);
+}
+
+.hb-menu-foot-end {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.hb-menu-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--menu-fg-soft);
+}
+
+.hb-menu-cta i {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: #f7e731;
+  transition: background-color 0.45s var(--ease-out-soft);
+}
+
+@media (max-width: 22rem) {
+  :root {
+    --menu-w: calc(100vw - 24px);
+  }
+
+  .hb-menu {
+    --menu-w: calc(100vw - 24px);
+  }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .hb-scrim,
+  .hb-menu,
+  .hb-menu-content,
+  .hb-menu-bars i {
+    transition-duration: 0.01ms !important;
+  }
+}

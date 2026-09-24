@@ -1,6 +1,6 @@
 import { footerContent, homeSections, navContent, type Section } from "@/lib/content";
-import { getPublished } from "@/lib/store";
-import { SiteNav } from "@/components/SiteNav";
+import { getPublished, getMenuConfig } from "@/lib/store";
+import { SiteHeader } from "@/components/menu/site-header";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SectionRenderer } from "@/components/SectionRenderer";
 
@@ -14,10 +14,16 @@ async function sections(): Promise<Section[]> {
 }
 
 export default async function HomePage() {
-  const secs = await sections();
+  const [secs, menu] = await Promise.all([sections(), getMenuConfig()]);
   return (
     <>
-      <SiteNav content={navContent} />
+      <SiteHeader
+        links={menu.links}
+        cases={menu.cases}
+        footnote={menu.footnote}
+        city={menu.city}
+        cta={{ label: menu.ctaLabel, href: menu.ctaHref }}
+      />
       <main>
         {secs.map((section, i) => (
           <SectionRenderer key={i} section={section} />

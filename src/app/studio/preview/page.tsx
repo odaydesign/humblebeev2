@@ -5,7 +5,8 @@ import type { Section } from "@/lib/content";
 import { navContent, footerContent } from "@/lib/content";
 import type { PageData, Collections } from "@/lib/pages";
 import { getPath } from "@/lib/section-schemas";
-import { SiteNav } from "@/components/SiteNav";
+import { SiteHeader } from "@/components/menu/site-header";
+import { defaultMenu, type MenuConfig } from "@/lib/menu";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SectionRenderer } from "@/components/SectionRenderer";
 import { ProgramPage } from "@/components/subpages/ProgramPage";
@@ -44,6 +45,8 @@ interface Overlay {
 export default function StudioPreview() {
   const [doc, setDoc] = useState<Doc | null>(null);
   const [collections, setCollections] = useState<Collections | null>(null);
+  const [menu, setMenu] = useState<MenuConfig>(defaultMenu);
+  const [homeSecs, setHomeSecs] = useState<Section[] | null>(null);
   const [sel, setSel] = useState(-1);
   const [dropIdx, setDropIdx] = useState<number | null>(null);
   const [overlay, setOverlay] = useState<Overlay | null>(null);
@@ -69,6 +72,15 @@ export default function StudioPreview() {
     fetch("/api/cms/collections?published=1")
       .then((r) => r.json())
       .then((r) => setCollections(r.data))
+      .catch(() => {});
+    // published menu config for chrome; home sections as __menu backdrop
+    fetch("/api/cms/pages?slug=__menu&published=1")
+      .then((r) => r.json())
+      .then((r) => r?.data && setMenu(r.data))
+      .catch(() => {});
+    fetch("/api/cms/pages?slug=__home&published=1")
+      .then((r) => r.json())
+      .then((r) => r?.data?.sections && setHomeSecs(r.data.sections))
       .catch(() => {});
     return () => window.removeEventListener("message", onMsg);
   }, []);
@@ -209,8 +221,10 @@ export default function StudioPreview() {
   };
 
   const isFreeform = doc?.template === "freeform" || doc?.slug === "__home";
+  const isMenu = doc?.slug === "__menu";
   const sections: Section[] = isFreeform ? ((doc?.data as any)?.sections ?? []) : [];
   const colls = doc?.collectionsEdit ?? collections;
+  const menuCfg: MenuConfig = isMenu ? { ...defaultMenu, ...(doc?.data ?? {}) } : menu;
 
   let body: React.ReactNode = null;
   if (doc) {
@@ -245,6 +259,10 @@ export default function StudioPreview() {
           </div>
         );
         break;
+      case "menu":
+        // real homepage as backdrop so the glass tone + panel show in context
+        body = (homeSecs ?? []).map((s, i) => <SectionRenderer key={i} section={s} />);
+        break;
       default:
         body = null;
     }
@@ -266,7 +284,13 @@ export default function StudioPreview() {
         if (type) post({ hbInsert: { type, index: indexAtY(e.clientY) } });
       }}
     >
-      <SiteNav content={navContent} />
+      <SiteHeader
+        links={menuCfg.links}
+        cases={menuCfg.cases}
+        footnote={menuCfg.footnote}
+        city={menuCfg.city}
+        cta={{ label: menuCfg.ctaLabel, href: menuCfg.ctaHref }}
+      />
       <main ref={wrap} className="hb-canvas">
         {isFreeform &&
           doc &&

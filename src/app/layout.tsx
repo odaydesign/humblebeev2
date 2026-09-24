@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { siteMeta } from "@/lib/content";
 import "./globals.css";
 import "./legacy.css";
+import "./menu.css";
 import "./custom.css";
 
 export const metadata: Metadata = {

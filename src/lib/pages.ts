@@ -15,7 +15,8 @@ export interface PageIndexEntry {
     | 'workIndex'
     | 'storiesIndex'
     | 'freeform'
-    | 'collections';
+    | 'collections'
+    | 'menu';
 }
 
 export interface FreeformData {

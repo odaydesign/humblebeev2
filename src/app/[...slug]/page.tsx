@@ -7,8 +7,8 @@ import {
   type ProgramData,
   type StoryData,
 } from "@/lib/pages";
-import { getPublished, getCollectionsStore, listPages } from "@/lib/store";
-import { SiteNav } from "@/components/SiteNav";
+import { getPublished, getCollectionsStore, getMenuConfig, listPages } from "@/lib/store";
+import { SiteHeader } from "@/components/menu/site-header";
 import { SiteFooter } from "@/components/SiteFooter";
 import { LegacyPage } from "@/components/subpages/LegacyPage";
 import { ProgramPage } from "@/components/subpages/ProgramPage";
@@ -90,9 +90,16 @@ export default async function CatchAllPage({
       content = <LegacyPage html={page.html || ""} css={page.css} />;
   }
 
+  const menu = await getMenuConfig();
   return (
     <>
-      <SiteNav content={navContent} />
+      <SiteHeader
+        links={menu.links}
+        cases={menu.cases}
+        footnote={menu.footnote}
+        city={menu.city}
+        cta={{ label: menu.ctaLabel, href: menu.ctaHref }}
+      />
       <main>{content}</main>
       <SiteFooter content={footerContent} nav={navContent} />
     </>
