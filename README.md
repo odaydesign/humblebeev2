@@ -118,6 +118,10 @@ typing sounds), but replies come from `/api/site-chat` → OpenRouter
   hard limits (only recommend real offers, never quote prices, always end
   with a next step). Plus a live catalog auto-injected from
   `collections.json` so program/case names never go stale.
+- **Rich answers** — replies end with a markdown link which renders as a
+  clickable card (Program/Case/Page label + title + blurb + thumbnail,
+  enriched via `src/lib/link-cards.ts`) — the recommendation is an
+  embedded component, not just text.
 - **Safety** — public by design, no auth needed: per-IP sliding-window
   rate limit (15/min), 500-char messages, last-8-turns memory.
 - **Fallback** — if the API fails, the original keyword `replyFor`

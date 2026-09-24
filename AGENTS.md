@@ -279,3 +279,11 @@ also holds the per-IP rate limit (15/min, sliding window). Route caps:
 500 chars/msg, last 8 turns. Tune the chat's voice/scope by editing the
 knowledge file — no code changes needed.
 
+**Rich replies** — the model ends replies with markdown links
+`[Title](/path)`/`(mailto:)`; `parseReply()` in hero.tsx strips them from
+the prose (plus `**bold**`/`- ` cleanup, `pre-line` on the lede) and
+renders them as **link cards** under the reply — enriched via
+`src/lib/link-cards.ts` (kind/title/blurb/thumbnail for programs, key
+cases, utility pages; unknown paths get a generic card). Cards appear
+after the typewriter finishes.
+

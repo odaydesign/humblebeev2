@@ -2,11 +2,50 @@
 
 import * as React from "react";
 import type { HeroSection } from "@/lib/content";
+import { LINK_CARDS } from "@/lib/link-cards";
 
 import { useTypingSound } from "./use-typing-sound";
 
 type Role = "user" | "ai";
-type Message = { id: number; role: Role; text: string; thinking?: boolean; streaming?: boolean };
+type OutLink = { label: string; href: string };
+type Message = { id: number; role: Role; text: string; thinking?: boolean; streaming?: boolean; links?: OutLink[] };
+
+/* Pull recommended links out of a reply — markdown links, bare internal
+   paths, and the studio email all become cards; the rest is prose. */
+function parseReply(raw: string): { text: string; links: OutLink[] } {
+  const links: OutLink[] = [];
+  let text = raw
+    .replace(/\[([^\]]+)\]\(((?:\/|mailto:|https?:)[^)\s]+)\)/g, (_m, l: string, h: string) => {
+      links.push({ label: l.trim(), href: h.trim() });
+      return " ";
+    })
+    .replace(
+      /(^|\s)(\/(?:programs|work|stories|events|contact|careers|hire-us|about-us|journeys|fast-track|hej)[\w/-]*)/g,
+      (_m, sp: string, h: string) => {
+        links.push({ label: h, href: h });
+        return sp;
+      }
+    )
+    .replace(/hello@humblebee\.se/g, () => {
+      links.push({ label: "hello@humblebee.se", href: "mailto:hello@humblebee.se" });
+      return " ";
+    });
+  const seen = new Set<string>();
+  const deduped = links.filter((l) => !seen.has(l.href) && (seen.add(l.href), true)).slice(0, 3);
+  const clean = text
+    .replace(/\*\*([^*]+)\*\*/g, "$1")
+    .replace(/\*([^*\n]+)\*/g, "$1")
+    .replace(/^- /gm, "· ")
+    .replace(/[ \t]{2,}/g, " ")
+    .replace(/\s+([.,!?])/g, "$1")
+    .trim();
+  return { text: clean, links: deduped };
+}
+
+function prettify(href: string) {
+  const seg = href.split("/").filter(Boolean).pop() ?? href;
+  return seg.replace(/[-_]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+}
 
 // Simulated, on-brand replies — keyword routed, Humblebee voice (plainspoken,
 // confident, anti-hype). No backend; this is a brand experience.
@@ -221,18 +260,20 @@ export function Hero({ section }: { section: HeroSection }) {
     return () => window.clearTimeout(id);
   }, [sound, reduce, BOOT_MS]);
 
-  function patchLastAI(text: string, streaming: boolean) {
+  function patchLastAI(text: string, streaming: boolean, links?: OutLink[]) {
     setMessages((prev) => {
       const copy = [...prev];
       const last = copy[copy.length - 1];
-      if (last && last.role === "ai") copy[copy.length - 1] = { ...last, text, streaming, thinking: false };
+      if (last && last.role === "ai")
+        copy[copy.length - 1] = { ...last, text, streaming, thinking: false, links };
       return copy;
     });
   }
 
   function stream(reply: string) {
+    const { text: body, links } = parseReply(reply);
     if (reduce) {
-      patchLastAI(reply, false);
+      patchLastAI(body, false, links);
       setResponding(false);
       return;
     }
@@ -241,15 +282,16 @@ export function Hero({ section }: { section: HeroSection }) {
     let lastTickAt = 0;
     const step = () => {
       i += 1;
-      patchLastAI(reply.slice(0, i), i < reply.length);
-      const ch = reply[i - 1];
+      patchLastAI(body.slice(0, i), i < body.length);
+      const ch = body[i - 1];
       if (ch && ch !== " " && performance.now() - lastTickAt > 90) {
         sound.aiType();
         lastTickAt = performance.now();
       }
-      if (i < reply.length) {
+      if (i < body.length) {
         timer.current = window.setTimeout(step, 16 + Math.random() * 24);
       } else {
+        patchLastAI(body, false, links);
         setResponding(false);
       }
     };
@@ -352,12 +394,36 @@ export function Hero({ section }: { section: HeroSection }) {
                 {m.thinking ? (
                   <ThinkingDots />
                 ) : (
-                  <p className="hb-hero-lede">
-                    {m.text}
-                    {m.streaming && (
-                      <span aria-hidden className="caret-blink hb-hero-streamcaret" style={CARET_GLOW} />
+                  <>
+                    <p className="hb-hero-lede">
+                      {m.text}
+                      {m.streaming && (
+                        <span aria-hidden className="caret-blink hb-hero-streamcaret" style={CARET_GLOW} />
+                      )}
+                    </p>
+                    {!m.streaming && m.links && m.links.length > 0 && (
+                      <div className="hb-hero-cards">
+                        {m.links.map((l) => {
+                          const meta = LINK_CARDS[l.href];
+                          return (
+                            <a key={l.href} href={l.href} className="hb-hero-card msg-in">
+                              {meta?.image && (
+                                <img src={meta.image} alt="" className="hb-hero-cardimg" loading="lazy" />
+                              )}
+                              <span className="hb-hero-cardbody">
+                                <span className="hb-hero-cardkind">{meta?.kind ?? "Link"}</span>
+                                <span className="hb-hero-cardtitle">
+                                  {meta?.title ?? (l.label === l.href ? prettify(l.href) : l.label)}
+                                </span>
+                                {meta?.blurb && <span className="hb-hero-cardblurb">{meta.blurb}</span>}
+                              </span>
+                              <span className="hb-hero-cardarrow" aria-hidden>↗</span>
+                            </a>
+                          );
+                        })}
+                      </div>
                     )}
-                  </p>
+                  </>
                 )}
               </div>
             )

@@ -41,8 +41,10 @@ ${catalog()}
 You are the conversational hero on humblebee.se — a designed part of the
 studio, not an assistant with a name. A visitor types a question; you answer
 as Humblebee. Follow the voice + hard rules in the knowledge above. Always
-end with one concrete next step. Keep it to a few short sentences — this is
-a chat widget, not an essay.`;
+end with one concrete next step as a markdown link [Title](/internal-path)
+or [hello@humblebee.se](mailto:hello@humblebee.se) — it renders as a
+clickable card. Keep it to a few short sentences — this is a chat widget,
+not an essay.`;
 
 /* ── rate limit — sliding window per IP, 15 req/min ─────────── */
 
@@ -81,7 +83,7 @@ export async function siteChat(messages: ChatMsg[]): Promise<string> {
     },
     body: JSON.stringify({
       model,
-      max_tokens: 300,
+      max_tokens: 500,
       temperature: 0.7,
       messages: [{ role: "system", content: SYSTEM }, ...messages],
     }),

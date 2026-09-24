@@ -149,6 +149,7 @@
   font-size: 19px;
   line-height: 1.65;
   color: var(--ink);
+  white-space: pre-line;
 }
 .hb-hero-streamcaret {
   display: inline-block;
@@ -287,4 +288,65 @@
 @media (max-width: 767px) {
   .hb-hero-lede { font-size: 17px; }
   .hb-hero { padding-top: 44px; }
+}
+
+/* ── reply link cards ── */
+.hb-hero-cards { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+.hb-hero-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid var(--line, #e0e0e0);
+  border-radius: 14px;
+  padding: 10px 16px 10px 10px;
+  text-decoration: none;
+  color: var(--ink);
+  background: #fff;
+  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+  max-width: 100%;
+}
+.hb-hero-card:hover {
+  border-color: rgba(22, 22, 22, 0.35);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(22, 22, 22, 0.06);
+}
+.hb-hero-cardimg {
+  width: 56px; height: 56px;
+  border-radius: 9px;
+  object-fit: cover;
+  flex: none;
+}
+.hb-hero-cardbody { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+.hb-hero-cardkind {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--honey-deep);
+}
+.hb-hero-cardtitle {
+  font-family: var(--font-heading);
+  font-size: 15.5px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hb-hero-cardblurb {
+  font-family: var(--font-body);
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--dark-grey);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.hb-hero-cardarrow { flex: none; font-size: 17px; color: var(--dark-grey); transition: color 0.15s, transform 0.15s; }
+.hb-hero-card:hover .hb-hero-cardarrow { color: var(--ink); transform: translate(1px, -1px); }
+
+@media (max-width: 479px) {
+  .hb-hero-cardimg { width: 46px; height: 46px; }
+  .hb-hero-cardtitle { white-space: normal; }
 }
