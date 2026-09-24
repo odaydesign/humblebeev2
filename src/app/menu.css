@@ -133,9 +133,11 @@
   pointer-events: none;
 }
 
-/* Keeps pages from jumping now that the header no longer sits in flow. */
+/* Keeps pages from jumping now that the header no longer sits in flow.
+   Humblebee pages are designed with the pill floating over the hero —
+   zero-height spacer preserves the overlay + tone sampling. */
 .hb-menu-spacer {
-  height: calc(var(--menu-top) * 2 + var(--menu-bar));
+  height: 0;
   flex: none;
 }
 
@@ -282,6 +284,9 @@
   width: 22px;
   height: 22px;
   margin-right: 2px;
+  padding: 0;
+  border: 0;
+  appearance: none;
   cursor: pointer;
   background: none;
   color: var(--menu-fg);
