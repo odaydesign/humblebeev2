@@ -1,5 +1,5 @@
 import type { Section } from "@/lib/content";
-import { Hero } from "./Hero";
+import { Hero } from "./hero/hero";
 import { Challenges } from "./Challenges";
 import { StrategyMoves } from "./StrategyMoves";
 import { Programs } from "./Programs";

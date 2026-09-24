@@ -33,7 +33,7 @@ import type { CustomSectionEntry } from "./section-schemas";
 import { CustomSectionRenderer } from "@/components/CustomSection";
 import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
-import { Hero } from "@/components/Hero";
+import { Hero } from "@/components/hero/hero";
 import { Challenges } from "@/components/Challenges";
 import { StrategyMoves } from "@/components/StrategyMoves";
 import { Programs } from "@/components/Programs";
@@ -390,12 +390,12 @@ const BUILTIN_LEVELS: DsLevel[] = [
         pageHref: "/",
 
         name: "Hero",
-        file: "src/components/Hero.tsx",
+        file: "src/components/hero/hero.tsx",
         blurb:
-          "Full-viewport heading + sub, image marquee strip (CSS animation), 8-client logo strip.",
-        composedOf: "h1 + sub + marquee_slider + logo grid",
+          "Conversational hero — greeting + ask-anything input; keyword-routed simulated replies, caret boot (orbit → dot → line), typing sound.",
+        composedOf: "greeting h1 + chat thread + composer (custom caret) + Enter pill + mute toggle",
         content: "homeSections[type=hero]",
-        responsive: "100vh → 80vh ≤991 → 75vh ≤479; marquee keeps looping",
+        responsive: "fluid clamp() type; thread scrolls inside min-height",
         embed: true,
         height: 700,
       },

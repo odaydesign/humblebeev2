@@ -26,7 +26,7 @@ with a fetch, keep the types.
 
 | type            | Component          | Notes                                        |
 |-----------------|--------------------|----------------------------------------------|
-| `hero`          | `Hero`             | heading, sub, CSS marquee strip, logo grid   |
+| `hero`          | `Hero`             | conversational hero — greeting + ask-anything input, simulated replies (see below) |
 | `challenges`    | `Challenges`       | client; GSAP pinned pills (desktop) / rotating deck (mobile) |
 | `strategyMoves` | `StrategyMoves`    | image-left cards w/ solid + ghost CTAs       |
 | `programs`      | `Programs`         | hover rows (yellow bg, blue arrow)           |
@@ -254,4 +254,17 @@ store.ts = published-or-default. Studio: Workspace → Menu pin edits it like
 a structured template; canvas shows the menu over the real homepage, and
 nav/case/CTA labels are `data-hb-f` inline-editable. `SiteNav` is retired —
 page renders mount `SiteHeader`.
+
+### Conversational hero (type `hero`)
+
+`src/components/hero/` — ported from `Humblebeev3/docs/agent-components/03-hero`
+(Tailwind classes → `hb-hero-*` rules in `src/app/hero.css`, lucide icons →
+inline SVG, `--honey`/`--honey-deep` tokens → brand yellow/orange). Spec
+must-keeps: caret boot orbit → dot → line, keyword `replyFor` routing +
+simulated streaming, `data-section="hero"`/`data-page-tone`, mute toggle
+(`hb-typing-muted` in localStorage), reduced-motion path. `use-typing-sound.ts`
+= Web Audio pentatonic sfx, unlocked on first gesture. CMS surface:
+`heading` = the greeting h1 (`data-hb-f` editable), `subheading` = input
+aria-label; old `marqueeImages`/`clientLogos` stay optional on `HeroSection`
+for old docs but are not rendered.
 

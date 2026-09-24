@@ -58,32 +58,16 @@ const BUILTIN_SCHEMAS: SectionSchema[] = [
     type: "hero",
     name: "Hero",
     icon: "▲",
-    blurb: "Full-viewport heading + marquee images + client logos. Page opener.",
+    blurb: "Conversational hero — greeting + ask-anything input with simulated replies. Page opener.",
     unique: true,
     fields: [
-      { k: "heading", l: "Heading", t: "text" },
-      { k: "subheading", l: "Subheading", t: "textarea" },
-      {
-        k: "marqueeImages", l: "Marquee images", t: "list", item: "image",
-        fields: [
-          { k: "src", l: "Image", t: "image" },
-          { k: "alt", l: "Alt", t: "text" },
-        ],
-      },
-      {
-        k: "clientLogos", l: "Client logos", t: "list", item: "logo",
-        fields: [
-          { k: "src", l: "Image", t: "image" },
-          { k: "alt", l: "Alt", t: "text" },
-        ],
-      },
+      { k: "heading", l: "Greeting", t: "text" },
+      { k: "subheading", l: "Input aria-label", t: "text" },
     ],
     make: () => ({
       type: "hero",
       heading: "What's your next move?",
-      subheading: "Tell the story of this page in one line.",
-      marqueeImages: [IMG, IMG, IMG],
-      clientLogos: [],
+      subheading: "Ask Humblebee anything",
     }),
   },
   {

@@ -92,10 +92,13 @@ export const navContent: NavContent = {
 
 export interface HeroSection {
   type: "hero";
+  /** The greeting — rendered as the h1, e.g. "What's your next move?" */
   heading: string;
-  subheading: string;
-  marqueeImages: ImageAsset[];
-  clientLogos: ImageAsset[];
+  /** aria-label for the ask-anything input */
+  subheading?: string;
+  /** legacy fields — unused by the conversational hero, kept for old docs */
+  marqueeImages?: ImageAsset[];
+  clientLogos?: ImageAsset[];
 }
 
 export interface ChallengePill {
