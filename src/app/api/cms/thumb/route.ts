@@ -25,11 +25,13 @@ async function shoot(slug: string) {
   const browser = await puppeteer.launch({
     executablePath: CHROME,
     headless: "shell",
-    args: ["--hide-scrollbars", "--force-device-scale-factor=1"],
+    args: ["--hide-scrollbars"],
   });
   try {
     const page = await browser.newPage();
-    await page.setViewport({ width: 480, height: 320 });
+    // Full desktop render @ 1.5x DPR — the board zooms ~4x on a 240px card,
+    // so 2160×1350 keeps lines crisp instead of stretching a 480px raster.
+    await page.setViewport({ width: 1440, height: 900, deviceScaleFactor: 1.5 });
     const route = slug === "__home" ? "/" : `/${slug}`;
     await page.goto(`http://localhost:3000${route}`, {
       waitUntil: "networkidle0",
