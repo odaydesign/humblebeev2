@@ -388,11 +388,12 @@ export function Hero({ section }: { section: HeroSection }) {
 
     // Synced typewriter — reveal follows playback position, so the text
     // you read is the word being spoken (tiny +2 char lead, subtitle-style).
+    // No per-char ticks here — the voice is the sound; clicks under it
+    // just lag and clutter.
     const synced = (el: HTMLAudioElement) => {
       sound.aiStart();
       let finished = false;
       let shown = -1;
-      let lastTickAt = 0;
       const complete = () => {
         if (!finished) {
           finished = true;
@@ -408,10 +409,6 @@ export function Hero({ section }: { section: HeroSection }) {
         if (i !== shown) {
           shown = i;
           patchLastAI(body.slice(0, i), i < len);
-          if (performance.now() - lastTickAt > 120) {
-            sound.aiType();
-            lastTickAt = performance.now();
-          }
         }
         if (!finished && i < len) rafRef.current = requestAnimationFrame(tick);
         else if (!finished) complete();
