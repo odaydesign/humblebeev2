@@ -37,29 +37,30 @@ export function useTypingSound() {
     }
   }, []);
 
-  React.useEffect(() => {
-    // Create the context at mount — it stays suspended until a gesture, but
-    // having it built means the first note only pays resume(), not the
-    // constructor roundtrip. "interactive" trims the output buffer.
-    const AC =
-      window.AudioContext ||
-      (window as unknown as { webkitAudioContext?: typeof AudioContext })
-        .webkitAudioContext;
-    if (AC && !ctxRef.current) {
-      try {
-        ctxRef.current = new AC({ latencyHint: "interactive" });
-      } catch {
-        ctxRef.current = new AC();
-      }
+  const ensureCtx = () => {
+    if (!ctxRef.current) {
+      const AC =
+        window.AudioContext ||
+        (window as unknown as { webkitAudioContext?: typeof AudioContext })
+          .webkitAudioContext;
+      if (!AC) return null;
+      ctxRef.current = new AC();
     }
-    const unlock = () => void ctxRef.current?.resume();
+    return ctxRef.current;
+  };
+
+  React.useEffect(() => {
+    // Create the context INSIDE the gesture — like the original spec. A
+    // context built before user activation can stay locked even when
+    // resume() is later called during a gesture (mobile Safari especially).
+    const unlock = () => void ensureCtx()?.resume();
     window.addEventListener("pointerdown", unlock);
-    // capture phase: resume starts before the input's own keydown handler
-    // plays its note, so the first keystroke isn't silent
+    // capture phase: create + resume start before the input's own keydown
+    // handler plays its note, so the first keystroke isn't silent
     window.addEventListener("keydown", unlock, { capture: true });
     window.addEventListener("touchstart", unlock);
     const onVis = () => {
-      if (document.visibilityState === "visible") unlock();
+      if (document.visibilityState === "visible") void ctxRef.current?.resume();
     };
     document.addEventListener("visibilitychange", onVis);
     return () => {
@@ -89,21 +90,8 @@ export function useTypingSound() {
 
   const blip = React.useCallback((o: Blip) => {
     if (mutedRef.current) return;
-    let c = ctxRef.current;
-    if (!c) {
-      // create lazily so the note that triggered the gesture isn't dropped
-      const AC =
-        window.AudioContext ||
-        (window as unknown as { webkitAudioContext?: typeof AudioContext })
-          .webkitAudioContext;
-      if (!AC) return;
-      try {
-        c = ctxRef.current = new AC({ latencyHint: "interactive" });
-      } catch {
-        c = ctxRef.current = new AC();
-      }
-    }
-    const ctx = c;
+    const ctx = ctxRef.current;
+    if (!ctx) return;
     if (ctx.state !== "running") {
       // Suspended — never schedule against the frozen clock (every note would
       // queue at t=0 and burst on resume). Resume first, then play on the
