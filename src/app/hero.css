@@ -350,3 +350,18 @@
   .hb-hero-cardimg { width: 46px; height: 46px; }
   .hb-hero-cardtitle { white-space: normal; }
 }
+
+/* ── ghost typing reveal ── */
+.hb-ghost-w { display: inline-block; }
+.hb-ghost-c {
+  display: inline-block;
+  animation: hb-ghost-in 0.4s var(--ease-out-soft) both;
+  will-change: opacity, filter, transform;
+}
+@keyframes hb-ghost-in {
+  from { opacity: 0; filter: blur(7px); transform: translateY(6px); }
+  to   { opacity: 1; filter: blur(0);   transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hb-ghost-c { animation: none; }
+}

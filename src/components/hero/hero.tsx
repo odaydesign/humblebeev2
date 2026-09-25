@@ -114,6 +114,29 @@ function ThinkingDots() {
   );
 }
 
+/* Ghost reveal — words stay atomic so lines wrap at word boundaries;
+   each char fades/de-blurs/rises in as it lands. Stable keys mean only
+   newly-typed chars animate. */
+function GhostText({ text }: { text: string }) {
+  return (
+    <>
+      {text.split(/(\s+)/).map((w, wi) =>
+        /^\s+$/.test(w) ? (
+          <React.Fragment key={wi}>{w}</React.Fragment>
+        ) : (
+          <span key={wi} className="hb-ghost-w">
+            {Array.from(w).map((c, ci) => (
+              <span key={ci} className="hb-ghost-c">
+                {c}
+              </span>
+            ))}
+          </span>
+        )
+      )}
+    </>
+  );
+}
+
 export function Hero({ section }: { section: HeroSection }) {
   const reduce = usePrefersReducedMotion();
   const { sound, muted, toggleMuted } = useTypingSound();
@@ -544,9 +567,9 @@ export function Hero({ section }: { section: HeroSection }) {
                 ) : (
                   <>
                     <p className="hb-hero-lede">
-                      {m.text}
+                      <GhostText text={m.text} />
                       {m.streaming && (
-                        <span aria-hidden className="caret-blink hb-hero-streamcaret" style={CARET_GLOW} />
+                        <span aria-hidden="true" className="caret-blink hb-hero-streamcaret" style={CARET_GLOW} />
                       )}
                     </p>
                     {!m.streaming && m.links && m.links.length > 0 && (
