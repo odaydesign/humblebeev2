@@ -34,7 +34,7 @@ with a fetch, keep the types.
 | `challenges`    | `Challenges`       | client; GSAP pinned pills (desktop) / rotating deck (mobile) |
 | `strategyMoves` | `StrategyMoves`    | image-left cards w/ solid + ghost CTAs       |
 | `programs`      | `Programs`         | hover rows (yellow bg, blue arrow)           |
-| `statement`     | `Statement`        | client; word-by-word scroll color reveal     |
+| `statement`     | `Statement`        | client; GSAP-scrubbed word rise+fade (07-studio-statement) |
 | `twoColumns`    | `TwoColumns`       | image 512px + h4 + blue CTA                  |
 | `hire`          | `Hire`             | 3-col card grid + blue CTA                   |
 | `featureBanner` | `FeatureBanner`    | grey split banner (AI Readiness Report)      |

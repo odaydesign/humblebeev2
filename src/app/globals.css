@@ -863,16 +863,58 @@ p {
   margin-top: 24px;
 }
 
-/* ── Statement (reveal text) ────────────────────────────────── */
+/* ── Statement (07 port — GSAP scrub word reveal) ───────────── */
 
-.statement-text {
-  max-width: 1093px;
+.hb-statement {
+  background: transparent;
+  overflow: hidden;
 }
-.statement-text h2 {
+.hb-statement-inner {
+  display: flex;
+  justify-content: center;
+  padding: clamp(7rem, 20vh, 14rem) 1.5rem;
+}
+@media (min-width: 48rem) {
+  .hb-statement-inner { padding-inline: 2.5rem; }
+}
+@media (min-width: 64rem) {
+  .hb-statement-inner { padding-inline: 3.5rem; }
+}
+.hb-statement-p {
+  max-width: 22ch;
   margin: 0;
+  font-family: var(--font-humblebee);
+  font-size: clamp(2.1rem, 5.2vw, 4.1rem);
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+  text-align: left;
 }
-.statement-text .word {
-  transition: color 0.15s linear;
+@media (min-width: 48rem) {
+  .hb-statement-p { max-width: 20ch; }
+}
+@media (min-width: 64rem) {
+  .hb-statement-p { max-width: min(60ch, 60rem); line-height: 1.05; }
+}
+.hb-statement .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+.hb-statement-word { display: inline-block; }
+.hb-statement-word-inner {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hb-statement-word-inner {
+    transform: none !important;
+    opacity: 1 !important;
+  }
 }
 
 /* ── TwoColumns ─────────────────────────────────────────────── */
@@ -1264,11 +1306,6 @@ p {
     width: 100%;
     padding-left: 30px;
     padding-right: 30px;
-  }
-  .statement-text h2 {
-    letter-spacing: -1.2px;
-    font-size: 28px;
-    line-height: 32px;
   }
   .feature-banner-image-wrap h2 {
     letter-spacing: -2px;

@@ -177,7 +177,7 @@ const BUILTIN_SCHEMAS: SectionSchema[] = [
     type: "statement",
     name: "Statement",
     icon: "¶",
-    blurb: "Manifesto text that colours in word-by-word on scroll.",
+    blurb: "Manifesto text — words rise and fade in, scrubbed to scroll (GSAP).",
     fields: [{ k: "text", l: "Text", t: "textarea" }],
     make: () => ({
       type: "statement",
