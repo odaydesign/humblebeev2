@@ -49,17 +49,31 @@ export function useTypingSound() {
       void ctxRef.current?.resume();
     };
     window.addEventListener("pointerdown", unlock);
-    window.addEventListener("keydown", unlock);
+    // capture phase: resume starts before the input's own keydown handler
+    // plays its note, so the first keystroke isn't silent
+    window.addEventListener("keydown", unlock, { capture: true });
     return () => {
       window.removeEventListener("pointerdown", unlock);
-      window.removeEventListener("keydown", unlock);
+      window.removeEventListener("keydown", unlock, { capture: true });
     };
   }, []);
 
   const blip = React.useCallback((o: Blip) => {
     if (mutedRef.current) return;
-    const c = ctxRef.current;
-    if (!c || c.state !== "running") return;
+    let c = ctxRef.current;
+    if (!c) {
+      // create lazily so the note that triggered the gesture isn't dropped
+      const AC =
+        window.AudioContext ||
+        (window as unknown as { webkitAudioContext?: typeof AudioContext })
+          .webkitAudioContext;
+      if (!AC) return;
+      c = ctxRef.current = new AC();
+    }
+    // Suspended (gesture just happened, resume still in flight): schedule
+    // anyway — currentTime is frozen while suspended, so the note lands the
+    // moment the context resumes instead of being silently dropped.
+    if (c.state !== "running") void c.resume();
     const { freq, to, gain = 0.03, attack = 0.012, decay = 0.11, delay = 0 } = o;
     const t = c.currentTime + delay;
     const osc = c.createOscillator();
