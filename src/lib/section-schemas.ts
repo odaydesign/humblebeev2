@@ -243,6 +243,72 @@ const BUILTIN_SCHEMAS: SectionSchema[] = [
     }),
   },
   {
+    type: "gallery",
+    name: "Gallery Marquee",
+    icon: "▶",
+    blurb: "Infinite draggable strip — image/video cards plus live tiles (CLI, ASCII, games, vinyl, brands reel).",
+    fields: [
+      { k: "speed", l: "Cruise speed (px/s, empty = 38)", t: "text" },
+      {
+        k: "items", l: "Cards", t: "list", item: "card",
+        fields: [
+          { k: "id", l: "Id", t: "text" },
+          {
+            k: "kind", l: "Kind", t: "select",
+            options: [
+              { v: "image", l: "Image" },
+              { v: "video", l: "Video (hover-play)" },
+              { v: "cli", l: "CLI terminal" },
+              { v: "ascii", l: "ASCII generator" },
+              { v: "game", l: "Space invaders" },
+              { v: "pong", l: "Pong (online)" },
+              { v: "portfolio", l: "Case card" },
+              { v: "studio", l: "Studio panel" },
+              { v: "vinyl", l: "Vinyl deck" },
+              { v: "wireframe", l: "Wireframe board" },
+              { v: "brands", l: "Brands reel" },
+            ],
+          },
+          { k: "src", l: "Image/video src", t: "image", hint: "image + video kinds only" },
+          { k: "webm", l: "WebM src (video)", t: "text" },
+          { k: "title", l: "Caption title", t: "text" },
+          { k: "blurb", l: "Caption blurb", t: "textarea" },
+          { k: "meta", l: "Meta (portfolio)", t: "text", hint: "e.g. 2025 · Fintech" },
+          { k: "tags", l: "Tags (portfolio, comma-sep)", t: "text" },
+          {
+            k: "format", l: "Format", t: "select",
+            options: [
+              { v: "square", l: "Square 1:1" },
+              { v: "portrait", l: "Portrait 3:4" },
+              { v: "tall", l: "Tall 2:3" },
+              { v: "landscape", l: "Landscape 4:3" },
+              { v: "wide", l: "Wide 16:9" },
+            ],
+          },
+          {
+            k: "offset", l: "Offset", t: "select",
+            options: [
+              { v: "mid", l: "Middle" },
+              { v: "up", l: "Up" },
+              { v: "down", l: "Down" },
+            ],
+          },
+        ],
+      },
+    ],
+    make: () => ({
+      type: "gallery",
+      speed: 38,
+      items: [
+        { id: "welding-ui", kind: "image", src: "/gallery/welding-ui.png", title: "Weld control", blurb: "Industrial UI with machine-grade clarity.", format: "square", offset: "up" },
+        { id: "cli", kind: "cli", title: "Studio CLI", blurb: "A terminal that ships taste.", format: "tall", offset: "down" },
+        { id: "wave", kind: "video", src: "/video/wave.mp4", webm: "/video/wave.webm", title: "Hello from the hive", blurb: "Hover to animate — a small wave from the studio.", format: "square", offset: "mid" },
+        { id: "ascii", kind: "ascii", title: "Signal field", blurb: "ASCII as material.", format: "square", offset: "up" },
+        { id: "polestar-interior", kind: "image", src: "/gallery/polestar-interior.png", title: "Polestar interior", blurb: "Configurator as product.", format: "wide", offset: "mid" },
+      ],
+    }),
+  },
+  {
     type: "richText",
     name: "Rich Text",
     icon: "✎",

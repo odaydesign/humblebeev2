@@ -45,6 +45,10 @@
   --grey: #f7f7f7;
   --dark-grey: #6c6e74;
   --line: #e0e0e0;
+  --foreground: #161616;
+  --muted: #f7f7f7;
+  --border: #e0e0e0;
+  --font-geist-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
   --blue: #1a00ff;
   --orange: #ff8000;
   --yellow: #fff500;

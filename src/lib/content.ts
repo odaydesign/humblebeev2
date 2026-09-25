@@ -181,6 +181,16 @@ export interface RichTextSection {
   html: string;
 }
 
+/** Infinite gallery strip — item union lives with the component
+ *  (`src/components/gallery/gallery-marquee.tsx`). `tags` may arrive as a
+ *  comma-separated string from the CMS inspector; the renderer normalises. */
+export interface GallerySection {
+  type: "gallery";
+  items: import("@/components/gallery/gallery-marquee").GalleryMarqueeItem[];
+  /** Auto-scroll cruise speed px/s */
+  speed?: number;
+}
+
 /** Agent-built sections — type is namespaced `custom:slug`, shape is
  *  declared by its registry entry (custom-sections.json), so the model is
  *  intentionally loose here. The `custom:` prefix keeps discriminated
@@ -200,6 +210,7 @@ export type Section =
   | HireSection
   | FeatureBannerSection
   | RichTextSection
+  | GallerySection
   | CustomSection;
 
 export const homeSections: Section[] = [

@@ -4,6 +4,7 @@ import "./globals.css";
 import "./legacy.css";
 import "./menu.css";
 import "./hero.css";
+import "./gallery.css";
 import "./custom.css";
 
 export const metadata: Metadata = {

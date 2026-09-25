@@ -7,6 +7,8 @@ import { Statement } from "./Statement";
 import { TwoColumns } from "./TwoColumns";
 import { Hire } from "./Hire";
 import { FeatureBanner } from "./FeatureBanner";
+import { GalleryMarquee } from "./gallery/gallery-marquee";
+import type { GalleryMarqueeItem } from "./gallery/gallery-marquee";
 import { RichText } from "./subpages/RichText";
 import { CustomSectionRenderer } from "./CustomSection";
 
@@ -32,6 +34,23 @@ export function SectionRenderer({ section }: { section: Section }) {
       return <Hire section={section} />;
     case "featureBanner":
       return <FeatureBanner section={section} />;
+    case "gallery":
+      return (
+        <GalleryMarquee
+          speed={Number(section.speed) || undefined}
+          items={section.items.map((it): GalleryMarqueeItem => {
+            if (it.kind !== "portfolio") return it;
+            const raw = (it as { tags?: unknown }).tags;
+            const tags =
+              typeof raw === "string"
+                ? raw.split(",").map((t) => t.trim()).filter(Boolean)
+                : Array.isArray(raw)
+                  ? raw
+                  : undefined;
+            return { ...it, tags };
+          })}
+        />
+      );
     case "richText":
       return (
         <section>

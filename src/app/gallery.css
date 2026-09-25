@@ -1,0 +1,1255 @@
+.hb-gallery-marquee {
+  background: transparent;
+}
+
+/* GSAP pin spacers must not paint a solid slab between tones. */
+.pin-spacer {
+  background: transparent !important;
+}
+
+/* ---------------------------------------------------------------------------
+   “Things we can help with” — pinned elastic capability scroll.
+   --------------------------------------------------------------------------- */
+.hb-help {
+  --help-dim: 0.22;
+  /* Shared geometry — the stage width is derived from these, so the three
+     columns can never collide at any viewport width. */
+  --hb-side-l: min(6vw, 4rem);
+  --hb-side-r: min(4vw, 2.5rem);
+  --hb-intro-w: min(32vw, 17rem);
+  --hb-list-w: min(34vw, 22rem);
+  --hb-gap: clamp(1.5rem, 3vw, 5rem);
+  --hb-stage-max: 30rem;
+}
+
+.hb-help-pin {
+  isolation: isolate;
+}
+
+/* Centered visual — width derived from the free space on the narrower side,
+   so the image can never collide with the intro or the word list. */
+.hb-help-stage {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: min(
+    calc(2 * (50vw - var(--hb-side-l) - var(--hb-intro-w) - var(--hb-gap))),
+    calc(2 * (50vw - var(--hb-side-r) - var(--hb-list-w) - var(--hb-gap))),
+    var(--hb-stage-max),
+    54vh
+  );
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* Tighter columns in the small-laptop band keep the visual generous. */
+@media (min-width: 64rem) and (max-width: 68.75rem) {
+  .hb-help {
+    --hb-intro-w: min(26vw, 14rem);
+    --hb-list-w: min(30vw, 18rem);
+    --hb-gap: clamp(1rem, 2vw, 2rem);
+  }
+}
+
+.hb-help-frame {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 1rem;
+  background: #161616;
+  box-shadow:
+    0 0 0 1px oklch(1 0 0 / 0.08),
+    0 3rem 6rem -2rem oklch(0 0 0 / 0.85);
+}
+
+.hb-help-image {
+  position: absolute;
+  inset: 0;
+  will-change: transform, opacity;
+}
+
+.hb-help-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Left column — eyebrow, heading, narration */
+.hb-help-intro {
+  position: absolute;
+  left: var(--hb-side-l);
+  top: 50%;
+  z-index: 3;
+  width: var(--hb-intro-w);
+  transform: translateY(-50%);
+}
+
+.hb-help-eyebrow {
+  display: block;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: oklch(1 0 0 / 0.5);
+}
+
+.hb-help-heading {
+  margin-top: 1rem;
+  font-family: var(--font-humblebee), system-ui, sans-serif;
+  font-size: clamp(2rem, 3.6vw, 3.25rem);
+  font-weight: 400;
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+}
+
+.hb-help-detail {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid oklch(1 0 0 / 0.18);
+  animation: hb-help-detail-in 0.5s var(--ease-out-soft) both;
+}
+
+@keyframes hb-help-detail-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hb-help-detail-num {
+  flex-shrink: 0;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  color: oklch(1 0 0 / 0.45);
+}
+
+.hb-help-detail-line {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: oklch(1 0 0 / 0.68);
+}
+
+/* Right column — the travelling words */
+.hb-help-list-wrap {
+  position: absolute;
+  right: var(--hb-side-r);
+  top: 0;
+  z-index: 3;
+  height: 100%;
+  /* Container queries below size the type to THIS box, not the viewport. */
+  width: var(--hb-list-w);
+  container-type: inline-size;
+  overflow: hidden;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 20%,
+    #000 80%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 20%,
+    #000 80%,
+    transparent 100%
+  );
+}
+
+.hb-help-list {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: stretch;
+  will-change: transform;
+}
+
+.hb-help-item {
+  /* Airy spacing so each word genuinely travels past the midline. */
+  padding-block: clamp(2rem, 13vh, 8rem);
+  will-change: transform, opacity;
+}
+
+.hb-help-item-btn {
+  display: flex;
+  width: 100%;
+  align-items: baseline;
+  justify-content: flex-end;
+  /* cqw = % of the column width, so long/short words always fit inside. */
+  gap: 0.5em;
+  font-family: var(--font-humblebee), system-ui, sans-serif;
+  font-size: clamp(1.5rem, 17cqw, 4rem);
+  font-weight: 400;
+  line-height: 1.04;
+  letter-spacing: -0.04em;
+  color: #ffffff;
+  text-align: right;
+  cursor: pointer;
+  transition: opacity 0.35s var(--ease-out-soft);
+}
+
+.hb-help-item-num {
+  flex-shrink: 0;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: clamp(0.6rem, 3.4cqw, 0.75rem);
+  letter-spacing: 0.08em;
+  opacity: 0.45;
+}
+
+.hb-help-item[data-active="true"] .hb-help-item-num {
+  opacity: 0.85;
+}
+
+/* Bottom — progress bar + jump ticks */
+.hb-help-foot {
+  position: absolute;
+  left: var(--hb-side-l);
+  right: var(--hb-side-r);
+  bottom: 2.5rem;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.hb-help-progress {
+  position: relative;
+  flex: 1;
+  height: 1px;
+  overflow: hidden;
+  background: oklch(1 0 0 / 0.2);
+}
+
+.hb-help-progress-fill {
+  position: absolute;
+  inset: 0;
+  display: block;
+  background: #f7e731;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.hb-help-ticks {
+  display: flex;
+  flex-shrink: 0;
+  gap: 0.9rem;
+}
+
+.hb-help-tick {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  color: oklch(1 0 0 / 0.4);
+  cursor: pointer;
+  transition: color 0.3s var(--ease-out-soft);
+}
+
+.hb-help-tick[data-on="true"],
+.hb-help-tick:hover {
+  color: #f7e731;
+}
+
+/* Mobile: no pin, plain stacked list */
+.hb-help-mobile {
+  display: none;
+}
+
+/* Below the desktop breakpoint the pinned 3-column layout has no room, so we
+   swap to a stacked list. Keep this in sync with the `min-width: 64rem`
+   matchMedia check in `global-team.tsx`. */
+@media (max-width: 63.9375rem) {
+  .hb-help-pin {
+    display: block;
+    min-height: 0;
+    padding-block: 6rem;
+  }
+
+  .hb-help-stage,
+  .hb-help-intro,
+  .hb-help-list-wrap,
+  .hb-help-foot {
+    display: none;
+  }
+
+  .hb-help-mobile {
+    display: block;
+    /* Cap the column so tablet widths don't stretch images to ~1000px. */
+    max-width: 34rem;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+
+  .hb-help-mobile-heading {
+    font-family: var(--font-humblebee), system-ui, sans-serif;
+    font-size: 2.25rem;
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+  }
+
+  .hb-help-mobile-item {
+    margin-top: 3.5rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid oklch(1 0 0 / 0.18);
+  }
+
+  .hb-help-mobile-frame {
+    aspect-ratio: 4 / 3;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    background: #161616;
+  }
+
+  .hb-help-mobile-frame img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hb-help-mobile-num {
+    display: block;
+    margin-top: 1.25rem;
+    font-family: var(--font-geist-mono), ui-monospace, monospace;
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    color: oklch(1 0 0 / 0.45);
+  }
+
+  .hb-help-mobile-label {
+    margin-top: 0.5rem;
+    font-family: var(--font-humblebee), system-ui, sans-serif;
+    font-size: 1.75rem;
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+  }
+
+  .hb-help-mobile-line {
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: oklch(1 0 0 / 0.68);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hb-help-detail {
+    animation: none;
+  }
+
+  .hb-help-item-btn,
+  .hb-help-tick {
+    transition: none;
+  }
+}
+/* ---------------------------------------------------------------------------
+   “Your next move” — sticky rail + scrolling program rows.
+   --------------------------------------------------------------------------- */
+.hb-nm-media {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.25rem;
+  background: var(--muted);
+  aspect-ratio: 16 / 11;
+  isolation: isolate;
+}
+
+@media (min-width: 48rem) {
+  .hb-nm-media {
+    border-radius: 1.5rem;
+    aspect-ratio: 4 / 3;
+  }
+}
+
+.hb-nm-visual {
+  position: absolute;
+  inset: -6% 0;
+  will-change: transform;
+}
+
+.hb-nm-visual img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: translateZ(0);
+}
+
+.hb-nm-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    color-mix(in oklab, var(--ink) 26%, transparent),
+    transparent 45%
+  );
+}
+
+.hb-nm-badge {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.25rem;
+  height: 2.25rem;
+  padding: 0 0.5rem;
+  border-radius: 999px;
+  background: color-mix(in oklab, #ffffff 88%, transparent);
+  color: var(--ink);
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  backdrop-filter: blur(6px);
+}
+
+.hb-nm-rail-link {
+  color: color-mix(in oklab, var(--foreground) 45%, transparent);
+  transition: color 0.35s var(--ease-out-soft);
+}
+
+.hb-nm-rail-link[data-active="true"] {
+  color: var(--foreground);
+}
+
+.hb-nm-rail-label {
+  position: relative;
+  display: inline-block;
+}
+
+.hb-nm-rail-label::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.15rem;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s var(--ease-out-soft);
+}
+
+.hb-nm-rail-link[data-active="true"] .hb-nm-rail-label::after {
+  transform: scaleX(1);
+}
+
+.hb-nm-cta {
+  transition: transform 0.35s var(--ease-out-soft), opacity 0.35s ease;
+}
+
+.hb-nm-cta:hover {
+  transform: translateY(-2px);
+}
+
+.hb-nm-cta-ghost {
+  transition: opacity 0.35s ease;
+}
+
+.hb-nm-cta-ghost:hover {
+  opacity: 0.6;
+}
+
+.hb-nm-arrow {
+  display: inline-block;
+  transition: transform 0.35s var(--ease-out-soft);
+}
+
+.hb-nm-cta:hover .hb-nm-arrow,
+.hb-nm-cta-ghost:hover .hb-nm-arrow {
+  transform: translateX(3px);
+}
+
+/* Image-free programs — same list, text-led rows. */
+.hb-nm-plain {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+  color: var(--foreground);
+  text-decoration: none;
+  transition: border-color 0.4s var(--ease-out-soft);
+}
+
+.hb-nm-plain:hover,
+.hb-nm-plain:focus-visible {
+  border-color: color-mix(in oklab, var(--foreground) 35%, transparent);
+}
+
+.hb-nm-plain-num {
+  flex-shrink: 0;
+  padding-top: 0.65em;
+  color: color-mix(in oklab, var(--foreground) 40%, transparent);
+  transition: color 0.4s var(--ease-out-soft);
+}
+
+.hb-nm-plain:hover .hb-nm-plain-num,
+.hb-nm-plain:focus-visible .hb-nm-plain-num {
+  color: var(--foreground);
+}
+
+.hb-nm-plain-arrow {
+  flex-shrink: 0;
+  margin-top: 0.35em;
+  font-size: 1.25rem;
+  color: color-mix(in oklab, var(--foreground) 45%, transparent);
+  transition:
+    color 0.4s var(--ease-out-soft),
+    transform 0.4s var(--ease-out-soft);
+}
+
+.hb-nm-plain:hover .hb-nm-plain-arrow,
+.hb-nm-plain:focus-visible .hb-nm-plain-arrow {
+  color: var(--foreground);
+  transform: translateX(4px);
+}
+
+@media (min-width: 48rem) {
+  .hb-nm-plain {
+    gap: 3rem;
+    padding-top: 2.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hb-nm-plain,
+  .hb-nm-plain-num,
+  .hb-nm-plain-arrow {
+    transition: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hb-nm-arrow,
+  .hb-nm-cta,
+  .hb-nm-rail-label::after {
+    transition: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Programs — full offering as an editorial row list.
+   Hover floods the row honey and fills the arrow disc.
+   --------------------------------------------------------------------------- */
+.hb-programs {
+  --program-honey: #f7e731;
+  --program-accent: #2f2ff0;
+}
+
+.hb-ph-row {
+  border-radius: 0;
+  color: var(--foreground);
+  text-decoration: none;
+  transition:
+    background-color 0.4s var(--ease-out-soft),
+    color 0.4s var(--ease-out-soft),
+    transform 0.4s var(--ease-out-soft);
+}
+
+/* Hairline between rows, drawn on the row so it can fade out when active. */
+.hb-ph-row::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 1px;
+  background: var(--border);
+  transition: opacity 0.35s ease;
+}
+
+.hb-ph-row:hover::before,
+.hb-ph-row.is-active::before,
+.hb-ph-row:focus-visible::before {
+  opacity: 0;
+}
+
+.hb-ph-row.is-active {
+  background-color: var(--program-honey);
+  color: var(--ink);
+  /* Punch the row out past the container edge so the flood reads full-bleed. */
+  border-radius: 0.35rem;
+  box-shadow: 0 0 0 0.5rem var(--program-honey);
+  background-clip: padding-box;
+}
+
+.hb-ph-num {
+  color: color-mix(in oklab, currentColor 45%, transparent);
+  transition: color 0.4s var(--ease-out-soft);
+}
+
+.hb-ph-row.is-active .hb-ph-num {
+  color: color-mix(in oklab, var(--ink) 60%, transparent);
+}
+
+.hb-ph-title {
+  font-weight: 500;
+}
+
+.hb-ph-question {
+  color: color-mix(in oklab, currentColor 55%, transparent);
+  transition: color 0.4s var(--ease-out-soft);
+}
+
+.hb-ph-row.is-active .hb-ph-question {
+  color: color-mix(in oklab, var(--ink) 72%, transparent);
+}
+
+.hb-ph-meta {
+  color: color-mix(in oklab, currentColor 42%, transparent);
+}
+
+/* Arrow disc — outline at rest, accent-filled on hover. */
+.hb-ph-arrow {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, currentColor 28%, transparent);
+  font-size: 0.95rem;
+  line-height: 1;
+  transition:
+    background-color 0.4s var(--ease-out-soft),
+    border-color 0.4s var(--ease-out-soft),
+    color 0.4s var(--ease-out-soft),
+    transform 0.4s var(--ease-out-soft);
+}
+
+.hb-ph-row:hover .hb-ph-arrow,
+.hb-ph-row.is-active .hb-ph-arrow,
+.hb-ph-row:focus-visible .hb-ph-arrow {
+  background-color: var(--program-accent);
+  border-color: var(--program-accent);
+  color: #ffffff;
+  transform: translateX(2px);
+}
+
+@media (min-width: 48rem) {
+  .hb-ph-arrow {
+    width: 2.75rem;
+    height: 2.75rem;
+    font-size: 1.05rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hb-ph-row,
+  .hb-ph-row::before,
+  .hb-ph-arrow,
+  .hb-ph-num,
+  .hb-ph-question {
+    transition: none;
+  }
+}
+
+/* Clip horizontally; tall stagger + under-card captions need room on the cross axis. */
+.hb-gallery-marquee-viewport {
+  overflow: hidden;
+  min-height: clamp(32rem, 62vw, 48rem);
+  padding-block: clamp(3rem, 6vw, 5rem) clamp(5.5rem, 9vw, 8rem);
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: pan-y;
+}
+
+.hb-gallery-marquee-viewport.is-dragging {
+  cursor: grabbing;
+}
+
+/* Motion is translate3d on the track — more reliable than scrollLeft in Safari. */
+.hb-gallery-marquee-track {
+  align-items: center;
+  width: max-content;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+}
+
+.hb-gallery-marquee-card {
+  box-shadow: none;
+  isolation: isolate;
+  transition:
+    transform 0.45s var(--ease-out-soft),
+    scale 0.45s var(--ease-out-soft),
+    filter 0.45s ease,
+    box-shadow 0.45s ease;
+}
+
+.hb-gallery-marquee-card-face {
+  box-shadow: none;
+  transition: box-shadow 0.45s ease;
+}
+
+.hb-gallery-marquee-card img,
+.hb-gallery-marquee-card video {
+  pointer-events: none;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Live tiles: fill the rounded frame; no bitmap bleed past radius. */
+.hb-gallery-marquee-card[data-kind="cli"] .hb-gallery-marquee-card-face,
+.hb-gallery-marquee-card[data-kind="ascii"] .hb-gallery-marquee-card-face,
+.hb-gallery-marquee-card[data-kind="game"] .hb-gallery-marquee-card-face,
+.hb-gallery-marquee-card[data-kind="pong"] .hb-gallery-marquee-card-face,
+.hb-gallery-marquee-card[data-kind="portfolio"] .hb-gallery-marquee-card-face,
+.hb-gallery-marquee-card[data-kind="studio"] .hb-gallery-marquee-card-face,
+.hb-gallery-marquee-card[data-kind="vinyl"] .hb-gallery-marquee-card-face,
+.hb-gallery-marquee-card[data-kind="wireframe"] .hb-gallery-marquee-card-face,
+.hb-gallery-marquee-card[data-kind="brands"] .hb-gallery-marquee-card-face {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+
+.hb-gallery-marquee-card[data-kind="cli"] .hb-gallery-marquee-card-face > *,
+.hb-gallery-marquee-card[data-kind="ascii"] .hb-gallery-marquee-card-face > *,
+.hb-gallery-marquee-card[data-kind="game"] .hb-gallery-marquee-card-face > *,
+.hb-gallery-marquee-card[data-kind="pong"] .hb-gallery-marquee-card-face > *,
+.hb-gallery-marquee-card[data-kind="portfolio"] .hb-gallery-marquee-card-face > *,
+.hb-gallery-marquee-card[data-kind="studio"] .hb-gallery-marquee-card-face > *,
+.hb-gallery-marquee-card[data-kind="vinyl"] .hb-gallery-marquee-card-face > *,
+.hb-gallery-marquee-card[data-kind="wireframe"] .hb-gallery-marquee-card-face > *,
+.hb-gallery-marquee-card[data-kind="brands"] .hb-gallery-marquee-card-face > * {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+}
+
+.hb-gallery-marquee-card[data-kind="game"] .hb-gallery-marquee-card-face,
+.hb-gallery-marquee-card[data-kind="pong"] .hb-gallery-marquee-card-face {
+  cursor: crosshair;
+}
+
+.hb-gallery-marquee-card[data-kind="vinyl"] .hb-gallery-marquee-card-face,
+.hb-gallery-marquee-card[data-kind="wireframe"] .hb-gallery-marquee-card-face {
+  cursor: pointer;
+}
+
+/* Brand reel uses rAF translate — no CSS keyframe scroll */
+.hb-brands-loop-track {
+  touch-action: none;
+}
+
+.hb-brands-loop-row {
+  flex: 0 0 auto;
+  padding-block: 0.12em;
+}
+
+.hb-gallery-marquee-card canvas {
+  display: block;
+}
+
+/* Fill the play area; keep the bitmap’s aspect (no stretch/crop). */
+.hb-gallery-live-canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+/* Use independent `scale` so Tailwind translate offsets are preserved. */
+.hb-gallery-marquee-card[data-active="true"] {
+  scale: 1.03;
+  z-index: 2;
+}
+
+.hb-gallery-marquee-card[data-active="true"] .hb-gallery-marquee-card-face {
+  box-shadow: 0 22px 48px oklch(0 0 0 / 0.16);
+}
+
+/*
+ * Caption tucked under the card face, then slides out below the bottom edge.
+ * pointer-events: none so playable cards stay clickable.
+ */
+.hb-gallery-caption {
+  position: absolute;
+  left: 0.55rem;
+  right: 0.55rem;
+  top: calc(100% - 0.4rem);
+  z-index: 0;
+  max-width: 100%;
+  padding: 0.9rem 0.15rem 0.15rem;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate3d(0, -108%, 0);
+  transition:
+    transform 0.52s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.32s ease;
+  will-change: transform, opacity;
+}
+
+.hb-gallery-marquee-card[data-hovered="true"] .hb-gallery-caption {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.hb-gallery-caption-title,
+.hb-gallery-caption-body {
+  margin: 0;
+  opacity: 0;
+  transform: translate3d(0, 0.55rem, 0);
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.35s ease;
+}
+
+.hb-gallery-caption-title {
+  margin-bottom: 0.28rem;
+  font-family: var(--font-humblebee), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: currentColor;
+  transition-delay: 0s;
+}
+
+.hb-gallery-caption-body {
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: color-mix(in oklab, currentColor 72%, transparent);
+  transition-delay: 0s;
+}
+
+.hb-gallery-marquee-card[data-hovered="true"] .hb-gallery-caption-title,
+.hb-gallery-marquee-card[data-hovered="true"] .hb-gallery-caption-body {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.hb-gallery-marquee-card[data-hovered="true"] .hb-gallery-caption-title {
+  transition-delay: 0.05s;
+}
+
+.hb-gallery-marquee-card[data-hovered="true"] .hb-gallery-caption-body {
+  transition-delay: 0.11s;
+}
+
+/* Reverse stagger on leave so copy tucks back under cleanly. */
+.hb-gallery-marquee-card:not([data-hovered="true"]) .hb-gallery-caption-title {
+  transition-delay: 0.04s;
+}
+
+.hb-gallery-marquee-card:not([data-hovered="true"]) .hb-gallery-caption-body {
+  transition-delay: 0s;
+}
+
+.hb-gallery-marquee-card:not([data-hovered="true"]) .hb-gallery-caption {
+  transition-delay: 0.04s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hb-gallery-caption,
+  .hb-gallery-caption-title,
+  .hb-gallery-caption-body {
+    transition: opacity 0.2s ease;
+    transform: none;
+  }
+
+  .hb-gallery-marquee-card[data-hovered="true"] .hb-gallery-caption,
+  .hb-gallery-marquee-card[data-hovered="true"] .hb-gallery-caption-title,
+  .hb-gallery-marquee-card[data-hovered="true"] .hb-gallery-caption-body {
+    transform: none;
+  }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 38s linear infinite;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-rise {
+  animation: rise 0.7s var(--ease-out-soft) both;
+}
+
+/* Bee: 3px body painted as three 1px bands — black / yellow / black, the
+   classic bee silhouette compressed into a tri-pixel. Position + opacity are
+   driven imperatively per frame in bee-swarm.tsx. */
+.bee {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 3px;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    var(--ink) 0 33.333%,
+    var(--honey) 33.333% 66.666%,
+    var(--ink) 66.666% 100%
+  );
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+/* Employee profile circles — gentle continuous hover/float. */
+@keyframes team-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-16px); }
+}
+.team-circle {
+  animation: team-bob 5s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes flag-sway {
+  0%, 100% { transform: rotate(-1.5deg); }
+  50% { transform: rotate(2deg); }
+}
+
+@keyframes progress {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+
+/* Testimonial switch — words rise + de-blur in a stagger, attribution after. */
+@keyframes quote-word-in {
+  from { opacity: 0; transform: translateY(0.55em); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.quote-word {
+  display: inline-block;
+  animation: quote-word-in 0.6s var(--ease-out-soft) both;
+}
+
+@keyframes quote-attr-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.quote-attr {
+  animation: quote-attr-in 0.6s ease both;
+}
+.animate-flag-sway {
+  animation: flag-sway 3.2s ease-in-out infinite;
+}
+
+
+/* ── scoped utility layer (Tailwind classes used by gallery cards) ── */
+.hb-gallery-marquee .-bottom-\[3px\]{bottom:3px}
+.hb-gallery-marquee .-left-\[3px\]{left:3px}
+.hb-gallery-marquee .-right-\[3px\]{right:3px}
+.hb-gallery-marquee .-top-\[3px\]{top:3px}
+.hb-gallery-marquee .-translate-y-6{transform:translateY(-1.5rem)}
+.hb-gallery-marquee .absolute{position:absolute}
+.hb-gallery-marquee .active\:cursor-grabbing:active{cursor:grabbing}
+.hb-gallery-marquee .animate-spin{animation:hb-g-spin 1s linear infinite}
+.hb-gallery-marquee .aspect-\[16\/9\]{aspect-ratio:16/9}
+.hb-gallery-marquee .aspect-\[2\/3\]{aspect-ratio:2/3}
+.hb-gallery-marquee .aspect-\[3\/4\]{aspect-ratio:3/4}
+.hb-gallery-marquee .aspect-\[4\/3\]{aspect-ratio:4/3}
+.hb-gallery-marquee .aspect-square{aspect-ratio:1/1}
+.hb-gallery-marquee .backdrop-blur-sm{backdrop-filter:blur(4px)}
+.hb-gallery-marquee .bg-\[\#0a0a0a\]{background:#0a0a0a}
+.hb-gallery-marquee .bg-\[\#0d99ff\]{background:#0d99ff}
+.hb-gallery-marquee .bg-\[\#28c840\]{background:#28c840}
+.hb-gallery-marquee .bg-\[\#9a9a9a\]{background:#9a9a9a}
+.hb-gallery-marquee .bg-\[\#b0b0b0\]{background:#b0b0b0}
+.hb-gallery-marquee .bg-\[\#c4c4c4\]{background:#c4c4c4}
+.hb-gallery-marquee .bg-\[\#d4d4d4\]{background:#d4d4d4}
+.hb-gallery-marquee .bg-\[\#d8d8d8\]{background:#d8d8d8}
+.hb-gallery-marquee .bg-\[\#ececec\]{background:#ececec}
+.hb-gallery-marquee .bg-\[\#efefef\]{background:#efefef}
+.hb-gallery-marquee .bg-\[\#f0f0f0\]{background:#f0f0f0}
+.hb-gallery-marquee .bg-\[\#f3f3f3\]{background:#f3f3f3}
+.hb-gallery-marquee .bg-\[\#f7e731\]{background:#f7e731}
+.hb-gallery-marquee .bg-\[\#fafafa\]{background:#fafafa}
+.hb-gallery-marquee .bg-\[\#febc2e\]{background:#febc2e}
+.hb-gallery-marquee .bg-\[\#ff5f57\]{background:#ff5f57}
+.hb-gallery-marquee .bg-background\/80{background-color:rgb(255 255 255 / 0.8)}
+.hb-gallery-marquee .bg-foreground{background-color:rgb(22 22 22)}
+.hb-gallery-marquee .bg-foreground\/25{background-color:rgb(22 22 22 / 0.25)}
+.hb-gallery-marquee .bg-gradient-to-b{background-image:linear-gradient(to bottom,var(--tw-gradient-from,transparent),var(--tw-gradient-to,transparent))}
+.hb-gallery-marquee .bg-gradient-to-t{background-image:linear-gradient(to top,var(--tw-gradient-from,transparent),var(--tw-gradient-to,transparent))}
+.hb-gallery-marquee .bg-ink{background-color:rgb(22 22 22)}
+.hb-gallery-marquee .bg-muted{background-color:rgb(247 247 247)}
+.hb-gallery-marquee .bg-secondary{background-color:rgb(247 247 247)}
+.hb-gallery-marquee .bg-white{background-color:rgb(255 255 255)}
+.hb-gallery-marquee .bg-white\/15{background-color:rgb(255 255 255 / 0.15)}
+.hb-gallery-marquee .bg-white\/\[0\.02\]{background-color:rgb(255 255 255 / NaN)}
+.hb-gallery-marquee .block{display:block}
+.hb-gallery-marquee .border{border-width:1px;border-style:solid;border-color:#e0e0e0}
+.hb-gallery-marquee .border-\[\#0d99ff\]{border-color:#0d99ff}
+.hb-gallery-marquee .border-\[\#9a9a9a\]{border-color:#9a9a9a}
+.hb-gallery-marquee .border-\[\#c8c8c8\]{border-color:#c8c8c8}
+.hb-gallery-marquee .border-\[\#cfcfcf\]{border-color:#cfcfcf}
+.hb-gallery-marquee .border-\[\#d0d0d0\]{border-color:#d0d0d0}
+.hb-gallery-marquee .border-\[\#ddd\]{border-color:#ddd}
+.hb-gallery-marquee .border-b{border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:currentColor}
+.hb-gallery-marquee .border-border{border-color:rgb(224 224 224)}
+.hb-gallery-marquee .border-border\/70{border-color:rgb(224 224 224 / 0.7)}
+.hb-gallery-marquee .border-t{border-top-width:1px;border-top-style:solid;border-top-color:currentColor}
+.hb-gallery-marquee .border-white{border-color:rgb(255 255 255)}
+.hb-gallery-marquee .border-white\/10{border-color:rgb(255 255 255 / 0.1)}
+.hb-gallery-marquee .border-white\/20{border-color:rgb(255 255 255 / 0.2)}
+.hb-gallery-marquee .bottom-0{bottom:0rem}
+.hb-gallery-marquee .bottom-8{bottom:2rem}
+.hb-gallery-marquee .bottom-\[3\%\]{bottom:3%}
+.hb-gallery-marquee .box-border{box-sizing:border-box}
+.hb-gallery-marquee .cursor-default{cursor:default}
+.hb-gallery-marquee .cursor-grab{cursor:grab}
+.hb-gallery-marquee .cursor-grabbing{cursor:grabbing}
+.hb-gallery-marquee .cursor-pointer{cursor:pointer}
+.hb-gallery-marquee .duration-100{transition-duration:100ms}
+.hb-gallery-marquee .duration-300{transition-duration:300ms}
+.hb-gallery-marquee .flex{display:flex}
+.hb-gallery-marquee .flex-1{flex:1 1 0%}
+.hb-gallery-marquee .flex-col{flex-direction:column}
+.hb-gallery-marquee .flex-wrap{flex-wrap:wrap}
+.hb-gallery-marquee .focus-visible\:ring-2:focus-visible{box-shadow:0 0 0 2px var(--honey)}
+.hb-gallery-marquee .font-medium{font-family:Inter,system-ui,sans-serif;font-weight:500}
+.hb-gallery-marquee .font-mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.hb-gallery-marquee .font-sans{font-family:Inter,system-ui,sans-serif}
+.hb-gallery-marquee .font-semibold{font-family:Inter,system-ui,sans-serif;font-weight:600}
+.hb-gallery-marquee .gap-0\.5{gap:0.125rem}
+.hb-gallery-marquee .gap-1{gap:0.25rem}
+.hb-gallery-marquee .gap-1\.5{gap:0.375rem}
+.hb-gallery-marquee .gap-2{gap:0.5rem}
+.hb-gallery-marquee .gap-2\.5{gap:0.625rem}
+.hb-gallery-marquee .gap-3{gap:0.75rem}
+.hb-gallery-marquee .gap-4{gap:1rem}
+.hb-gallery-marquee .gap-8{gap:2rem}
+.hb-gallery-marquee .grid{display:grid}
+.hb-gallery-marquee .grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.hb-gallery-marquee .grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.hb-gallery-marquee .grid-cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.hb-gallery-marquee .grid-cols-\[1\.05fr_0\.95fr\]{grid-template-columns:1.05fr 0.95fr}
+.hb-gallery-marquee .h-0\.5{height:0.125rem}
+.hb-gallery-marquee .h-1{height:0.25rem}
+.hb-gallery-marquee .h-1\.5{height:0.375rem}
+.hb-gallery-marquee .h-10{height:2.5rem}
+.hb-gallery-marquee .h-2{height:0.5rem}
+.hb-gallery-marquee .h-2\.5{height:0.625rem}
+.hb-gallery-marquee .h-\[1em\]{height:1em}
+.hb-gallery-marquee .h-\[58\%\]{height:58%}
+.hb-gallery-marquee .h-\[65\%\]{height:65%}
+.hb-gallery-marquee .h-auto{height:auto}
+.hb-gallery-marquee .h-full{height:100%}
+.hb-gallery-marquee .hidden{display:none}
+.hb-gallery-marquee .hover\:bg-\[\#f5f5f5\]:hover{background:#f5f5f5}
+.hb-gallery-marquee .hover\:border-\[\#a8a8a8\]:hover{border-color:#a8a8a8}
+.hb-gallery-marquee .hover\:border-\[\#bbb\]:hover{border-color:#bbb}
+.hb-gallery-marquee .hover\:border-white\/40:hover{border-color:rgb(255 255 255 / 0.4)}
+.hb-gallery-marquee .inline-block{display:inline-block}
+.hb-gallery-marquee .inset-0{inset:0rem}
+.hb-gallery-marquee .inset-\[5\.5\%\]{inset:5.5%}
+.hb-gallery-marquee .inset-\[6\%\]{inset:6%}
+.hb-gallery-marquee .inset-\[7\%\]{inset:7%}
+.hb-gallery-marquee .inset-\[9\%\]{inset:9%}
+.hb-gallery-marquee .items-center{align-items:center}
+.hb-gallery-marquee .items-end{align-items:flex-end}
+.hb-gallery-marquee .justify-between{justify-content:space-between}
+.hb-gallery-marquee .justify-center{justify-content:center}
+.hb-gallery-marquee .justify-end{justify-content:flex-end}
+.hb-gallery-marquee .justify-start{justify-content:flex-start}
+.hb-gallery-marquee .leading-\[0\.95\]{line-height:0.95}
+.hb-gallery-marquee .leading-\[1\.12\]{line-height:1.12}
+.hb-gallery-marquee .leading-\[1\.2\]{line-height:1.2}
+.hb-gallery-marquee .leading-none{line-height:1}
+.hb-gallery-marquee .leading-relaxed{line-height:1.625}
+.hb-gallery-marquee .leading-snug{line-height:1.375}
+.hb-gallery-marquee .leading-tight{line-height:1.25}
+.hb-gallery-marquee .left-\[7\%\]{left:7%}
+.hb-gallery-marquee .max-w-\[11\.5rem\]{max-width:11.5rem}
+.hb-gallery-marquee .max-w-\[16rem\]{max-width:16rem}
+.hb-gallery-marquee .mb-0\.5{margin-bottom:0.125rem}
+.hb-gallery-marquee .min-h-0{min-height:0rem}
+.hb-gallery-marquee .min-h-\[40\%\]{min-height:40%}
+.hb-gallery-marquee .min-w-0{min-width:0rem}
+.hb-gallery-marquee .min-w-\[2\.5rem\]{min-width:2.5rem}
+.hb-gallery-marquee .ml-0\.5{margin-left:0.125rem}
+.hb-gallery-marquee .ml-auto{margin-left:auto}
+.hb-gallery-marquee .mt-0\.5{margin-top:0.125rem}
+.hb-gallery-marquee .mt-1{margin-top:0.25rem}
+.hb-gallery-marquee .mt-1\.5{margin-top:0.375rem}
+.hb-gallery-marquee .mt-2{margin-top:0.5rem}
+.hb-gallery-marquee .mt-3{margin-top:0.75rem}
+.hb-gallery-marquee .object-cover{object-fit:cover}
+.hb-gallery-marquee .opacity-\[0\.35\]{opacity:0.35}
+.hb-gallery-marquee .outline-none{outline:none}
+.hb-gallery-marquee .overflow-hidden{overflow:hidden}
+.hb-gallery-marquee .overflow-visible{overflow:visible}
+.hb-gallery-marquee .p-1{padding:0.25rem}
+.hb-gallery-marquee .p-1\.5{padding:0.375rem}
+.hb-gallery-marquee .p-2\.5{padding:0.625rem}
+.hb-gallery-marquee .p-3{padding:0.75rem}
+.hb-gallery-marquee .p-3\.5{padding:0.875rem}
+.hb-gallery-marquee .p-5{padding:1.25rem}
+.hb-gallery-marquee .pb-0\.5{padding-bottom:0.125rem}
+.hb-gallery-marquee .pointer-events-none{pointer-events:none}
+.hb-gallery-marquee .pt-3{padding-top:0.75rem}
+.hb-gallery-marquee .px-0\.5{padding-left:0.125rem;padding-right:0.125rem}
+.hb-gallery-marquee .px-1{padding-left:0.25rem;padding-right:0.25rem}
+.hb-gallery-marquee .px-1\.5{padding-left:0.375rem;padding-right:0.375rem}
+.hb-gallery-marquee .px-2{padding-left:0.5rem;padding-right:0.5rem}
+.hb-gallery-marquee .px-2\.5{padding-left:0.625rem;padding-right:0.625rem}
+.hb-gallery-marquee .px-3{padding-left:0.75rem;padding-right:0.75rem}
+.hb-gallery-marquee .px-4{padding-left:1rem;padding-right:1rem}
+.hb-gallery-marquee .px-6{padding-left:1.5rem;padding-right:1.5rem}
+.hb-gallery-marquee .py-1{padding-top:0.25rem;padding-bottom:0.25rem}
+.hb-gallery-marquee .py-1\.5{padding-top:0.375rem;padding-bottom:0.375rem}
+.hb-gallery-marquee .py-2{padding-top:0.5rem;padding-bottom:0.5rem}
+.hb-gallery-marquee .py-24{padding-top:6rem;padding-bottom:6rem}
+.hb-gallery-marquee .relative{position:relative}
+.hb-gallery-marquee .right-5{right:1.25rem}
+.hb-gallery-marquee .right-\[8\%\]{right:8%}
+.hb-gallery-marquee .rounded{border-radius:4px}
+.hb-gallery-marquee .rounded-\[1\.35rem\]{border-radius:1.35rem}
+.hb-gallery-marquee .rounded-\[1px\]{border-radius:1px}
+.hb-gallery-marquee .rounded-\[2px\]{border-radius:2px}
+.hb-gallery-marquee .rounded-full{border-radius:999px}
+.hb-gallery-marquee .rounded-sm{border-radius:2px}
+.hb-gallery-marquee .select-none{user-select:none}
+.hb-gallery-marquee .shadow-\[0_0_0_1px_\#0d99ff\]{box-shadow:0 0 0 1px #0d99ff}
+.hb-gallery-marquee .shadow-\[0_0_8px_rgba\(247\,231\,49\,0\.7\)\]{box-shadow:0 0 8px rgba(247,231,49,0.7)}
+.hb-gallery-marquee .shadow-\[0_1px_4px_rgba\(0\,0\,0\,0\.06\)\]{box-shadow:0 1px 4px rgba(0,0,0,0.06)}
+.hb-gallery-marquee .shadow-sm{box-shadow:0 1px 2px rgb(0 0 0/.06)}
+.hb-gallery-marquee .shrink-0{flex-shrink:0}
+.hb-gallery-marquee .size-1{width:0.25rem;height:0.25rem}
+.hb-gallery-marquee .size-1\.5{width:0.375rem;height:0.375rem}
+.hb-gallery-marquee .size-2\.5{width:0.625rem;height:0.625rem}
+.hb-gallery-marquee .size-6{width:1.5rem;height:1.5rem}
+.hb-gallery-marquee .size-\[28\%\]{width:28%;height:28%}
+.hb-gallery-marquee .size-\[5px\]{width:5px;height:5px}
+.hb-gallery-marquee .size-full{width:full;height:full}
+.hb-gallery-marquee .text-\[\#444\]{font-size:#444}
+.hb-gallery-marquee .text-\[\#666\]{font-size:#666}
+.hb-gallery-marquee .text-\[\#777\]{font-size:#777}
+.hb-gallery-marquee .text-\[\#888\]{font-size:#888}
+.hb-gallery-marquee .text-\[\#999\]{font-size:#999}
+.hb-gallery-marquee .text-\[\#a8a8a8\]{font-size:#a8a8a8}
+.hb-gallery-marquee .text-\[\#bbb\]{font-size:#bbb}
+.hb-gallery-marquee .text-\[\#f7e731\]{font-size:#f7e731}
+.hb-gallery-marquee .text-\[0\.45rem\]{font-size:0.45rem}
+.hb-gallery-marquee .text-\[0\.55rem\]{font-size:0.55rem}
+.hb-gallery-marquee .text-\[0\.58rem\]{font-size:0.58rem}
+.hb-gallery-marquee .text-\[0\.5rem\]{font-size:0.5rem}
+.hb-gallery-marquee .text-\[0\.625rem\]{font-size:0.625rem}
+.hb-gallery-marquee .text-\[0\.68rem\]{font-size:0.68rem}
+.hb-gallery-marquee .text-\[0\.6rem\]{font-size:0.6rem}
+.hb-gallery-marquee .text-\[0\.72rem\]{font-size:0.72rem}
+.hb-gallery-marquee .text-\[0\.85rem\]{font-size:0.85rem}
+.hb-gallery-marquee .text-\[0\.8rem\]{font-size:0.8rem}
+.hb-gallery-marquee .text-\[0\.95rem\]{font-size:0.95rem}
+.hb-gallery-marquee .text-\[1\.35rem\]{font-size:1.35rem}
+.hb-gallery-marquee .text-\[1\.55rem\]{font-size:1.55rem}
+.hb-gallery-marquee .text-\[clamp\(0\.5rem\,1\.35vw\,0\.68rem\)\]{font-size:clamp(0.5rem,1.35vw,0.68rem)}
+.hb-gallery-marquee .text-\[clamp\(1\.35rem\,3\.2vw\,1\.85rem\)\]{font-size:clamp(1.35rem,3.2vw,1.85rem)}
+.hb-gallery-marquee .text-\[clamp\(1\.35rem\,5\.2vw\,2\.05rem\)\]{font-size:clamp(1.35rem,5.2vw,2.05rem)}
+.hb-gallery-marquee .text-background{color:rgb(255 255 255)}
+.hb-gallery-marquee .text-center{text-align:center}
+.hb-gallery-marquee .text-foreground{color:rgb(22 22 22)}
+.hb-gallery-marquee .text-ink{color:rgb(22 22 22)}
+.hb-gallery-marquee .text-left{text-align:left}
+.hb-gallery-marquee .text-muted-foreground{color:rgb(108 110 116)}
+.hb-gallery-marquee .text-right{text-align:right}
+.hb-gallery-marquee .text-white{color:rgb(255 255 255)}
+.hb-gallery-marquee .text-white\/25{color:rgb(255 255 255 / 0.25)}
+.hb-gallery-marquee .text-white\/30{color:rgb(255 255 255 / 0.3)}
+.hb-gallery-marquee .text-white\/35{color:rgb(255 255 255 / 0.35)}
+.hb-gallery-marquee .text-white\/40{color:rgb(255 255 255 / 0.4)}
+.hb-gallery-marquee .text-white\/45{color:rgb(255 255 255 / 0.45)}
+.hb-gallery-marquee .text-white\/55{color:rgb(255 255 255 / 0.55)}
+.hb-gallery-marquee .text-white\/70{color:rgb(255 255 255 / 0.7)}
+.hb-gallery-marquee .text-white\/75{color:rgb(255 255 255 / 0.75)}
+.hb-gallery-marquee .text-white\/80{color:rgb(255 255 255 / 0.8)}
+.hb-gallery-marquee .text-white\/85{color:rgb(255 255 255 / 0.85)}
+.hb-gallery-marquee .top-0{top:0rem}
+.hb-gallery-marquee .top-\[10\%\]{top:10%}
+.hb-gallery-marquee .top-\[2\.5\%\]{top:2.5%}
+.hb-gallery-marquee .top-\[8\%\]{top:8%}
+.hb-gallery-marquee .touch-none{touch-action:none}
+.hb-gallery-marquee .tracking-\[-0\.01em\]{letter-spacing:-0.01em}
+.hb-gallery-marquee .tracking-\[-0\.02em\]{letter-spacing:-0.02em}
+.hb-gallery-marquee .tracking-\[-0\.03em\]{letter-spacing:-0.03em}
+.hb-gallery-marquee .tracking-\[-0\.04em\]{letter-spacing:-0.04em}
+.hb-gallery-marquee .tracking-\[0\.04em\]{letter-spacing:0.04em}
+.hb-gallery-marquee .tracking-\[0\.12em\]{letter-spacing:0.12em}
+.hb-gallery-marquee .tracking-\[0\.14em\]{letter-spacing:0.14em}
+.hb-gallery-marquee .tracking-\[0\.16em\]{letter-spacing:0.16em}
+.hb-gallery-marquee .tracking-\[0\.1em\]{letter-spacing:0.1em}
+.hb-gallery-marquee .transition-\[box-shadow\,border-color\]{transition-property:box-shadow, border-color}
+.hb-gallery-marquee .transition-all{transition-property:all}
+.hb-gallery-marquee .transition-colors{transition-property:color,background-color,border-color}
+.hb-gallery-marquee .translate-y-0{transform:translateY(0rem)}
+.hb-gallery-marquee .translate-y-6{transform:translateY(1.5rem)}
+.hb-gallery-marquee .translate-y-\[0\.1em\]{transform:translateY(0.1em)}
+.hb-gallery-marquee .truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hb-gallery-marquee .uppercase{text-transform:uppercase}
+.hb-gallery-marquee .w-\[0\.45em\]{width:0.45em}
+.hb-gallery-marquee .w-\[12\%\]{width:12%}
+.hb-gallery-marquee .w-\[14\%\]{width:14%}
+.hb-gallery-marquee .w-\[16\%\]{width:16%}
+.hb-gallery-marquee .w-\[18\%\]{width:18%}
+.hb-gallery-marquee .w-\[20\%\]{width:20%}
+.hb-gallery-marquee .w-\[32\%\]{width:32%}
+.hb-gallery-marquee .w-\[36\%\]{width:36%}
+.hb-gallery-marquee .w-\[42\%\]{width:42%}
+.hb-gallery-marquee .w-\[48\%\]{width:48%}
+.hb-gallery-marquee .w-\[65\%\]{width:65%}
+.hb-gallery-marquee .w-\[70\%\]{width:70%}
+.hb-gallery-marquee .w-\[82\%\]{width:82%}
+.hb-gallery-marquee .w-\[86\%\]{width:86%}
+.hb-gallery-marquee .w-\[92\%\]{width:92%}
+.hb-gallery-marquee .w-\[clamp\(15rem\,30vw\,21rem\)\]{width:clamp(15rem,30vw,21rem)}
+.hb-gallery-marquee .w-\[clamp\(16rem\,32vw\,23rem\)\]{width:clamp(16rem,32vw,23rem)}
+.hb-gallery-marquee .w-\[clamp\(17rem\,34vw\,25rem\)\]{width:clamp(17rem,34vw,25rem)}
+.hb-gallery-marquee .w-\[clamp\(22rem\,44vw\,34rem\)\]{width:clamp(22rem,44vw,34rem)}
+.hb-gallery-marquee .w-\[clamp\(24rem\,50vw\,38rem\)\]{width:clamp(24rem,50vw,38rem)}
+.hb-gallery-marquee .w-full{width:100%}
+.hb-gallery-marquee .will-change-transform{will-change:transform}
+.hb-gallery-marquee .z-10{z-index:10}
+.hb-gallery-marquee .z-20{z-index:20}
+.hb-gallery-marquee .z-\[1\]{z-index:1}
+@media(min-width:768px){
+.hb-gallery-marquee .md\:-translate-y-10{transform:translateY(-2.5rem)}
+.hb-gallery-marquee .md\:bottom-10{bottom:2.5rem}
+.hb-gallery-marquee .md\:flex{display:flex}
+.hb-gallery-marquee .md\:gap-11{gap:2.75rem}
+.hb-gallery-marquee .md\:gap-3{gap:0.75rem}
+.hb-gallery-marquee .md\:p-3\.5{padding:0.875rem}
+.hb-gallery-marquee .md\:p-4{padding:1rem}
+.hb-gallery-marquee .md\:p-6{padding:1.5rem}
+.hb-gallery-marquee .md\:px-10{padding-left:2.5rem;padding-right:2.5rem}
+.hb-gallery-marquee .md\:py-28{padding-top:7rem;padding-bottom:7rem}
+.hb-gallery-marquee .md\:right-8{right:2rem}
+.hb-gallery-marquee .md\:rounded-\[1\.75rem\]{border-radius:1.75rem}
+.hb-gallery-marquee .md\:text-\[0\.72rem\]{font-size:0.72rem}
+.hb-gallery-marquee .md\:text-\[0\.8rem\]{font-size:0.8rem}
+.hb-gallery-marquee .md\:translate-y-10{transform:translateY(2.5rem)}
+}
+@media(min-width:1024px){
+.hb-gallery-marquee .lg\:gap-14{gap:3.5rem}
+.hb-gallery-marquee .lg\:px-14{padding-left:3.5rem;padding-right:3.5rem}
+}
+@keyframes hb-g-spin{to{transform:rotate(360deg)}}

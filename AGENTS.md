@@ -8,6 +8,10 @@ built as the foundation for a custom component CMS.
 - Next.js 15 (App Router) + React 19 + TypeScript
 - GSAP + ScrollTrigger (the pinned "challenges" scroll animation)
 - No Tailwind — single `src/app/globals.css` with design tokens as CSS vars
+  (+ `menu.css`/`hero.css`/`gallery.css` for the ported v3 components; their
+  Tailwind classes are re-emitted as scoped utility rules — see "scoped
+  utility layer" comment at the bottom of `gallery.css`)
+- `peerjs` — lazy-loaded only when the Pong card looks for an online match
 
 ## Commands
 
@@ -34,6 +38,7 @@ with a fetch, keep the types.
 | `twoColumns`    | `TwoColumns`       | image 512px + h4 + blue CTA                  |
 | `hire`          | `Hire`             | 3-col card grid + blue CTA                   |
 | `featureBanner` | `FeatureBanner`    | grey split banner (AI Readiness Report)      |
+| `gallery`       | `GalleryMarquee`   | infinite drag-scrub strip; image/video + live tiles (cli, ascii, invaders, pong/peerjs, studio, vinyl, wireframe, brands); `items[]` per card: id/kind/src/title/blurb/format/offset |
 
 Chrome-level: `SiteNav` (pill nav + fullscreen overlay menu, client),
 `SiteFooter`, shared `EmailCopyButton`, `ArrowIcon` variants.
@@ -294,4 +299,26 @@ the ghost typewriter (per-char fade/deblur/rise) with `aiType` pentatonic
 ticks; `aiStart`/`enter`/`key`/`del` round out the sound set. Voice/TTS
 was tried (Gemini via `/api/site-tts`) and removed — git history has it if
 it ever comes back.
+
+### Gallery marquee (type `gallery`)
+
+`src/components/gallery/` — ported from `Humblebeev3/docs/agent-components/04-gallery-marquee`
+(the package's Tailwind classes are re-emitted as a scoped utility layer at
+the bottom of `src/app/gallery.css` — all selectors prefixed
+`.hb-gallery-marquee`; `cn()` → `gallery/lib/utils.ts`; `peerjs` is lazy —
+only `import()`ed when the Pong card searches for an online opponent).
+
+Infinite horizontal strip, offset-drift transform loop (not `scrollLeft`),
+drag-scrub with fling physics, duplicated items for seamless wrap. Cards:
+`image`/`video` (hover plays, leaves reset) + live tiles — `cli` (typing
+terminal), `ascii` (shape-morph generator), `game` (Space Invaders),
+`pong` (vs CPU or online via PeerJS cloud), `studio` (local
+time/weather HUD), `vinyl` (tonearm + `public/audio/vinyl-loop.mp3`),
+`wireframe` (draggable layout blocks + dice), `brands` (name reel),
+`portfolio` (case card; `tags` accepts `string[]` or comma-string from the
+inspector). Hover shows `hb-gallery-caption` below the card; hovering a
+`data-playable` card pauses the strip. CMS surface: `items[]` (id, kind,
+src/webm, title/blurb caption, meta, format portrait|tall|square|
+landscape|wide, offset up|mid|down) + `speed` px/s. Emits
+`data-section="gallery"` + `data-page-tone="white"`.
 

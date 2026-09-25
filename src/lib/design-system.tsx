@@ -34,6 +34,7 @@ import { CustomSectionRenderer } from "@/components/CustomSection";
 import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
 import { Hero } from "@/components/hero/hero";
+import { GalleryMarquee, HOME_GALLERY_ITEMS } from "@/components/gallery/gallery-marquee";
 import { Challenges } from "@/components/Challenges";
 import { StrategyMoves } from "@/components/StrategyMoves";
 import { Programs } from "@/components/Programs";
@@ -398,6 +399,21 @@ const BUILTIN_LEVELS: DsLevel[] = [
         responsive: "fluid clamp() type; thread scrolls inside min-height",
         embed: true,
         height: 700,
+      },
+      {
+        id: "gallery",
+        refs: [],
+        pageHref: "/",
+
+        name: "Gallery Marquee",
+        file: "src/components/gallery/gallery-marquee.tsx",
+        blurb:
+          "Infinite draggable strip — case images + hover-play video + live tiles (CLI terminal, ASCII generator, Space Invaders, online Pong, vinyl deck, wireframe board, brands reel). Hover slides a caption out from under the card; playable cards pause the strip.",
+        composedOf: "viewport (drag scrub) + track (duplicated items) + cards + captions + progress dots",
+        content: "Section[type=gallery].items — id/kind/src/title/blurb/format/offset per card",
+        responsive: "fluid clamp() card widths; md/lg gaps + paddings via scoped utilities",
+        embed: true,
+        height: 640,
       },
       {
         id: "challenges",
@@ -879,6 +895,7 @@ export const EMBEDS: Record<string, () => ReactNode> = {
   /* sections */
   "site-nav": () => <SiteNav content={navContent} />,
   hero: () => <Hero section={sec<HeroSection>("hero")} />,
+  gallery: () => <GalleryMarquee items={HOME_GALLERY_ITEMS} />,
   challenges: () => <Challenges section={sec<ChallengesSection>("challenges")} />,
   "strategy-moves": () => <StrategyMoves section={sec<StrategyMovesSection>("strategyMoves")} />,
   programs: () => <Programs section={sec<ProgramsSection>("programs")} />,
