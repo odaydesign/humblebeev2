@@ -509,7 +509,20 @@ select.st-in {
 .st-in .st-lbl { text-transform: none; }
 .st-ta { resize: vertical; font-family: inherit; line-height: 1.5; }
 .st-img { display: flex; gap: 8px; align-items: flex-start; }
+.st-img-row { display: flex; gap: 6px; flex: 1; min-width: 0; }
 .st-img .st-in { flex: 1; font-size: 12px; }
+.st-upload {
+  flex: none;
+  width: 30px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm, 7px);
+  background: var(--surface, #fff);
+  color: var(--grey);
+  font-size: 13px;
+  cursor: pointer;
+}
+.st-upload:hover { color: var(--blue); border-color: var(--blue); }
+.st-upload:disabled { opacity: 0.5; cursor: wait; }
 .st-thumb {
   width: 48px;
   height: 36px;

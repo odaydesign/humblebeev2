@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type { Field, SectionSchema } from "@/lib/section-schemas";
 import { getPath, setPath } from "@/lib/section-schemas";
 
@@ -10,6 +10,68 @@ interface Props {
   assets: string[];
   slugs: string[];
   onChange: (next: any) => void;
+}
+
+/** Image field: text input w/ asset datalist + thumbnail + file upload
+ *  (POST /api/cms/upload → /uploads/<file>). */
+function ImgCtl({ v, onSet }: { v: any; onSet: (src: string) => void }) {
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [busy, setBusy] = useState(false);
+  const src = v?.src ?? v ?? "";
+  const upload = async (file: File) => {
+    setBusy(true);
+    try {
+      const data = await new Promise<string>((res, rej) => {
+        const r = new FileReader();
+        r.onload = () => res(String(r.result));
+        r.onerror = rej;
+        r.readAsDataURL(file);
+      });
+      const res = await fetch("/api/cms/upload", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ name: file.name, data }),
+      });
+      const j = await res.json();
+      if (res.ok && j.path) onSet(j.path);
+    } finally {
+      setBusy(false);
+    }
+  };
+  return (
+    <div className="st-img">
+      <div className="st-img-row">
+        <input
+          className="st-in"
+          type="text"
+          value={src}
+          list="hb-assets"
+          placeholder="/assets/images/…"
+          onChange={(e) => onSet(e.target.value)}
+        />
+        <button
+          type="button"
+          className="st-upload"
+          disabled={busy}
+          onClick={() => fileRef.current?.click()}
+        >
+          {busy ? "…" : "⬆"}
+        </button>
+        <input
+          ref={fileRef}
+          type="file"
+          accept="image/*"
+          hidden
+          onChange={(e) => {
+            const f = e.target.files?.[0];
+            if (f) void upload(f);
+            e.target.value = "";
+          }}
+        />
+      </div>
+      {src && <img className="st-thumb" src={src} alt="" />}
+    </div>
+  );
 }
 
 /** Schema-driven property editor — renders form controls for every field
@@ -44,19 +106,12 @@ export function Inspector({ section, schema, assets, slugs, onChange }: Props) {
         );
       case "image":
         return (
-          <div className="st-img">
-            <input
-              className="st-in"
-              type="text"
-              value={v?.src ?? v ?? ""}
-              list="hb-assets"
-              placeholder="/assets/images/…"
-              onChange={(e) => set(path + ".src", e.target.value)}
-            />
-            {(v?.src || v) && (
-              <img className="st-thumb" src={v?.src ?? v} alt="" />
-            )}
-          </div>
+          <ImgCtl
+            v={v}
+            onSet={(src) =>
+              set(v && typeof v === "object" ? path + ".src" : path, src)
+            }
+          />
         );
       case "href":
         return (
