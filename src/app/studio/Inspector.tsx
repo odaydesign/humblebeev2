@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import type { Field, SectionSchema } from "@/lib/section-schemas";
 import { getPath, setPath } from "@/lib/section-schemas";
 
@@ -15,6 +16,9 @@ interface Props {
  *  in the section schema and writes edits back through dot-paths. */
 export function Inspector({ section, schema, assets, slugs, onChange }: Props) {
   const set = (path: string, v: any) => onChange(setPath(section, path, v));
+  const [open, setOpen] = useState<Record<string, boolean>>({});
+  const toggle = (k: string, dflt: boolean) =>
+    setOpen((o) => ({ ...o, [k]: !(o[k] ?? dflt) }));
 
   const ctl = (f: Field, path: string) => {
     const v = getPath(section, path);
@@ -146,8 +150,19 @@ export function Inspector({ section, schema, assets, slugs, onChange }: Props) {
       case "list": {
         const arr = (getPath(section, path) as any[]) ?? [];
         const scalar = f.fields.length === 1 && f.fields[0].k === "";
-        const add = () =>
-          set(path, [...arr, arr.length ? structuredClone(arr[arr.length - 1]) : scalar ? "" : {}]);
+        const add = () => {
+          set(path, [
+            ...arr,
+            f.newItem
+              ? f.newItem()
+              : arr.length
+                ? structuredClone(arr[arr.length - 1])
+                : scalar
+                  ? ""
+                  : {},
+          ]);
+          setOpen((o) => ({ ...o, [`${path}.${arr.length}`]: true }));
+        };
         const move = (i: number, dir: -1 | 1) => {
           const j = i + dir;
           if (j < 0 || j >= arr.length) return;
@@ -155,34 +170,66 @@ export function Inspector({ section, schema, assets, slugs, onChange }: Props) {
           [next[i], next[j]] = [next[j], next[i]];
           set(path, next);
         };
+        const many = arr.length > 4; // long lists start collapsed
+        const summary = (v: any, i: number) =>
+          f.summary?.(v, i) ??
+          (v?.title ?? v?.id ?? v?.label ?? v?.name ?? `${f.item} ${i + 1}`);
         return (
           <div className="st-list">
-            {arr.map((_, i) => (
-              <div className="st-item" key={i}>
-                <div className="st-item-head">
-                  <span>
-                    {f.item} {i + 1}
-                  </span>
-                  <span className="st-item-tools">
-                    <button title="Move up" onClick={() => move(i, -1)}>↑</button>
-                    <button title="Move down" onClick={() => move(i, 1)}>↓</button>
-                    <button
-                      title="Remove"
-                      className="st-del"
-                      onClick={() => set(path, arr.filter((_, j) => j !== i))}
+            {arr.map((v, i) => {
+              const ok = `${path}.${i}`;
+              const isOpen = open[ok] ?? !many;
+              return (
+                <div className={`st-item${isOpen ? " open" : ""}`} key={i}>
+                  <div
+                    className="st-item-head st-item-toggle"
+                    role="button"
+                    onClick={() => toggle(ok, !many)}
+                  >
+                    <span className={`st-caret${isOpen ? " open" : ""}`}>▸</span>
+                    <span className="st-item-name" title={String(summary(v, i))}>
+                      {summary(v, i)}
+                    </span>
+                    <span
+                      className="st-item-tools"
+                      onClick={(e) => e.stopPropagation()}
                     >
-                      ✕
-                    </button>
-                  </span>
+                      <button title="Move up" onClick={() => move(i, -1)}>↑</button>
+                      <button title="Move down" onClick={() => move(i, 1)}>↓</button>
+                      <button
+                        title="Duplicate"
+                        onClick={() => {
+                          const clone = structuredClone(v);
+                          if (clone && typeof clone === "object" && clone.id)
+                            clone.id = `${clone.id}-copy`;
+                          set(path, [
+                            ...arr.slice(0, i + 1),
+                            clone,
+                            ...arr.slice(i + 1),
+                          ]);
+                        }}
+                      >
+                        ⧉
+                      </button>
+                      <button
+                        title="Remove"
+                        className="st-del"
+                        onClick={() => set(path, arr.filter((_, j) => j !== i))}
+                      >
+                        ✕
+                      </button>
+                    </span>
+                  </div>
+                  {isOpen &&
+                    f.fields.map((sf) => (
+                      <label className="st-field" key={sf.k || "value"}>
+                        {!scalar && <span className="st-lbl">{sf.l}</span>}
+                        {ctl(sf, scalar ? `${path}.${i}` : `${path}.${i}.${sf.k}`)}
+                      </label>
+                    ))}
                 </div>
-                {f.fields.map((sf) => (
-                  <label className="st-field" key={sf.k || "value"}>
-                    {!scalar && <span className="st-lbl">{sf.l}</span>}
-                    {ctl(sf, scalar ? `${path}.${i}` : `${path}.${i}.${sf.k}`)}
-                  </label>
-                ))}
-              </div>
-            ))}
+              );
+            })}
             <button className="st-add" onClick={add}>
               + Add {f.item}
             </button>

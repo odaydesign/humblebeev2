@@ -101,9 +101,14 @@ A canvas-first CMS for section-based pages. Three-column layout: Add/Pages
 - **`src/lib/section-schemas.ts`** — the editor contract: per section
   type, declarative `fields` (text/textarea/image/href/email/select/
   switch/cta/list with nested item fields), palette metadata, `unique`
-  rule (hero max 1), `make()` factory. Add a `type` to `Section` in
-  content.ts + a `SectionRenderer` case + a schema here to make it
-  editable.
+  rule (hero max 1), `make()` factory. `list` fields may add `summary`
+  (collapsed-item label) and `newItem` (factory for "+ Add"). Add a
+  `type` to `Section` in content.ts + a `SectionRenderer` case + a
+  schema here to make it editable.
+- **Inspector lists** — items are collapsible (lists >4 items start
+  collapsed; click the header to expand/edit); header rows carry
+  ↑↓ sort, ⧉ duplicate, ✕ delete. "+ Add" inserts `newItem()` and
+  auto-opens it.
 - **Canvas** `src/app/studio/preview/page.tsx` — renders the working doc
   with real `SiteNav`/`SiteFooter`/`SectionRenderer`; postMessage
   protocol: `{hbDoc}` in, `{hbSel}` in, `{hbReady}`/`{hbSelect}`/

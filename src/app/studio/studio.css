@@ -545,12 +545,30 @@ select.st-in {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 6px;
   font-size: 10.5px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--grey-2);
 }
+.st-item-toggle { cursor: pointer; user-select: none; }
+.st-item-toggle:hover .st-item-name { color: var(--ink); }
+.st-caret {
+  flex: none;
+  font-size: 9px;
+  transition: transform 0.15s;
+  color: var(--grey);
+}
+.st-caret.open { transform: rotate(90deg); }
+.st-item-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.st-item:not(.open) { gap: 0; padding: 9px 12px; }
 .st-item-tools button {
   border: 0;
   background: none;

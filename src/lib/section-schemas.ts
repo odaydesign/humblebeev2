@@ -36,7 +36,17 @@ export type Field =
   | { k: string; l: string; t: "text" | "textarea" | "image" | "href" | "email"; hint?: string }
   | { k: string; l: string; t: "select"; options: { v: string; l: string }[] }
   | { k: string; l: string; t: "switch" }
-  | { k: string; l: string; t: "list"; item: string; fields: Field[] }
+  | {
+      k: string;
+      l: string;
+      t: "list";
+      item: string;
+      fields: Field[];
+      /** one-line label for a collapsed item (defaults to title/id/name) */
+      summary?: (v: any, i: number) => string;
+      /** fresh item for "+ Add" (defaults to cloning the last item) */
+      newItem?: () => any;
+    }
   | { k: string; l: string; t: "group"; fields: Field[] }
   | { k: string; l: string; t: "cta" };
 
@@ -251,6 +261,17 @@ const BUILTIN_SCHEMAS: SectionSchema[] = [
       { k: "speed", l: "Cruise speed (px/s, empty = 38)", t: "text" },
       {
         k: "items", l: "Cards", t: "list", item: "card",
+        summary: (c) =>
+          `${{ image: "🖼", video: "🎬", cli: "⌨", ascii: "▒", game: "👾", pong: "🏓", portfolio: "▣", studio: "◉", vinyl: "●", wireframe: "▤", brands: "∞" }[c?.kind as string] ?? "▢"} ${c?.title || c?.id || "Untitled"} · ${c?.kind ?? "image"} · ${c?.format ?? "square"}`,
+        newItem: () => ({
+          id: `card-${Date.now().toString(36)}`,
+          kind: "image",
+          src: "",
+          title: "New card",
+          blurb: "",
+          format: "square",
+          offset: "mid",
+        }),
         fields: [
           { k: "id", l: "Id", t: "text" },
           {
