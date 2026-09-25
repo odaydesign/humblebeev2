@@ -276,8 +276,12 @@ export function Hero({ section }: { section: HeroSection }) {
     });
   }
 
-  /* ── spoken reply — Flux TTS via /api/site-tts, fetched in parallel
-        with the typewriter and played when it finishes ── */
+  /* ── spoken reply — Gemini TTS via /api/site-tts. Fetched while the
+        "thinking" dots show; when it lands, playback starts and the
+        typewriter paces itself to the audio duration — you hear the
+        words as they type. ── */
+  type AudioJob = { el: HTMLAudioElement; url: string; duration: number };
+
   const audioRef = React.useRef<HTMLAudioElement | null>(null);
   const audioUrlRef = React.useRef<string | null>(null);
 
@@ -298,7 +302,7 @@ export function Hero({ section }: { section: HeroSection }) {
       .trim();
   }
 
-  function fetchAudio(text: string): Promise<string | null> {
+  function fetchAudio(text: string): Promise<AudioJob | null> {
     if (muted || reduce) return Promise.resolve(null);
     const spoken = speakable(text);
     if (!spoken) return Promise.resolve(null);
@@ -307,47 +311,79 @@ export function Hero({ section }: { section: HeroSection }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ text: spoken }),
     })
-      .then(async (r) => (r.ok ? URL.createObjectURL(await r.blob()) : null))
+      .then(async (r) => {
+        if (!r.ok) return null;
+        const url = URL.createObjectURL(await r.blob());
+        const el = new Audio(url);
+        const duration = await new Promise<number>((res) => {
+          el.onloadedmetadata = () => res(el.duration || 0);
+          window.setTimeout(() => res(0), 2000);
+        });
+        return { el, url, duration };
+      })
       .catch(() => null);
   }
 
-  function playAudio(url: string | null) {
-    if (!url || muted) return;
+  function startAudio(job: AudioJob | null) {
+    if (!job || muted) return;
     stopAudio();
-    audioUrlRef.current = url;
-    const a = new Audio(url);
-    audioRef.current = a;
-    a.play().catch(() => {});
+    audioUrlRef.current = job.url;
+    audioRef.current = job.el;
+    job.el.play().catch(() => {});
   }
 
-  function stream(body: string, links: OutLink[], audioP?: Promise<string | null>) {
-    const done = () => {
+  function stream(body: string, links: OutLink[], audioP?: Promise<AudioJob | null>) {
+    const finish = () => {
       patchLastAI(body, false, links);
       setResponding(false);
-      audioP?.then(playAudio);
     };
-    if (reduce) {
-      done();
+
+    const begin = (audio: AudioJob | null) => {
+      if (reduce) {
+        finish();
+        return;
+      }
+      sound.aiStart();
+      // Pace the typewriter to the voice: chars land as they're spoken.
+      const perChar =
+        audio && audio.duration > 0
+          ? Math.max(14, Math.min(90, (audio.duration * 1000) / body.length))
+          : 16 + Math.random() * 24;
+      let i = 0;
+      let lastTickAt = 0;
+      const step = () => {
+        i += 1;
+        patchLastAI(body.slice(0, i), i < body.length);
+        const ch = body[i - 1];
+        if (ch && ch !== " " && performance.now() - lastTickAt > 90) {
+          sound.aiType();
+          lastTickAt = performance.now();
+        }
+        if (i < body.length) {
+          timer.current = window.setTimeout(step, perChar);
+        } else {
+          finish();
+        }
+      };
+      if (audio) startAudio(audio);
+      step();
+    };
+
+    if (!audioP) {
+      begin(null);
       return;
     }
-    sound.aiStart();
-    let i = 0;
-    let lastTickAt = 0;
-    const step = () => {
-      i += 1;
-      patchLastAI(body.slice(0, i), i < body.length);
-      const ch = body[i - 1];
-      if (ch && ch !== " " && performance.now() - lastTickAt > 90) {
-        sound.aiType();
-        lastTickAt = performance.now();
-      }
-      if (i < body.length) {
-        timer.current = window.setTimeout(step, 16 + Math.random() * 24);
+    // Wait for the voice (thinking dots still showing), capped — if TTS is
+    // slow, start typing anyway and let the late audio play on arrival.
+    const cap = new Promise<null>((res) => window.setTimeout(() => res(null), 3500));
+    Promise.race([audioP, cap]).then((audio) => {
+      if (audio && !muted) {
+        begin(audio);
       } else {
-        done();
+        audioP.then((a) => a && startAudio(a)); // late audio still speaks
+        begin(null);
       }
-    };
-    step();
+    });
   }
 
   // Real reply via /api/site-chat; the keyword replyFor stays as the silent
