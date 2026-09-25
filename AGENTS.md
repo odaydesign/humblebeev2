@@ -287,14 +287,11 @@ renders them as **link cards** under the reply — enriched via
 cases, utility pages; unknown paths get a generic card). Cards appear
 after the typewriter finishes.
 
-**Spoken replies (synced)** — answers are spoken aloud via `/api/site-tts`
-→ OpenRouter `google/gemini-3.8-flash-lite-tts` (env:
-`OPENROUTER_TTS_MODEL`, `OPENROUTER_TTS_VOICE` default `Zephyr`,
-`OPENROUTER_TTS_RATE` default 24000). Gemini TTS returns raw PCM — the
-route wraps it in a WAV header server-side. Sync: the TTS fetch runs
-while the "thinking" dots show (3.5s cap); when audio lands, playback
-starts and the typewriter paces to `duration/chars` — you hear each word
-as it types. Late audio still plays on arrival; muted/reduced-motion skip
-synthesis entirely; muting mid-play stops it. TTS bucket: 10 req/min/IP,
-1500-char cap.
+**Thinking state** — while the reply is fetched+streamed the AI message
+shows a miniature caret boot (`BootThink`): honey glow orbiting the ink
+dot, looping — matches the load-in caret language. Replies stream through
+the ghost typewriter (per-char fade/deblur/rise) with `aiType` pentatonic
+ticks; `aiStart`/`enter`/`key`/`del` round out the sound set. Voice/TTS
+was tried (Gemini via `/api/site-tts`) and removed — git history has it if
+it ever comes back.
 

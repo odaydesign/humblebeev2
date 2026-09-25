@@ -365,3 +365,43 @@
 @media (prefers-reduced-motion: reduce) {
   .hb-ghost-c { animation: none; }
 }
+
+/* ── thinking — miniature caret boot ── */
+.hb-hero-boot {
+  position: relative;
+  display: inline-flex;
+  width: 30px;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  margin: 4px 0;
+}
+.hb-hero-bootdot {
+  width: 8px; height: 8px;
+  border-radius: 999px;
+  background: var(--ink);
+  animation: hb-boot-breathe 1.8s var(--ease-out-soft) infinite;
+}
+.hb-hero-bootorbit {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 0; height: 0;
+  animation: hb-boot-orbit 2.2s linear infinite;
+}
+.hb-hero-orb {
+  position: absolute;
+  left: 11px; top: -4.5px;
+  width: 9px; height: 9px;
+  border-radius: 999px;
+  background: var(--honey-deep);
+  filter: blur(2.5px);
+  box-shadow: 0 0 8px color-mix(in oklch, var(--honey) 70%, transparent);
+}
+@keyframes hb-boot-orbit { to { transform: rotate(360deg); } }
+@keyframes hb-boot-breathe {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(0.72); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hb-hero-bootorbit, .hb-hero-bootdot { animation: none; }
+}

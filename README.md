@@ -122,12 +122,9 @@ typing sounds), but replies come from `/api/site-chat` → OpenRouter
   clickable card (Program/Case/Page label + title + blurb + thumbnail,
   enriched via `src/lib/link-cards.ts`) — the recommendation is an
   embedded component, not just text.
-- **Spoken answers, synced** — replies are read aloud via Gemini Flash
-  Lite TTS through `/api/site-tts` (same OpenRouter key;
-  `OPENROUTER_TTS_VOICE` picks the voice, default `Zephyr`). Audio starts
-  when the typewriter starts and the typing pace matches the voice — you
-  hear the words as they appear. The mute toggle controls typing sounds
-  and voice together.
+- **Feel** — thinking state is a miniature of the hero's caret boot
+  (honey orbit around the ink dot); answers reveal with a per-char ghost
+  typewriter + soft pentatonic ticks. The 🔊 toggle mutes all of it.
 - **Safety** — public by design, no auth needed: per-IP sliding-window
   rate limit (15/min), 500-char messages, last-8-turns memory.
 - **Fallback** — if the API fails, the original keyword `replyFor`

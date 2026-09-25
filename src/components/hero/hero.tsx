@@ -104,12 +104,15 @@ const IconMute = () => (
   </svg>
 );
 
-function ThinkingDots() {
+/* Thinking — a miniature of the hero's load-in caret boot: the honey
+   glow orbits the ink dot until the reply starts. */
+function BootThink() {
   return (
-    <span className="hb-hero-think" aria-label="Thinking">
-      {[0, 1, 2].map((i) => (
-        <span key={i} className="think-dot" style={{ animationDelay: `${i * 0.16}s` }} />
-      ))}
+    <span className="hb-hero-boot" role="status" aria-label="Humblebee is thinking">
+      <span className="hb-hero-bootdot" aria-hidden />
+      <span className="hb-hero-bootorbit" aria-hidden>
+        <span className="hb-hero-orb" />
+      </span>
     </span>
   );
 }
@@ -273,13 +276,7 @@ export function Hero({ section }: { section: HeroSection }) {
     };
   }, [reduce, sound, BOOT_MS]);
 
-  React.useEffect(
-    () => () => {
-      window.clearTimeout(timer.current);
-      stopAudio();
-    },
-    []
-  );
+  React.useEffect(() => () => window.clearTimeout(timer.current), []);
 
   // One soft note as the greeting sharpens into focus (silent until audio is
   // unlocked by a gesture — see useTypingSound).
@@ -299,167 +296,31 @@ export function Hero({ section }: { section: HeroSection }) {
     });
   }
 
-  /* ── spoken reply — Gemini TTS via /api/site-tts. Fetched while the
-        "thinking" dots show; when it lands, playback starts and the
-        typewriter paces itself to the audio duration — you hear the
-        words as they type. ── */
-  type AudioJob = { el: HTMLAudioElement; url: string; duration: number };
-
-  const audioRef = React.useRef<HTMLAudioElement | null>(null);
-  const audioUrlRef = React.useRef<string | null>(null);
-  const rafRef = React.useRef(0);
-
-  function stopAudio() {
-    cancelAnimationFrame(rafRef.current);
-    audioRef.current?.pause();
-    audioRef.current = null;
-    if (audioUrlRef.current) {
-      URL.revokeObjectURL(audioUrlRef.current);
-      audioUrlRef.current = null;
-    }
-  }
-
-  function speakable(text: string) {
-    return text
-      .replace(/·\s*/g, "")
-      .replace(/\n{2,}/g, ". ")
-      .replace(/\n/g, " ")
-      .trim();
-  }
-
-  function fetchAudio(text: string): Promise<AudioJob | null> {
-    if (muted || reduce) return Promise.resolve(null);
-    const spoken = speakable(text);
-    if (!spoken) return Promise.resolve(null);
-    return fetch("/api/site-tts", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text: spoken }),
-    })
-      .then(async (r) => {
-        if (!r.ok) return null;
-        const url = URL.createObjectURL(await r.blob());
-        const el = new Audio(url);
-        const duration = await new Promise<number>((res) => {
-          el.onloadedmetadata = () => res(el.duration || 0);
-          window.setTimeout(() => res(0), 2000);
-        });
-        return { el, url, duration };
-      })
-      .catch(() => null);
-  }
-
-  // Late audio (arrived after typing already started) still gets spoken.
-  function playLate(job: AudioJob | null) {
-    if (!job || muted) return;
-    stopAudio();
-    audioUrlRef.current = job.url;
-    audioRef.current = job.el;
-    job.el.play().catch(() => {});
-  }
-
-  function stream(body: string, links: OutLink[], audioP?: Promise<AudioJob | null>) {
+  function stream(body: string, links: OutLink[]) {
     const len = body.length;
     const finish = () => {
       patchLastAI(body, false, links);
       setResponding(false);
     };
-
-    // Free-running typewriter — paceMs is mutable so late-arriving audio
-    // can re-pace the remaining text to finish when the voice does.
-    let typedI = 0;
-    let paceMs = 20;
-    const timed = () => {
-      sound.aiStart();
-      let lastTickAt = 0;
-      const step = () => {
-        typedI += 1;
-        patchLastAI(body.slice(0, typedI), typedI < len);
-        const ch = body[typedI - 1];
-        if (ch && ch !== " " && performance.now() - lastTickAt > 90) {
-          sound.aiType();
-          lastTickAt = performance.now();
-        }
-        if (typedI < len) timer.current = window.setTimeout(step, paceMs);
-        else finish();
-      };
-      step();
-    };
-
-    // Synced typewriter — reveal follows playback position, so the text
-    // you read is the word being spoken (tiny +2 char lead, subtitle-style).
-    // No per-char ticks here — the voice is the sound; clicks under it
-    // just lag and clutter.
-    const synced = (el: HTMLAudioElement) => {
-      sound.aiStart();
-      let finished = false;
-      let shown = -1;
-      const complete = () => {
-        if (!finished) {
-          finished = true;
-          cancelAnimationFrame(rafRef.current);
-          finish();
-        }
-      };
-      el.onended = complete;
-      el.onerror = complete;
-      const tick = () => {
-        const p = el.duration ? el.currentTime / el.duration : 0;
-        const i = Math.min(len, Math.floor(p * len) + 2);
-        if (i !== shown) {
-          shown = i;
-          patchLastAI(body.slice(0, i), i < len);
-        }
-        if (!finished && i < len) rafRef.current = requestAnimationFrame(tick);
-        else if (!finished) complete();
-      };
-      rafRef.current = requestAnimationFrame(tick);
-    };
-
-    const begin = async (audio: AudioJob | null) => {
-      if (reduce) {
-        finish();
-        return;
-      }
-      let playing = false;
-      if (audio && !muted) {
-        stopAudio();
-        audioUrlRef.current = audio.url;
-        audioRef.current = audio.el;
-        try {
-          await audio.el.play();
-          playing = true;
-        } catch {
-          playing = false; // autoplay blocked → free-run the typewriter
-        }
-      }
-      if (playing && audio) synced(audio.el);
-      else timed();
-    };
-
-    if (!audioP) {
-      begin(null);
+    if (reduce) {
+      finish();
       return;
     }
-    // Wait for the voice under the thinking dots — most replies synthesize
-    // in a few seconds. Capped at 10s: if TTS is slow, typing starts anyway
-    // and late audio re-paces the remaining text to converge with playback.
-    const cap = new Promise<null>((res) => window.setTimeout(() => res(null), 10_000));
-    Promise.race([audioP, cap]).then((audio) => {
-      if (audio && !muted) {
-        begin(audio);
-      } else {
-        audioP.then((job) => {
-          if (!job || muted) return;
-          // still typing → re-pace so text ends when the voice does
-          if (job.duration > 0 && typedI < len) {
-            paceMs = Math.max(14, Math.min(120, (job.duration * 1000) / Math.max(1, len - typedI)));
-          }
-          playLate(job);
-        });
-        begin(null);
+    sound.aiStart();
+    let i = 0;
+    let lastTickAt = 0;
+    const step = () => {
+      i += 1;
+      patchLastAI(body.slice(0, i), i < len);
+      const ch = body[i - 1];
+      if (ch && ch !== " " && performance.now() - lastTickAt > 90) {
+        sound.aiType();
+        lastTickAt = performance.now();
       }
-    });
+      if (i < len) timer.current = window.setTimeout(step, 16 + Math.random() * 24);
+      else finish();
+    };
+    step();
   }
 
   // Real reply via /api/site-chat; the keyword replyFor stays as the silent
@@ -487,7 +348,7 @@ export function Hero({ section }: { section: HeroSection }) {
 
     void Promise.all([replyP, minThink]).then(([reply]) => {
       const { text: body, links } = parseReply(reply);
-      stream(body, links, fetchAudio(body));
+      stream(body, links);
     });
   }
 
@@ -495,7 +356,6 @@ export function Hero({ section }: { section: HeroSection }) {
     const text = value.trim();
     if (!text || responding) return;
     sound.enter();
-    stopAudio();
     const history = [
       ...messages
         .filter((m) => !m.thinking && m.text)
@@ -560,7 +420,7 @@ export function Hero({ section }: { section: HeroSection }) {
                   <span className="hb-hero-ainame">Humblebee</span>
                 </div>
                 {m.thinking ? (
-                  <ThinkingDots />
+                  <BootThink />
                 ) : (
                   <>
                     <p className="hb-hero-lede">
@@ -664,11 +524,8 @@ export function Hero({ section }: { section: HeroSection }) {
       {/* Typing-sound toggle */}
       <button
         type="button"
-        onClick={() => {
-          stopAudio();
-          toggleMuted();
-        }}
-        aria-label={muted ? "Turn typing sound and voice on" : "Turn typing sound and voice off"}
+        onClick={toggleMuted}
+        aria-label={muted ? "Turn typing sound on" : "Turn typing sound off"}
         title={muted ? "Sound off" : "Sound on"}
         className="hb-hero-mute"
       >
