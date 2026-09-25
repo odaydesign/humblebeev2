@@ -284,8 +284,10 @@ export function Hero({ section }: { section: HeroSection }) {
 
   const audioRef = React.useRef<HTMLAudioElement | null>(null);
   const audioUrlRef = React.useRef<string | null>(null);
+  const rafRef = React.useRef(0);
 
   function stopAudio() {
+    cancelAnimationFrame(rafRef.current);
     audioRef.current?.pause();
     audioRef.current = null;
     if (audioUrlRef.current) {
@@ -324,7 +326,8 @@ export function Hero({ section }: { section: HeroSection }) {
       .catch(() => null);
   }
 
-  function startAudio(job: AudioJob | null) {
+  // Late audio (arrived after typing already started) still gets spoken.
+  function playLate(job: AudioJob | null) {
     if (!job || muted) return;
     stopAudio();
     audioUrlRef.current = job.url;
@@ -333,54 +336,107 @@ export function Hero({ section }: { section: HeroSection }) {
   }
 
   function stream(body: string, links: OutLink[], audioP?: Promise<AudioJob | null>) {
+    const len = body.length;
     const finish = () => {
       patchLastAI(body, false, links);
       setResponding(false);
     };
 
-    const begin = (audio: AudioJob | null) => {
-      if (reduce) {
-        finish();
-        return;
-      }
+    // Free-running typewriter — paceMs is mutable so late-arriving audio
+    // can re-pace the remaining text to finish when the voice does.
+    let typedI = 0;
+    let paceMs = 20;
+    const timed = () => {
       sound.aiStart();
-      // Pace the typewriter to the voice: chars land as they're spoken.
-      const perChar =
-        audio && audio.duration > 0
-          ? Math.max(14, Math.min(90, (audio.duration * 1000) / body.length))
-          : 16 + Math.random() * 24;
-      let i = 0;
       let lastTickAt = 0;
       const step = () => {
-        i += 1;
-        patchLastAI(body.slice(0, i), i < body.length);
-        const ch = body[i - 1];
+        typedI += 1;
+        patchLastAI(body.slice(0, typedI), typedI < len);
+        const ch = body[typedI - 1];
         if (ch && ch !== " " && performance.now() - lastTickAt > 90) {
           sound.aiType();
           lastTickAt = performance.now();
         }
-        if (i < body.length) {
-          timer.current = window.setTimeout(step, perChar);
-        } else {
+        if (typedI < len) timer.current = window.setTimeout(step, paceMs);
+        else finish();
+      };
+      step();
+    };
+
+    // Synced typewriter — reveal follows playback position, so the text
+    // you read is the word being spoken (tiny +2 char lead, subtitle-style).
+    const synced = (el: HTMLAudioElement) => {
+      sound.aiStart();
+      let finished = false;
+      let shown = -1;
+      let lastTickAt = 0;
+      const complete = () => {
+        if (!finished) {
+          finished = true;
+          cancelAnimationFrame(rafRef.current);
           finish();
         }
       };
-      if (audio) startAudio(audio);
-      step();
+      el.onended = complete;
+      el.onerror = complete;
+      const tick = () => {
+        const p = el.duration ? el.currentTime / el.duration : 0;
+        const i = Math.min(len, Math.floor(p * len) + 2);
+        if (i !== shown) {
+          shown = i;
+          patchLastAI(body.slice(0, i), i < len);
+          if (performance.now() - lastTickAt > 120) {
+            sound.aiType();
+            lastTickAt = performance.now();
+          }
+        }
+        if (!finished && i < len) rafRef.current = requestAnimationFrame(tick);
+        else if (!finished) complete();
+      };
+      rafRef.current = requestAnimationFrame(tick);
+    };
+
+    const begin = async (audio: AudioJob | null) => {
+      if (reduce) {
+        finish();
+        return;
+      }
+      let playing = false;
+      if (audio && !muted) {
+        stopAudio();
+        audioUrlRef.current = audio.url;
+        audioRef.current = audio.el;
+        try {
+          await audio.el.play();
+          playing = true;
+        } catch {
+          playing = false; // autoplay blocked → free-run the typewriter
+        }
+      }
+      if (playing && audio) synced(audio.el);
+      else timed();
     };
 
     if (!audioP) {
       begin(null);
       return;
     }
-    // Wait for the voice (thinking dots still showing), capped — if TTS is
-    // slow, start typing anyway and let the late audio play on arrival.
-    const cap = new Promise<null>((res) => window.setTimeout(() => res(null), 3500));
+    // Wait for the voice under the thinking dots — most replies synthesize
+    // in a few seconds. Capped at 10s: if TTS is slow, typing starts anyway
+    // and late audio re-paces the remaining text to converge with playback.
+    const cap = new Promise<null>((res) => window.setTimeout(() => res(null), 10_000));
     Promise.race([audioP, cap]).then((audio) => {
       if (audio && !muted) {
         begin(audio);
       } else {
-        audioP.then((a) => a && startAudio(a)); // late audio still speaks
+        audioP.then((job) => {
+          if (!job || muted) return;
+          // still typing → re-pace so text ends when the voice does
+          if (job.duration > 0 && typedI < len) {
+            paceMs = Math.max(14, Math.min(120, (job.duration * 1000) / Math.max(1, len - typedI)));
+          }
+          playLate(job);
+        });
         begin(null);
       }
     });
