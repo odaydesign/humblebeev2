@@ -7,16 +7,24 @@ import { cn } from "../lib/utils";
 
 type BrandRow = { name: string };
 
-/** Client names — denser list for the reel. */
-const BRAND_ROWS: BrandRow[] = marqueeItems.map((name) => ({ name }));
-
-const LOOP = [...BRAND_ROWS, ...BRAND_ROWS];
 const AUTO_PX_PER_SEC = 28;
 
 /**
  * Continuous vertical brand-name scroll — drag or wheel to scrub the reel.
+ * `names` overrides the built-in client list (CMS-editable).
  */
-export function BrandsLoopCard({ focused }: { focused?: boolean }) {
+export function BrandsLoopCard({
+  focused,
+  names,
+}: {
+  focused?: boolean;
+  names?: string[];
+}) {
+  const rows = React.useMemo<BrandRow[]>(
+    () => (names?.length ? names : marqueeItems).map((name) => ({ name })),
+    [names],
+  );
+  const loop = React.useMemo(() => [...rows, ...rows], [rows]);
   const rootRef = React.useRef<HTMLDivElement>(null);
   const trackRef = React.useRef<HTMLDivElement>(null);
   const offsetRef = React.useRef(0);
@@ -131,7 +139,7 @@ export function BrandsLoopCard({ focused }: { focused?: boolean }) {
         focused ? (dragging ? "cursor-grabbing" : "cursor-grab") : "cursor-pointer",
       )}
       role="region"
-      aria-label={`Brands we've worked with. ${focused ? "Drag or scroll to browse." : "Hover to interact."} ${BRAND_ROWS.map((b) => b.name).join(", ")}`}
+      aria-label={`Brands we've worked with. ${focused ? "Drag or scroll to browse." : "Hover to interact."} ${rows.map((b) => b.name).join(", ")}`}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={endDrag}
@@ -142,7 +150,7 @@ export function BrandsLoopCard({ focused }: { focused?: boolean }) {
         className="hb-brands-loop-track absolute inset-x-0 top-0 flex flex-col justify-start will-change-transform pt-3"
         aria-hidden
       >
-        {LOOP.map((row, i) => (
+        {loop.map((row, i) => (
           <div
             key={`${row.name}-${i}`}
             className="hb-brands-loop-row px-4 text-left leading-[0.95]"

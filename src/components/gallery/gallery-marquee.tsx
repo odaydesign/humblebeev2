@@ -70,6 +70,8 @@ export type GalleryMarqueeItem =
     })
   | (BaseItem & {
       kind: "brands";
+      /** Client names for the reel — falls back to the built-in list. */
+      clients?: string[];
     });
 
 export type GalleryMarqueeProps = {
@@ -449,7 +451,12 @@ export function GalleryMarquee({
       return <WireframeLayoutCard focused={focusLoop === loopIndex} />;
     }
     if (item.kind === "brands") {
-      return <BrandsLoopCard focused={focusLoop === loopIndex} />;
+      return (
+        <BrandsLoopCard
+          focused={focusLoop === loopIndex}
+          names={item.clients}
+        />
+      );
     }
     if (item.kind === "video") {
       return (

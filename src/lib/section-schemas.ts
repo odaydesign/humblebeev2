@@ -297,6 +297,10 @@ const BUILTIN_SCHEMAS: SectionSchema[] = [
           { k: "meta", l: "Meta (portfolio)", t: "text", hint: "e.g. 2025 · Fintech" },
           { k: "tags", l: "Tags (portfolio, comma-sep)", t: "text" },
           {
+            k: "clients", l: "Client names (brands reel)", t: "list", item: "client",
+            fields: [{ k: "", l: "Name", t: "text" }],
+          },
+          {
             k: "format", l: "Format", t: "select",
             options: [
               { v: "square", l: "Square 1:1" },

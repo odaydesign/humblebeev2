@@ -228,7 +228,9 @@ export function Inspector({ section, schema, assets, slugs, onChange }: Props) {
         const many = arr.length > 4; // long lists start collapsed
         const summary = (v: any, i: number) =>
           f.summary?.(v, i) ??
-          (v?.title ?? v?.id ?? v?.label ?? v?.name ?? `${f.item} ${i + 1}`);
+          (typeof v === "string" || typeof v === "number"
+            ? String(v) || `${f.item} ${i + 1}`
+            : (v?.title ?? v?.id ?? v?.label ?? v?.name ?? `${f.item} ${i + 1}`));
         return (
           <div className="st-list">
             {arr.map((v, i) => {
