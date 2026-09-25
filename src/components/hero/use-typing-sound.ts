@@ -38,23 +38,35 @@ export function useTypingSound() {
   }, []);
 
   React.useEffect(() => {
-    const unlock = () => {
-      if (!ctxRef.current) {
-        const AC =
-          window.AudioContext ||
-          (window as unknown as { webkitAudioContext?: typeof AudioContext })
-            .webkitAudioContext;
-        if (AC) ctxRef.current = new AC();
+    // Create the context at mount — it stays suspended until a gesture, but
+    // having it built means the first note only pays resume(), not the
+    // constructor roundtrip. "interactive" trims the output buffer.
+    const AC =
+      window.AudioContext ||
+      (window as unknown as { webkitAudioContext?: typeof AudioContext })
+        .webkitAudioContext;
+    if (AC && !ctxRef.current) {
+      try {
+        ctxRef.current = new AC({ latencyHint: "interactive" });
+      } catch {
+        ctxRef.current = new AC();
       }
-      void ctxRef.current?.resume();
-    };
+    }
+    const unlock = () => void ctxRef.current?.resume();
     window.addEventListener("pointerdown", unlock);
     // capture phase: resume starts before the input's own keydown handler
     // plays its note, so the first keystroke isn't silent
     window.addEventListener("keydown", unlock, { capture: true });
+    window.addEventListener("touchstart", unlock);
+    const onVis = () => {
+      if (document.visibilityState === "visible") unlock();
+    };
+    document.addEventListener("visibilitychange", onVis);
     return () => {
       window.removeEventListener("pointerdown", unlock);
       window.removeEventListener("keydown", unlock, { capture: true });
+      window.removeEventListener("touchstart", unlock);
+      document.removeEventListener("visibilitychange", onVis);
     };
   }, []);
 
@@ -68,7 +80,11 @@ export function useTypingSound() {
         (window as unknown as { webkitAudioContext?: typeof AudioContext })
           .webkitAudioContext;
       if (!AC) return;
-      c = ctxRef.current = new AC();
+      try {
+        c = ctxRef.current = new AC({ latencyHint: "interactive" });
+      } catch {
+        c = ctxRef.current = new AC();
+      }
     }
     // Suspended (gesture just happened, resume still in flight): schedule
     // anyway — currentTime is frozen while suspended, so the note lands the
