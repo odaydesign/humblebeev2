@@ -224,7 +224,6 @@ export function GalleryMarquee({
   const offsetRef = React.useRef(0);
 
   const loop = React.useMemo(() => [...items, ...items], [items]);
-  const [active, setActive] = React.useState(0);
   const [hovered, setHovered] = React.useState<number | null>(null);
   const [focusLoop, setFocusLoop] = React.useState<number | null>(null);
 
@@ -380,7 +379,6 @@ export function GalleryMarquee({
 
     let raf = 0;
     let last = performance.now();
-    let progressTick = 0;
     let lastDesired = cruise;
 
     const tick = (now: number) => {
@@ -402,17 +400,6 @@ export function GalleryMarquee({
         if (Math.abs(vel) > 0.01) {
           offsetRef.current = wrapOffset(offsetRef.current + vel * dt);
           applyTransform();
-        }
-      }
-
-      progressTick += dt;
-      if (progressTick > 0.2 && items.length > 0 && halfWidth > 0) {
-        progressTick = 0;
-        const card = halfWidth / items.length;
-        if (card > 0) {
-          const idx =
-            Math.floor((offsetRef.current % halfWidth) / card) % items.length;
-          setActive(idx);
         }
       }
 
@@ -565,23 +552,6 @@ export function GalleryMarquee({
             </figure>
           );
         })}
-        </div>
-      </div>
-
-      <div
-        className="pointer-events-none absolute bottom-8 right-5 hidden flex-col items-center gap-1.5 md:bottom-10 md:right-8 md:flex"
-        aria-hidden
-      >
-        <div className="flex flex-col gap-1 rounded-full border border-border/70 bg-background/80 px-1.5 py-2 backdrop-blur-sm">
-          {items.map((item, i) => (
-            <span
-              key={item.id}
-              className={cn(
-                "block size-1 rounded-full transition-colors duration-300",
-                i === active ? "bg-foreground" : "bg-foreground/25",
-              )}
-            />
-          ))}
         </div>
       </div>
     </section>
