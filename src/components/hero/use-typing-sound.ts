@@ -70,6 +70,23 @@ export function useTypingSound() {
     };
   }, []);
 
+  /** Build + start one note against the live clock — call only when running. */
+  const play = (c: AudioContext, o: Blip) => {
+    const { freq, to, gain = 0.03, attack = 0.012, decay = 0.11, delay = 0 } = o;
+    const t = c.currentTime + delay;
+    const osc = c.createOscillator();
+    const g = c.createGain();
+    osc.type = "sine"; // pure + smooth
+    osc.frequency.setValueAtTime(freq, t);
+    if (to) osc.frequency.exponentialRampToValueAtTime(to, t + decay * 0.85);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.linearRampToValueAtTime(gain, t + attack);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + decay);
+    osc.connect(g).connect(c.destination);
+    osc.start(t);
+    osc.stop(t + decay + 0.03);
+  };
+
   const blip = React.useCallback((o: Blip) => {
     if (mutedRef.current) return;
     let c = ctxRef.current;
@@ -86,23 +103,17 @@ export function useTypingSound() {
         c = ctxRef.current = new AC();
       }
     }
-    // Suspended (gesture just happened, resume still in flight): schedule
-    // anyway — currentTime is frozen while suspended, so the note lands the
-    // moment the context resumes instead of being silently dropped.
-    if (c.state !== "running") void c.resume();
-    const { freq, to, gain = 0.03, attack = 0.012, decay = 0.11, delay = 0 } = o;
-    const t = c.currentTime + delay;
-    const osc = c.createOscillator();
-    const g = c.createGain();
-    osc.type = "sine"; // pure + smooth
-    osc.frequency.setValueAtTime(freq, t);
-    if (to) osc.frequency.exponentialRampToValueAtTime(to, t + decay * 0.85);
-    g.gain.setValueAtTime(0.0001, t);
-    g.gain.linearRampToValueAtTime(gain, t + attack);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + decay);
-    osc.connect(g).connect(c.destination);
-    osc.start(t);
-    osc.stop(t + decay + 0.03);
+    const ctx = c;
+    if (ctx.state !== "running") {
+      // Suspended — never schedule against the frozen clock (every note would
+      // queue at t=0 and burst on resume). Resume first, then play on the
+      // live clock so the note lands right after unlock.
+      void ctx.resume().then(() => {
+        if (ctx.state === "running" && !mutedRef.current) play(ctx, o);
+      });
+      return;
+    }
+    play(ctx, o);
   }, []);
 
   const sound = React.useMemo(
