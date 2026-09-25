@@ -287,3 +287,12 @@ renders them as **link cards** under the reply — enriched via
 cases, utility pages; unknown paths get a generic card). Cards appear
 after the typewriter finishes.
 
+**Spoken replies** — when a reply finishes streaming it's spoken aloud via
+`/api/site-tts` → OpenRouter `deepgram/flux-tts` (env:
+`OPENROUTER_TTS_MODEL` default `deepgram/flux-tts:free`,
+`OPENROUTER_TTS_VOICE` default `flux-wes-en`). The fetch fires in parallel
+with the typewriter, plays on completion, and is gated by the same mute
+toggle + reduced-motion check — muting stops audio and skips synthesis.
+Speakable text = prose only (links/`·` stripped). TTS bucket: 10 req/min/IP,
+1500-char cap.
+

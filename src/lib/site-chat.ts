@@ -46,21 +46,21 @@ or [hello@humblebee.se](mailto:hello@humblebee.se) — it renders as a
 clickable card. Keep it to a few short sentences — this is a chat widget,
 not an essay.`;
 
-/* ── rate limit — sliding window per IP, 15 req/min ─────────── */
+/* ── rate limit — sliding window per IP per bucket ──────────── */
 
 const hits = new Map<string, number[]>();
 const WINDOW_MS = 60_000;
-const MAX = 15;
 
-export function rateLimited(ip: string): boolean {
+export function rateLimited(ip: string, bucket = "chat", max = 15): boolean {
+  const key = `${bucket}:${ip}`;
   const now = Date.now();
-  const list = (hits.get(ip) ?? []).filter((t) => now - t < WINDOW_MS);
-  if (list.length >= MAX) {
-    hits.set(ip, list);
+  const list = (hits.get(key) ?? []).filter((t) => now - t < WINDOW_MS);
+  if (list.length >= max) {
+    hits.set(key, list);
     return true;
   }
   list.push(now);
-  hits.set(ip, list);
+  hits.set(key, list);
   return false;
 }
 

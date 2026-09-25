@@ -250,7 +250,13 @@ export function Hero({ section }: { section: HeroSection }) {
     };
   }, [reduce, sound, BOOT_MS]);
 
-  React.useEffect(() => () => window.clearTimeout(timer.current), []);
+  React.useEffect(
+    () => () => {
+      window.clearTimeout(timer.current);
+      stopAudio();
+    },
+    []
+  );
 
   // One soft note as the greeting sharpens into focus (silent until audio is
   // unlocked by a gesture — see useTypingSound).
@@ -270,11 +276,58 @@ export function Hero({ section }: { section: HeroSection }) {
     });
   }
 
-  function stream(reply: string) {
-    const { text: body, links } = parseReply(reply);
-    if (reduce) {
+  /* ── spoken reply — Flux TTS via /api/site-tts, fetched in parallel
+        with the typewriter and played when it finishes ── */
+  const audioRef = React.useRef<HTMLAudioElement | null>(null);
+  const audioUrlRef = React.useRef<string | null>(null);
+
+  function stopAudio() {
+    audioRef.current?.pause();
+    audioRef.current = null;
+    if (audioUrlRef.current) {
+      URL.revokeObjectURL(audioUrlRef.current);
+      audioUrlRef.current = null;
+    }
+  }
+
+  function speakable(text: string) {
+    return text
+      .replace(/·\s*/g, "")
+      .replace(/\n{2,}/g, ". ")
+      .replace(/\n/g, " ")
+      .trim();
+  }
+
+  function fetchAudio(text: string): Promise<string | null> {
+    if (muted || reduce) return Promise.resolve(null);
+    const spoken = speakable(text);
+    if (!spoken) return Promise.resolve(null);
+    return fetch("/api/site-tts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: spoken }),
+    })
+      .then(async (r) => (r.ok ? URL.createObjectURL(await r.blob()) : null))
+      .catch(() => null);
+  }
+
+  function playAudio(url: string | null) {
+    if (!url || muted) return;
+    stopAudio();
+    audioUrlRef.current = url;
+    const a = new Audio(url);
+    audioRef.current = a;
+    a.play().catch(() => {});
+  }
+
+  function stream(body: string, links: OutLink[], audioP?: Promise<string | null>) {
+    const done = () => {
       patchLastAI(body, false, links);
       setResponding(false);
+      audioP?.then(playAudio);
+    };
+    if (reduce) {
+      done();
       return;
     }
     sound.aiStart();
@@ -291,8 +344,7 @@ export function Hero({ section }: { section: HeroSection }) {
       if (i < body.length) {
         timer.current = window.setTimeout(step, 16 + Math.random() * 24);
       } else {
-        patchLastAI(body, false, links);
-        setResponding(false);
+        done();
       }
     };
     step();
@@ -321,13 +373,17 @@ export function Hero({ section }: { section: HeroSection }) {
       timer.current = window.setTimeout(res, reduce ? 0 : 620);
     });
 
-    void Promise.all([replyP, minThink]).then(([reply]) => stream(reply));
+    void Promise.all([replyP, minThink]).then(([reply]) => {
+      const { text: body, links } = parseReply(reply);
+      stream(body, links, fetchAudio(body));
+    });
   }
 
   function send() {
     const text = value.trim();
     if (!text || responding) return;
     sound.enter();
+    stopAudio();
     const history = [
       ...messages
         .filter((m) => !m.thinking && m.text)
@@ -496,8 +552,11 @@ export function Hero({ section }: { section: HeroSection }) {
       {/* Typing-sound toggle */}
       <button
         type="button"
-        onClick={toggleMuted}
-        aria-label={muted ? "Turn typing sound on" : "Turn typing sound off"}
+        onClick={() => {
+          stopAudio();
+          toggleMuted();
+        }}
+        aria-label={muted ? "Turn typing sound and voice on" : "Turn typing sound and voice off"}
         title={muted ? "Sound off" : "Sound on"}
         className="hb-hero-mute"
       >
