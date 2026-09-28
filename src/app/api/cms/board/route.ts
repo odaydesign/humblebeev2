@@ -4,7 +4,10 @@ import path from "path";
 
 export const dynamic = "force-dynamic";
 
-const FILE = path.join(process.cwd(), "src/lib/board-positions.json");
+const FILE = path.join(
+  process.env.CMS_DATA_DIR ?? path.join(process.cwd(), "src/lib"),
+  "board-positions.json"
+);
 
 function read(): Record<string, { x: number; y: number }> {
   try {
