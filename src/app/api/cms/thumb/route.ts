@@ -25,7 +25,13 @@ async function shoot(slug: string) {
   const browser = await puppeteer.launch({
     executablePath: CHROME,
     headless: "shell",
-    args: ["--hide-scrollbars"],
+    // Docker/chromium can't use the kernel sandbox — opt in via env.
+    args: [
+      "--hide-scrollbars",
+      ...(process.env.CHROME_NO_SANDBOX === "1"
+        ? ["--no-sandbox", "--disable-setuid-sandbox"]
+        : []),
+    ],
   });
   try {
     const page = await browser.newPage();

@@ -12,3 +12,4 @@ public/uploads/
 src/lib/drafts/
 src/lib/chats/
 src/lib/board-positions.json
+.vercel
